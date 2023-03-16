@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.MainScreenController">
    <children>
       <HBox layoutX="3.0" prefHeight="400.0" prefWidth="600.0">
@@ -45,25 +44,17 @@
                               <Font name="Arial Rounded MT Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Hyperlink alignment="BOTTOM_LEFT" focusTraversable="false" text="Regístrate" />
+                        <Hyperlink alignment="BOTTOM_LEFT" focusTraversable="false" onAction="#registerButtonClicked" text="Regístrate" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="loginButton"
-                                contentDisplay="CENTER"
-                                minWidth="80.0"
-                                mnemonicParsing="false"
-                                onAction="#loginButtonClicked"
-                                prefHeight="30.0"
-                                prefWidth="87.0"
-                                styleClass="button-accept"
-                                text="Login">
+                        <Button fx:id="loginButton" contentDisplay="CENTER" minWidth="80.0" mnemonicParsing="false" onAction="#loginButtonClicked" prefHeight="30.0" prefWidth="87.0" styleClass="button-accept" text="Login">
                            <font>
-                              <Font name="Arial Rounded MT Bold" size="13.0"/>
+                              <Font name="Arial Rounded MT Bold" size="13.0" />
                            </font>
                            <effect>
-                              <DropShadow/>
+                              <DropShadow />
                            </effect>
                         </Button>
                      </children>
@@ -73,10 +64,7 @@
             <VBox alignment="CENTER" prefHeight="400.0" prefWidth="310.0">
                <children>
                   <Label prefHeight="121.0" prefWidth="282.0" text="¿Por qué no juegas una partida rápida para calentar?" />
-                  <Button fx:id="fastGameButton"
-                          mnemonicParsing="false"
-                          onAction="#fastGameButtonClicked"
-                          text="¡Que empiece el juego!"/>
+                  <Button fx:id="fastGameButton" mnemonicParsing="false" onAction="#fastGameButtonClicked" text="¡Que empiece el juego!" />
                </children>
             </VBox>
          </children>

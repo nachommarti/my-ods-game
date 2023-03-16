@@ -45,6 +45,21 @@ public class MainScreenController implements Initializable {
     }
 
     @FXML
+    void registerButtonClicked(ActionEvent event) throws IOException {
+        FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/registroUsuario-view.fxml"));
+        BorderPane root = myLoader.load();
+
+        Scene scene = new Scene (root);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Formulario de registro");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.setResizable(false);
+        stage.show();
+        System.out.println("hi");
+    }
+
+    @FXML
     void loginButtonClicked(ActionEvent event) {}
 
     @Override
