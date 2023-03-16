@@ -55,11 +55,11 @@ public class Pregunta {
         this.respuesta4 = respuesta4;
     }
 
-    public int getRespuestaCorrecta() {
+    public String getRespuestaCorrecta() {
         return respuestaCorrecta;
     }
 
-    public void setRespuestaCorrecta(int respuestaCorrecta) {
+    public void setRespuestaCorrecta(String respuestaCorrecta) {
         this.respuestaCorrecta = respuestaCorrecta;
     }
 
@@ -72,7 +72,7 @@ public class Pregunta {
     }
 
     private String respuesta4;
-    private int respuestaCorrecta;
+    private String respuestaCorrecta;
     private int nivelDificultad;
 
     private Pregunta(Builder builder) {
@@ -110,7 +110,7 @@ public class Pregunta {
         private String respuesta2;
         private String respuesta3;
         private String respuesta4;
-        private int respuestaCorrecta;
+        private String respuestaCorrecta;
         private int nivelDificultad;
 
         public Builder setId(int id) {
@@ -143,7 +143,7 @@ public class Pregunta {
             return this;
         }
 
-        public Builder setRespuestaCorrecta(int respuestaCorrecta) {
+        public Builder setRespuestaCorrecta(String respuestaCorrecta) {
             this.respuestaCorrecta = respuestaCorrecta;
             return this;
         }

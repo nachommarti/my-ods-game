@@ -7,15 +7,14 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
 <BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.RetoPreguntaController">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                <children>
-                  <Button fx:id="respuesta1" mnemonicParsing="false" prefHeight="45.0" prefWidth="192.0" text="Respuesta 1" />
-                  <Button fx:id="respuesta2" mnemonicParsing="false" prefHeight="45.0" prefWidth="192.0" text="Respuesta 2">
+                  <Button fx:id="respuesta1" mnemonicParsing="false" onAction="#respuesta1Clicked" prefHeight="45.0" prefWidth="192.0" text="Respuesta 1" />
+                  <Button fx:id="respuesta2" mnemonicParsing="false" onAction="#respuesta2Clicked" prefHeight="45.0" prefWidth="192.0" text="Respuesta 2">
                      <opaqueInsets>
                         <Insets left="10.0" />
                      </opaqueInsets>
@@ -30,15 +29,15 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                <children>
-                  <Button fx:id="respuesta3" mnemonicParsing="false" prefHeight="45.0" prefWidth="192.0" text="Respuesta 3" />
-                  <Button fx:id="respuesta4" mnemonicParsing="false" prefHeight="45.0" prefWidth="192.0" text="Respuesta 4" />
+                  <Button fx:id="respuesta3" mnemonicParsing="false" onAction="#respuesta3Clicked" prefHeight="45.0" prefWidth="192.0" text="Respuesta 3" />
+                  <Button fx:id="respuesta4" mnemonicParsing="false" onAction="#respuesta4Clicked" prefHeight="45.0" prefWidth="192.0" text="Respuesta 4" />
                </children>
             </HBox>
          </children>
       </VBox>
    </center>
    <bottom>
-      <Button fx:id="pista" mnemonicParsing="false" onAction="#pistaClicked" text="Pista" BorderPane.alignment="CENTER">
+      <Button fx:id="ayuda" mnemonicParsing="false" onAction="#ayudaClicked" text="Ayuda" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="20.0" />
          </BorderPane.margin>

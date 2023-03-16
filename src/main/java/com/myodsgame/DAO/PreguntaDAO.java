@@ -55,7 +55,7 @@ public class PreguntaDAO {
                         .setRespuesta2(rs.getString("respuesta2"))
                         .setRespuesta3(rs.getString("respuesta3"))
                         .setRespuesta4(rs.getString("respuesta4"))
-                        .setRespuestaCorrecta(rs.getInt("respuesta_correcta"))
+                        .setRespuestaCorrecta(rs.getString("respuesta_correcta"))
                         .setNivelDificultad(rs.getInt("nivel_dificultad"))
                         .build());
             }
