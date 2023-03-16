@@ -1,7 +1,7 @@
-package com.myodsgame.myodsgame.DAO;
+package com.myodsgame.DAO;
 
-import com.myodsgame.myodsgame.Models.Pregunta;
-import com.myodsgame.myodsgame.Util.DBConnection;
+import com.myodsgame.Models.Pregunta;
+import com.myodsgame.Utils.DBConnection;
 
 import java.sql.*;
 import java.util.ArrayList;

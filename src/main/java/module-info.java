@@ -4,10 +4,10 @@ module com.myodsgame.myodsgame {
     requires java.sql;
 
 
-    opens com.myodsgame.myodsgame to javafx.fxml;
-    exports com.myodsgame.myodsgame;
-    exports com.myodsgame.myodsgame.Util;
-    opens com.myodsgame.myodsgame.Util to javafx.fxml;
-    exports com.myodsgame.myodsgame.Controllers;
-    opens com.myodsgame.myodsgame.Controllers to javafx.fxml;
+    opens com.myodsgame to javafx.fxml;
+    exports com.myodsgame;
+    exports com.myodsgame.Utils;
+    opens com.myodsgame.Utils to javafx.fxml;
+    exports com.myodsgame.Controllers;
+    opens com.myodsgame.Controllers to javafx.fxml;
 }

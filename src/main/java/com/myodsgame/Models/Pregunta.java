@@ -1,4 +1,4 @@
-package com.myodsgame.myodsgame.Models;
+package com.myodsgame.Models;
 
 public class Pregunta {
     private int id;

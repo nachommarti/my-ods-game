@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.MainScreenController">
+   <children>
+      <HBox layoutX="3.0" prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <VBox prefHeight="400.0" prefWidth="301.0">
+               <children>
+                  <VBox alignment="BOTTOM_CENTER" prefHeight="162.0" prefWidth="296.0">
+                     <children>
+                        <Label prefHeight="15.0" prefWidth="209.0" text="Usuario:">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="username" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="211.0" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="97.0" prefWidth="296.0">
+                     <children>
+                        <Label prefHeight="15.0" prefWidth="208.0" text="Contraseña:">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <PasswordField fx:id="password" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="211.0" />
+                     </children>
+                  </VBox>
+                  <HBox alignment="CENTER" prefHeight="62.0" prefWidth="296.0">
+                     <children>
+                        <Label focusTraversable="false" prefHeight="23.0" prefWidth="137.0" text="¿Aún no tienes cuenta?">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Hyperlink alignment="BOTTOM_LEFT" focusTraversable="false" text="Regístrate" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="loginButton"
+                                contentDisplay="CENTER"
+                                minWidth="80.0"
+                                mnemonicParsing="false"
+                                onAction="#loginButtonClicked"
+                                prefHeight="30.0"
+                                prefWidth="87.0"
+                                styleClass="button-accept"
+                                text="Login">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="13.0"/>
+                           </font>
+                           <effect>
+                              <DropShadow/>
+                           </effect>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="400.0" prefWidth="310.0">
+               <children>
+                  <Label prefHeight="121.0" prefWidth="282.0" text="¿Por qué no juegas una partida rápida para calentar?" />
+                  <Button fx:id="fastGameButton"
+                          mnemonicParsing="false"
+                          onAction="#fastGameButtonClicked"
+                          text="¡Que empiece el juego!"/>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</Pane>

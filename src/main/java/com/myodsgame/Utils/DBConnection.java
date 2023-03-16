@@ -1,4 +1,4 @@
-package com.myodsgame.myodsgame.Util;
+package com.myodsgame.Utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
