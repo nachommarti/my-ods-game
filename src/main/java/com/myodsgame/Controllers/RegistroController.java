@@ -174,10 +174,10 @@ public class RegistroController implements Initializable {
 
     private void checkUsername() {
         if (!UserUtils.checkUsername(usernameField.textProperty().getValueSafe())) {
-            usernameErrorText.textProperty().setValue("Incorrect username. A nickname is " +
-                    "valid if it is between 6 and 15 characters long and " +
+            usernameErrorText.textProperty().setValue("Incorrect username. A username is " +
+                    "valid if it is between 5 and 20 characters long and " +
                     "contains uppercase or lowercase letters or the " +
-                    "hyphens '-' and '_' .");
+                    "hyphens '-' and '_' . (cannot appear consecutive nor first nor last)");
             manageError(usernameErrorText, usernameField, validUsername);
         } else {
             usernameErrorText.textProperty().setValue("");
@@ -276,11 +276,11 @@ public class RegistroController implements Initializable {
         alert.setTitle("Password help");
         alert.setHeaderText("A password is correct if:");
         alert.setContentText(
-                "- contains between 8 and 20 characters\n" +
+                "- contains at least 8 characters\n" +
                         "- contains at least one upper case letter\n" +
                         "- contains at least one lower case letter\n" +
                         "- contains at least one digit" +
-                        "- contains a special character from the set: !@#$%&*&*()-+=\n" +
+                        "- contains a special character from the set: @#$%^&+=\n" +
                         "- does not contain any blank spaces"
         );
         alert.initModality(Modality.WINDOW_MODAL);
