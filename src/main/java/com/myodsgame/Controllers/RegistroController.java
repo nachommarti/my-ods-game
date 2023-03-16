@@ -273,15 +273,14 @@ public class RegistroController implements Initializable {
     @FXML
     void passwordInfoButtonClicked(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Password help");
-        alert.setHeaderText("A password is correct if:");
+        alert.setTitle("Información contraseña");
+        alert.setHeaderText("Una contraseña es correcta si:");
         alert.setContentText(
-                "- contains at least 8 characters\n" +
-                        "- contains at least one upper case letter\n" +
-                        "- contains at least one lower case letter\n" +
-                        "- contains at least one digit" +
-                        "- contains a special character from the set: @#$%^&+=\n" +
-                        "- does not contain any blank spaces"
+                "- contiene almenos 8 caracteres\n" +
+                        "- contiene almenos una letra mayúscula y mínúscula\n" +
+                        "- contiene almenos un dígito\n" +
+                        "- contiene almenos uno de los siguientes caracteres especiales: @#$%^&+=\n" +
+                        "- no contiene ningún espacio en blanco"
         );
         alert.initModality(Modality.WINDOW_MODAL);
         alert.initOwner(emailField.getScene().getWindow());
