@@ -33,6 +33,9 @@ public class RetoPreguntaController implements Initializable {
     @FXML
     private Button respuesta4;
 
+    @FXML
+    private Label resultadoRespuesta;
+
     private List<Button> respuestas;
 
     private String respuestaCorrecta;
@@ -102,9 +105,10 @@ public class RetoPreguntaController implements Initializable {
     }
 
     private void checkAnswers(Button respuestaSeleccionada){
-        if(respuestaSeleccionada.getText().equals(respuestaCorrecta)) {
+        if(respuestaSeleccionada.getText().equals(respuestaCorrecta))
             respuestaCorrectaSeleccionada = true;
-        }
+
+        fillAnswerResult();
 
         for(Button respuesta : respuestas){
             if(respuesta.getText().equals(respuestaCorrecta)){
@@ -130,6 +134,11 @@ public class RetoPreguntaController implements Initializable {
         }else{
             //restamos puntos
         }
+    }
+
+    private void fillAnswerResult(){
+        resultadoRespuesta.setText(respuestaCorrectaSeleccionada ? "¡RESPUESTA CORRECTA!" : "¡RESPUESTA INCORRECTA!");
+        resultadoRespuesta.setTextFill(respuestaCorrectaSeleccionada ? Color.GREEN : Color.RED);
     }
 
     private Pregunta getRandomQuestion(List<Pregunta> preguntas){

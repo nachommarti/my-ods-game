@@ -9,8 +9,9 @@
 
 <BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.RetoPreguntaController">
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
+            <Label fx:id="resultadoRespuesta" alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="158.0" text="Hola" textAlignment="JUSTIFY" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                <children>
                   <Button fx:id="respuesta1" mnemonicParsing="false" onAction="#respuesta1Clicked" prefHeight="45.0" prefWidth="192.0" text="Respuesta 1" />
@@ -44,6 +45,6 @@
       </Button>
    </bottom>
    <top>
-      <Label fx:id="enunciadoPregunta" prefHeight="122.0" prefWidth="430.0" text="Enunciado pregunta" BorderPane.alignment="CENTER" />
+      <Label fx:id="enunciadoPregunta" prefHeight="112.0" prefWidth="430.0" text="Enunciado pregunta" BorderPane.alignment="CENTER" />
    </top>
 </BorderPane>
