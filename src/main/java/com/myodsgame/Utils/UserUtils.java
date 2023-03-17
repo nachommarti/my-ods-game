@@ -17,4 +17,8 @@ public class UserUtils {
     public static boolean checkUsername(String username) {
         return username.matches(USERNAME_REGEX);
     }
+
+    public static boolean checkUserExists(String username, String password){
+        return false;
+    }
 }
