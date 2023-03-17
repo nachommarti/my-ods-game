@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class MainScreenController implements Initializable {
@@ -44,17 +45,39 @@ public class MainScreenController implements Initializable {
 
     @FXML
     void fastGameButtonClicked(ActionEvent event) throws IOException {
-        FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/retoPregunta-view.fxml"));
+        int randomChallenge = 1 + new Random().nextInt(4);
+        String viewRoute = null;
+        String challengeTitle = null;
+
+        switch (randomChallenge){
+            case 1:
+                viewRoute = "/com/myodsgame/retoPregunta-view.fxml";
+                challengeTitle = "Reto Pregunta";
+                break;
+            case 2:
+                viewRoute = "/com/myodsgame/retoPregunta-view.fxml";
+                challengeTitle = "Reto Sopa Letras";
+                break;
+            case 3:
+                viewRoute = "/com/myodsgame/retoPregunta-view.fxml";
+                challengeTitle = "Reto Ahorcado";
+                break;
+            case 4:
+                viewRoute = "/com/myodsgame/retoPregunta-view.fxml";
+                challengeTitle = "Reto ni idea";
+                break;
+        }
+
+        FXMLLoader myLoader = new FXMLLoader(getClass().getResource(viewRoute));
         BorderPane root = myLoader.load();
 
         Scene scene = new Scene (root);
         Stage stage = new Stage();
         stage.setScene(scene);
-        stage.setTitle("Reto Pregunta");
+        stage.setTitle(challengeTitle);
         stage.initModality(Modality.WINDOW_MODAL);
         stage.setResizable(false);
         stage.show();
-        System.out.println("hi");
     }
 
     @FXML
