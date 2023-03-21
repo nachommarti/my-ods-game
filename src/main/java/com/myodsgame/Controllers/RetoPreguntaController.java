@@ -2,6 +2,8 @@ package com.myodsgame.Controllers;
 
 import com.myodsgame.DAO.PreguntaDAO;
 import com.myodsgame.Models.Pregunta;
+import com.myodsgame.Repository.RepositorioPregunta;
+import com.myodsgame.Repository.RepositorioPreguntaImpl;
 import com.myodsgame.Utils.TestData;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -50,10 +52,12 @@ public class RetoPreguntaController implements Initializable {
     private int numeroPregunta;
 
     private List<Pregunta> preguntas;
+    private RepositorioPregunta repositorioPregunta;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.preguntas = new PreguntaDAO().getPregunta();
+        this.repositorioPregunta = new RepositorioPreguntaImpl();
+        this.preguntas = repositorioPregunta.getPreguntas();
         loadQuestion(preguntas);
 
     }
