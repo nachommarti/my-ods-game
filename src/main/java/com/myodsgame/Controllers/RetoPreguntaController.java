@@ -36,6 +36,9 @@ public class RetoPreguntaController implements Initializable {
     @FXML
     private Label resultadoRespuesta;
 
+    @FXML
+    private Button nextQuestionButton;
+
     private List<Button> respuestas;
 
     private String respuestaCorrecta;
@@ -44,22 +47,28 @@ public class RetoPreguntaController implements Initializable {
 
     private boolean respuestaCorrectaSeleccionada;
 
-    private int preguntaActual = 0;
+    private int numeroPregunta;
+
+    private List<Pregunta> preguntas;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        List<Pregunta> preguntas = new PreguntaDAO().getPregunta();
-        Collections.shuffle(preguntas);
-        Pregunta preguntaAleatoria = getRandomQuestion(preguntas);
-        //Pregunta preguntaAleatoria = TestData.getPregunta();
-        enunciadoPregunta.setText(preguntaAleatoria.getEnunciado());
-        respuesta1.setText(preguntaAleatoria.getRespuesta1());
-        respuesta2.setText(preguntaAleatoria.getRespuesta2());
-        respuesta3.setText(preguntaAleatoria.getRespuesta3());
-        respuesta4.setText(preguntaAleatoria.getRespuesta4());
-        this.respuestaCorrecta = preguntaAleatoria.getRespuestaCorrecta();
-        this.respuestas = List.of(respuesta1, respuesta2, respuesta3, respuesta4);
+        this.preguntas = new PreguntaDAO().getPregunta();
+        loadQuestion(preguntas);
 
+    }
+
+    private void loadQuestion(List<Pregunta> preguntas){
+        nextQuestionButton.setVisible(false);
+        Pregunta preguntaActual = preguntas.get(numeroPregunta);
+        enunciadoPregunta.setText(preguntaActual.getEnunciado());
+        respuesta1.setText(preguntaActual.getRespuesta1());
+        respuesta2.setText(preguntaActual.getRespuesta2());
+        respuesta3.setText(preguntaActual.getRespuesta3());
+        respuesta4.setText(preguntaActual.getRespuesta4());
+        this.respuestaCorrecta = preguntaActual.getRespuestaCorrecta();
+        this.respuestas = List.of(respuesta1, respuesta2, respuesta3, respuesta4);
+        numeroPregunta++;
     }
 
     @FXML
@@ -78,6 +87,29 @@ public class RetoPreguntaController implements Initializable {
 
         this.ayuda.setDisable(true);
         this.ayudaPulsada = true;
+    }
+
+    @FXML
+    void nextQuestionButtonClicked(ActionEvent event) {
+        loadQuestion(preguntas);
+        restoreState();
+    }
+
+    private void restoreState(){
+        respuesta1.setDisable(false);
+        respuesta2.setDisable(false);
+        respuesta3.setDisable(false);
+        respuesta4.setDisable(false);
+        ayuda.setDisable(false);
+
+        respuesta1.setTextFill(Color.BLACK);
+        respuesta2.setTextFill(Color.BLACK);
+        respuesta3.setTextFill(Color.BLACK);
+        respuesta4.setTextFill(Color.BLACK);
+
+        resultadoRespuesta.setText("");
+        respuestaCorrectaSeleccionada = false;
+        ayudaPulsada = false;
     }
 
     @FXML
@@ -105,6 +137,8 @@ public class RetoPreguntaController implements Initializable {
     }
 
     private void checkAnswers(Button respuestaSeleccionada){
+        nextQuestionButton.setVisible(true);
+
         if(respuestaSeleccionada.getText().equals(respuestaCorrecta))
             respuestaCorrectaSeleccionada = true;
 
