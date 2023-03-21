@@ -44,18 +44,19 @@ public class RetoPreguntaController implements Initializable {
 
     private boolean respuestaCorrectaSeleccionada;
 
+    private int preguntaActual = 0;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //List<Pregunta> preguntas = new PreguntaDAO().getPregunta();
-        //Collections.shuffle(preguntas);
-        //Pregunta preguntaAleatoria = getRandomQuestion(preguntas);
-        Pregunta preguntaAleatoria = TestData.getPregunta();
+        List<Pregunta> preguntas = new PreguntaDAO().getPregunta();
+        Collections.shuffle(preguntas);
+        Pregunta preguntaAleatoria = getRandomQuestion(preguntas);
+        //Pregunta preguntaAleatoria = TestData.getPregunta();
         enunciadoPregunta.setText(preguntaAleatoria.getEnunciado());
         respuesta1.setText(preguntaAleatoria.getRespuesta1());
         respuesta2.setText(preguntaAleatoria.getRespuesta2());
         respuesta3.setText(preguntaAleatoria.getRespuesta3());
         respuesta4.setText(preguntaAleatoria.getRespuesta4());
-        //informacionPista = preguntaAleatoria.getPista();
         this.respuestaCorrecta = preguntaAleatoria.getRespuestaCorrecta();
         this.respuestas = List.of(respuesta1, respuesta2, respuesta3, respuesta4);
 
@@ -73,7 +74,6 @@ public class RetoPreguntaController implements Initializable {
                 seenElement.add(respuesta);
                 removedElements++;
             }
-            System.out.println("pito");
         }
 
         this.ayuda.setDisable(true);

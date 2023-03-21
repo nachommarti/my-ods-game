@@ -6,6 +6,9 @@ public class Pregunta {
     private String respuesta1;
     private String respuesta2;
     private String respuesta3;
+    private String respuesta4;
+    private String respuestaCorrecta;
+    private int nivelDificultad;
 
     public int getId() {
         return id;
@@ -70,10 +73,6 @@ public class Pregunta {
     public void setNivelDificultad(int nivelDificultad) {
         this.nivelDificultad = nivelDificultad;
     }
-
-    private String respuesta4;
-    private String respuestaCorrecta;
-    private int nivelDificultad;
 
     private Pregunta(Builder builder) {
         id = builder.id;

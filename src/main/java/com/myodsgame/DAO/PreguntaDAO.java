@@ -40,8 +40,7 @@ public class PreguntaDAO {
     */
 
     public List<Pregunta> getPregunta(/*int dificultad*/) {
-        String sql = "SELECT * FROM preguntas"; //where nivel_dificultad = dificultad";
-        Pregunta pregunta;
+        String sql = "SELECT * FROM pregunta"; //where nivel_dificultad = dificultad";
         List<Pregunta> list = new ArrayList<>();
 
         try {
@@ -50,7 +49,7 @@ public class PreguntaDAO {
             while (rs.next()) {
                 list.add(new Pregunta.Builder()
                         .setId(rs.getInt("id"))
-                        .setEnunciado(rs.getString("pregunta"))
+                        .setEnunciado(rs.getString("enunciado"))
                         .setRespuesta1(rs.getString("respuesta1"))
                         .setRespuesta2(rs.getString("respuesta2"))
                         .setRespuesta3(rs.getString("respuesta3"))

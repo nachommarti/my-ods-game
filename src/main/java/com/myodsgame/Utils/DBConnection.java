@@ -5,12 +5,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-    private static final String HOST = "localhost";
-    private static final int PUERTO = 5432;
-    private static final String DB = "pswdatabase";
-    private static final String USER = "postgres";
-    private static final String PASSWORD = "budafriends";
-    private static final String URL = "jdbc:postgresql://" + HOST + ":" + PUERTO + "/" + DB;
+    private static final String HOST = "sql7.freesqldatabase.com";
+    private static final int PUERTO = 3306;
+    private static final String DB = "sql7607569";
+    private static final String USER = "sql7607569";
+    private static final String PASSWORD = "UAfl5PuGzG";
+    private static final String URL = "jdbc:mysql://" + HOST + ":" + PUERTO + "/" + DB;
 
     private static Connection conn = null;
 
