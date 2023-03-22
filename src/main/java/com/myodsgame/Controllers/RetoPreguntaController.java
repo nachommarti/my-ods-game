@@ -5,13 +5,17 @@ import com.myodsgame.Models.Pregunta;
 import com.myodsgame.Repository.RepositorioPregunta;
 import com.myodsgame.Repository.RepositorioPreguntaImpl;
 import com.myodsgame.Utils.TestData;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.*;
@@ -45,6 +49,16 @@ public class RetoPreguntaController implements Initializable {
     @FXML
     private Label timer;
 
+
+    @FXML
+    private Button consolidarButton;
+
+    @FXML
+    private Label estatusRespuesta;
+
+    @FXML
+    private Button nextQuestionButton;
+
     private List<Button> respuestas;
 
     private String respuestaCorrecta;
@@ -63,13 +77,33 @@ public class RetoPreguntaController implements Initializable {
     private final int hardQuestionPoints = 300;
     public int obtainedPoints = 0;
     public int consolidatedPoints = 0;
-    public boolean consolidated = false;
-    Pregunta preguntaActual;
-    public String currentStyle;
-    public String initialStyle;
+    private boolean consolidated;
+    private Pregunta preguntaActual;
+    private String currentStyle;
+    private String initialStyle;
+
+    private Timeline timeline;
+    private int timeCountdown = 15;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        timeline = new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        // KeyFrame event handler
+        timeline.getKeyFrames().add(
+                new KeyFrame(Duration.seconds(1),
+                        event -> {
+                            timeCountdown--;
+                            // update timerLabel
+                            timer.setText(""+timeCountdown);
+                            if (timeCountdown <= 0) {
+                                timeline.stop();
+                                endTimer();
+                                showMessage(respuestaCorrectaSeleccionada);
+                            }
+                        })
+        );
+
         this.initialStyle = "-fx-background-color:  rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10";
         this.repositorioPregunta = new RepositorioPreguntaImpl();
         this.preguntas = repositorioPregunta.getPreguntas();
@@ -77,7 +111,7 @@ public class RetoPreguntaController implements Initializable {
 
     }
 
-    private void loadQuestion(List<Pregunta> preguntas){
+    private void loadQuestion(List<Pregunta> preguntas) {
         preguntaActual = preguntas.get(numeroPregunta);
         enunciadoPregunta.setText(preguntaActual.getEnunciado());
         respuesta1.setText(preguntaActual.getRespuesta1());
@@ -89,16 +123,20 @@ public class RetoPreguntaController implements Initializable {
         numeroPregunta++;
         currentQuestion.setText(numeroPregunta + "/10");
         currentScore.setText(Integer.toString(obtainedPoints));
+        consolidarButton.setDisable(true);
+        nextQuestionButton.setDisable(true);
+        this.timeCountdown = 15;
+        timeline.playFromStart();
     }
 
     @FXML
-    void ayudaClicked(ActionEvent event){
+    void ayudaClicked(ActionEvent event) {
         int removedElements = 0;
         Set<Button> seenElement = new HashSet<>();
 
-        while(removedElements < 2){
+        while (removedElements < 2) {
             Button respuesta = respuestas.get(new Random().nextInt(respuestas.size()));
-            if(!respuesta.getText().equals(respuestaCorrecta) && !seenElement.contains(respuesta)){
+            if (!respuesta.getText().equals(respuestaCorrecta) && !seenElement.contains(respuesta)) {
                 respuesta.setDisable(true);
                 seenElement.add(respuesta);
                 removedElements++;
@@ -109,12 +147,13 @@ public class RetoPreguntaController implements Initializable {
         this.ayudaPulsada = true;
     }
 
-    private void restoreState(){
+    private void restoreState() {
         respuesta1.setDisable(false);
         respuesta2.setDisable(false);
         respuesta3.setDisable(false);
         respuesta4.setDisable(false);
         ayuda.setDisable(false);
+        estatusRespuesta.setText("");
 
         respuesta1.setStyle(initialStyle);
         respuesta2.setStyle(initialStyle);
@@ -153,132 +192,113 @@ public class RetoPreguntaController implements Initializable {
         showMessage(respuestaCorrectaSeleccionada);
     }
 
-    private void checkAnswers(Button respuestaSeleccionada){
+    @FXML
+    void siguientePreguntaClicked(ActionEvent event) {
+        loadQuestion(preguntas);
+        restoreState();
+        timeline.playFromStart();
+    }
 
-        if(respuestaSeleccionada.getText().equals(respuestaCorrecta))
+    @FXML
+    void consolidarButtonClicked(ActionEvent event) {
+        consolidatedPoints = obtainedPoints;
+        consolidated = true;
+    }
+
+    private void checkAnswers(Button respuestaSeleccionada) {
+
+        timeline.stop();
+
+        if (respuestaSeleccionada.getText().equals(respuestaCorrecta))
             respuestaCorrectaSeleccionada = true;
 
-        for(Button respuesta : respuestas){
+        for (Button respuesta : respuestas) {
             currentStyle = respuesta.getStyle();
             int index = currentStyle.indexOf(";");
-            if(respuesta.getText().equals(respuestaCorrecta)){
+            if (respuesta.getText().equals(respuestaCorrecta)) {
                 respuesta.setStyle("-fx-background-color: rgba(184, 218, 186, 0.5)" + currentStyle.substring(index));
                 respuesta.setDisable(true);
-            }
-            else if(!respuestaCorrectaSeleccionada){
+            } else if (!respuestaCorrectaSeleccionada) {
                 respuestaSeleccionada.setStyle("-fx-background-color: rgba(204, 96, 56, 0.5)" + currentStyle.substring(index));
                 respuestaSeleccionada.setDisable(true);
             }
             respuesta.setDisable(true);
 
         }
+
+        if(numeroPregunta <= 10)
+            nextQuestionButton.setDisable(false);
+
+        consolidarButton.setDisable(consolidated);
+
         ayuda.setDisable(true);
         computePoints();
     }
 
-    private void computePoints(){
-        if(respuestaCorrectaSeleccionada){
-                obtainedPoints += addPoints(preguntaActual.getNivelDificultad());
-        }
-        else{
+    private void computePoints() {
+        if (respuestaCorrectaSeleccionada) {
+            obtainedPoints += addPoints(preguntaActual.getNivelDificultad());
+        } else {
             obtainedPoints -= decreasePoints(preguntaActual.getNivelDificultad());
-            if(obtainedPoints < 0)
+            if (obtainedPoints < 0)
                 obtainedPoints = 0;
         }
     }
-    private Pregunta getRandomQuestion(List<Pregunta> preguntas){
-        return preguntas.get(new Random().nextInt(preguntas.size()));
-    }
 
-    private int addPoints(int difficulty){
+    private int addPoints(int difficulty) {
         switch (difficulty) {
             case 1:
-                if(ayudaPulsada)
+                if (ayudaPulsada)
                     return easyQuestionPoints / 2;
                 else
                     return easyQuestionPoints;
-
             case 2:
-                if(ayudaPulsada)
+                if (ayudaPulsada)
                     return mediumQuestionPoints / 2;
                 else
                     return mediumQuestionPoints;
-
             case 3:
-                if(ayudaPulsada)
+                if (ayudaPulsada)
                     return hardQuestionPoints / 2;
                 else
                     return hardQuestionPoints;
-
             default:
                 return 0;
         }
     }
 
-    private int decreasePoints(int difficulty){
+    private int decreasePoints(int difficulty) {
         switch (difficulty) {
             case 1:
-                    return easyQuestionPoints * 2;
-
+                return easyQuestionPoints * 2;
             case 2:
-                    return mediumQuestionPoints * 2;
-
+                return mediumQuestionPoints * 2;
             case 3:
-                    return hardQuestionPoints * 2;
+                return hardQuestionPoints * 2;
 
             default:
                 return 0;
         }
     }
 
-    public void showMessage(boolean answered)
-    {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        String title = null;
-        String headerText = null;
-        String contentText = null;
-        alert.initModality(Modality.APPLICATION_MODAL);
-        if(answered) {
-            alert.setTitle("Acierto");
-            alert.setHeaderText("¡Acabas de conseguir " + addPoints(preguntaActual.getNivelDificultad()) + " puntos!");
-            if (!consolidated) {
-                alert.setContentText("Llevas un total de " + obtainedPoints + " puntos ¿Quieres consolidar?");
-                ButtonType buttonTypeOk = new ButtonType("Consolidar", ButtonBar.ButtonData.OK_DONE);
-                ButtonType buttonTypeCancel = new ButtonType("Siguiente Pregunta", ButtonBar.ButtonData.CANCEL_CLOSE);
-                alert.getButtonTypes().setAll(buttonTypeOk, buttonTypeCancel);
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.isPresent() && result.get() == buttonTypeOk) {
-                    consolidatedPoints = obtainedPoints;
-                    consolidated = true;
-                }
-                loadQuestion(preguntas);
-                restoreState();
-            }
-            else {
-                alert.setContentText("Llevas un total de " + obtainedPoints + " puntos");
-                ButtonType buttonTypeCancel = new ButtonType("Siguiente Pregunta", ButtonBar.ButtonData.CANCEL_CLOSE);
-                alert.getButtonTypes().setAll(buttonTypeCancel);
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.isPresent() && result.get() == buttonTypeCancel) {
-                    loadQuestion(preguntas);
-                    restoreState();
-                }
-            }
-        }
-        else {
-            alert.setTitle("Fallo");
-            alert.setHeaderText("¡Acabas de perder " + decreasePoints(preguntaActual.getNivelDificultad()) + " puntos!");
-            alert.setContentText("Llevas un total de " + obtainedPoints + " puntos");
-            ButtonType buttonTypeCancel = new ButtonType("Siguiente Pregunta", ButtonBar.ButtonData.CANCEL_CLOSE);
-            alert.getButtonTypes().setAll(buttonTypeCancel);
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && result.get() == buttonTypeCancel) {
-                loadQuestion(preguntas);
-                restoreState();
-            }
-        }
+    private void endTimer(){
+        respuestas.forEach(respuesta -> respuesta.setDisable(true));
+        if(numeroPregunta <= 10)
+            nextQuestionButton.setDisable(false);
 
-        alert.close();
-
+        consolidarButton.setDisable(consolidated);
+        ayuda.setDisable(true);
+        this.timeCountdown = 15;
     }
+
+    private void showMessage(boolean answered) {
+        if(answered){
+            estatusRespuesta.setText("¡CORRECTO! " + "¡Acabas de conseguir " + addPoints(preguntaActual.getNivelDificultad()) + " puntos!");
+            estatusRespuesta.setTextFill(Color.GREEN);
+        }else{
+            estatusRespuesta.setText("¡INCORRECTO! " + "¡Acabas de perder " + addPoints(preguntaActual.getNivelDificultad()) + " puntos!");
+            estatusRespuesta.setTextFill(Color.RED);
+        }
+    }
+
 }
