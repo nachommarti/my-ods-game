@@ -95,7 +95,7 @@ public class RetoPreguntaController implements Initializable {
                         event -> {
                             timeCountdown--;
                             // update timerLabel
-                            timer.setText(""+timeCountdown);
+                            timer.setText(Integer.toString(timeCountdown));
                             if (timeCountdown <= 0) {
                                 timeline.stop();
                                 endTimer();
@@ -121,8 +121,8 @@ public class RetoPreguntaController implements Initializable {
         this.respuestaCorrecta = preguntaActual.getRespuestaCorrecta();
         this.respuestas = List.of(respuesta1, respuesta2, respuesta3, respuesta4);
         numeroPregunta++;
-        currentQuestion.setText(numeroPregunta + "/10");
-        currentScore.setText(Integer.toString(obtainedPoints));
+        currentQuestion.setText(currentQuestion.getText() + " " + numeroPregunta + "/10");
+        currentScore.setText(currentScore.getText() + " " + obtainedPoints);
         consolidarButton.setDisable(true);
         nextQuestionButton.setDisable(true);
         this.timeCountdown = 15;
@@ -201,6 +201,7 @@ public class RetoPreguntaController implements Initializable {
 
     @FXML
     void consolidarButtonClicked(ActionEvent event) {
+        consolidarButton.setDisable(true);
         consolidatedPoints = obtainedPoints;
         consolidated = true;
     }
@@ -226,7 +227,7 @@ public class RetoPreguntaController implements Initializable {
 
         }
 
-        if(numeroPregunta <= 10)
+        if(numeroPregunta < 10)
             nextQuestionButton.setDisable(false);
 
         consolidarButton.setDisable(consolidated);
@@ -283,7 +284,7 @@ public class RetoPreguntaController implements Initializable {
 
     private void endTimer(){
         respuestas.forEach(respuesta -> respuesta.setDisable(true));
-        if(numeroPregunta <= 10)
+        if(numeroPregunta < 10)
             nextQuestionButton.setDisable(false);
 
         consolidarButton.setDisable(consolidated);

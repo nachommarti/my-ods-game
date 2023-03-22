@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane prefHeight="555.0" prefWidth="705.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.RetoPreguntaController">
    <center>
@@ -30,9 +31,12 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="38.0" prefWidth="704.0" spacing="50.0">
                <children>
-                  <Label fx:id="currentQuestion" prefHeight="18.0" prefWidth="34.0" text="? num" />
-                  <Label fx:id="timer" alignment="CENTER" prefHeight="18.0" prefWidth="51.0" text="Timer" />
-                  <Label fx:id="currentScore" text="Score" />
+                  <Label fx:id="currentQuestion" alignment="CENTER" prefHeight="18.0" prefWidth="88.0" text="Question:" />
+                  <Label fx:id="timer" alignment="CENTER" prefHeight="38.0" prefWidth="94.0" text="Timer">
+                     <font>
+                        <Font size="26.0" />
+                     </font></Label>
+                  <Label fx:id="currentScore" alignment="CENTER" prefHeight="18.0" prefWidth="76.0" text="Score:" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" top="10.0" />
