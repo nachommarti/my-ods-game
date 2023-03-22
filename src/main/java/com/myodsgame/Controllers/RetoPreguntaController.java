@@ -36,6 +36,15 @@ public class RetoPreguntaController implements Initializable {
     @FXML
     private Button respuesta4;
 
+    @FXML
+    private Label currentQuestion;
+
+    @FXML
+    private Label currentScore;
+
+    @FXML
+    private Label timer;
+
     private List<Button> respuestas;
 
     private String respuestaCorrecta;
@@ -78,6 +87,8 @@ public class RetoPreguntaController implements Initializable {
         this.respuestaCorrecta = preguntaActual.getRespuestaCorrecta();
         this.respuestas = List.of(respuesta1, respuesta2, respuesta3, respuesta4);
         numeroPregunta++;
+        currentQuestion.setText(numeroPregunta + "/10");
+        currentScore.setText(Integer.toString(obtainedPoints));
     }
 
     @FXML
@@ -223,6 +234,9 @@ public class RetoPreguntaController implements Initializable {
     public void showMessage(boolean answered)
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        String title = null;
+        String headerText = null;
+        String contentText = null;
         alert.initModality(Modality.APPLICATION_MODAL);
         if(answered) {
             alert.setTitle("Acierto");
@@ -236,13 +250,9 @@ public class RetoPreguntaController implements Initializable {
                 if (result.isPresent() && result.get() == buttonTypeOk) {
                     consolidatedPoints = obtainedPoints;
                     consolidated = true;
-                    loadQuestion(preguntas);
-                    restoreState();
                 }
-                else{
-                    loadQuestion(preguntas);
-                    restoreState();
-                }
+                loadQuestion(preguntas);
+                restoreState();
             }
             else {
                 alert.setContentText("Llevas un total de " + obtainedPoints + " puntos");
