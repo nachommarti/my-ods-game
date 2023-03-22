@@ -8,9 +8,10 @@ import com.myodsgame.Utils.TestData;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.*;
@@ -54,6 +55,14 @@ public class RetoPreguntaController implements Initializable {
     private List<Pregunta> preguntas;
     private RepositorioPregunta repositorioPregunta;
 
+    private final int easyQuestionPoints = 100;
+    private final int mediumQuestionPoints = 200;
+    private final int hardQuestionPoints = 300;
+    public int obtainedPoints = 0;
+    public int consolidatedPoints = 0;
+    public boolean consolidated = false;
+    Pregunta preguntaActual;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.repositorioPregunta = new RepositorioPreguntaImpl();
@@ -64,7 +73,7 @@ public class RetoPreguntaController implements Initializable {
 
     private void loadQuestion(List<Pregunta> preguntas){
         nextQuestionButton.setVisible(false);
-        Pregunta preguntaActual = preguntas.get(numeroPregunta);
+        preguntaActual = preguntas.get(numeroPregunta);
         enunciadoPregunta.setText(preguntaActual.getEnunciado());
         respuesta1.setText(preguntaActual.getRespuesta1());
         respuesta2.setText(preguntaActual.getRespuesta2());
@@ -95,8 +104,7 @@ public class RetoPreguntaController implements Initializable {
 
     @FXML
     void nextQuestionButtonClicked(ActionEvent event) {
-        loadQuestion(preguntas);
-        restoreState();
+
     }
 
     private void restoreState(){
@@ -120,24 +128,28 @@ public class RetoPreguntaController implements Initializable {
     void respuesta1Clicked(ActionEvent event) {
         Button respuestaSeleccionada = (Button) event.getSource();
         checkAnswers(respuestaSeleccionada);
+        showMessage(respuestaCorrectaSeleccionada);
     }
 
     @FXML
     void respuesta2Clicked(ActionEvent event) {
         Button respuestaSeleccionada = (Button) event.getSource();
         checkAnswers(respuestaSeleccionada);
+        showMessage(respuestaCorrectaSeleccionada);
     }
 
     @FXML
     void respuesta3Clicked(ActionEvent event) {
         Button respuestaSeleccionada = (Button) event.getSource();
         checkAnswers(respuestaSeleccionada);
+        showMessage(respuestaCorrectaSeleccionada);
     }
 
     @FXML
     void respuesta4Clicked(ActionEvent event) {
         Button respuestaSeleccionada = (Button) event.getSource();
         checkAnswers(respuestaSeleccionada);
+        showMessage(respuestaCorrectaSeleccionada);
     }
 
     private void checkAnswers(Button respuestaSeleccionada){
@@ -164,13 +176,12 @@ public class RetoPreguntaController implements Initializable {
 
     private void computePoints(){
         if(respuestaCorrectaSeleccionada){
-            if(ayudaPulsada){
-                //solo sumamos la mitad de puntos
-            }else{
-                //sumamos todos los puntos
-            }
-        }else{
-            //restamos puntos
+                obtainedPoints += addPoints(preguntaActual.getNivelDificultad());
+        }
+        else{
+            obtainedPoints -= decreasePoints(preguntaActual.getNivelDificultad());
+            if(obtainedPoints < 0)
+                obtainedPoints = 0;
         }
     }
 
@@ -183,4 +194,97 @@ public class RetoPreguntaController implements Initializable {
         return preguntas.get(new Random().nextInt(preguntas.size()));
     }
 
+    private int addPoints(int difficulty){
+        switch (difficulty) {
+            case 1:
+                if(ayudaPulsada)
+                    return easyQuestionPoints / 2;
+                else
+                    return easyQuestionPoints;
+
+            case 2:
+                if(ayudaPulsada)
+                    return mediumQuestionPoints / 2;
+                else
+                    return mediumQuestionPoints;
+
+            case 3:
+                if(ayudaPulsada)
+                    return hardQuestionPoints / 2;
+                else
+                    return hardQuestionPoints;
+
+            default:
+                return 0;
+        }
+    }
+
+    private int decreasePoints(int difficulty){
+        switch (difficulty) {
+            case 1:
+                    return easyQuestionPoints * 2;
+
+            case 2:
+                    return mediumQuestionPoints * 2;
+
+            case 3:
+                    return hardQuestionPoints * 2;
+
+            default:
+                return 0;
+        }
+    }
+
+    public void showMessage(boolean answered)
+    {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        if(answered) {
+            alert.setTitle("Acertada");
+            alert.setHeaderText("¡Acabas de conseguir " + addPoints(preguntaActual.getNivelDificultad()) + " puntos!");
+            if (!consolidated) {
+                alert.setContentText("Llevas un total de " + obtainedPoints + " puntos ¿Quieres consolidar?");
+                ButtonType buttonTypeOk = new ButtonType("Vale", ButtonBar.ButtonData.OK_DONE);
+                ButtonType buttonTypeCancel = new ButtonType("Seguir", ButtonBar.ButtonData.CANCEL_CLOSE);
+                alert.getButtonTypes().setAll(buttonTypeOk, buttonTypeCancel);
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.isPresent() && result.get() == buttonTypeOk) {
+                    consolidatedPoints = obtainedPoints;
+                    consolidated = true;
+                    loadQuestion(preguntas);
+                    restoreState();
+                }
+                else{
+                    loadQuestion(preguntas);
+                    restoreState();
+                }
+            }
+            else {
+                alert.setContentText("Llevas un total de " + obtainedPoints + " puntos");
+                ButtonType buttonTypeCancel = new ButtonType("Seguir", ButtonBar.ButtonData.CANCEL_CLOSE);
+                alert.getButtonTypes().setAll(buttonTypeCancel);
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.isPresent() && result.get() == buttonTypeCancel) {
+                    loadQuestion(preguntas);
+                    restoreState();
+                }
+            }
+        }
+        else {
+            alert.setTitle("Error");
+            alert.setHeaderText("¡Acabas de perder " + decreasePoints(preguntaActual.getNivelDificultad()) + " puntos!");
+            alert.setContentText("Llevas un total de " + obtainedPoints + " puntos");
+            ButtonType buttonTypeCancel = new ButtonType("Seguir", ButtonBar.ButtonData.CANCEL_CLOSE);
+            alert.getButtonTypes().setAll(buttonTypeCancel);
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == buttonTypeCancel) {
+                loadQuestion(preguntas);
+                restoreState();
+            }
+        }
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.toFront();
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.showAndWait();
+
+    }
 }
