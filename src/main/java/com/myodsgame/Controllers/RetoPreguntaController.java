@@ -36,12 +36,6 @@ public class RetoPreguntaController implements Initializable {
     @FXML
     private Button respuesta4;
 
-    @FXML
-    private Label resultadoRespuesta;
-
-    @FXML
-    private Button nextQuestionButton;
-
     private List<Button> respuestas;
 
     private String respuestaCorrecta;
@@ -62,6 +56,8 @@ public class RetoPreguntaController implements Initializable {
     public int consolidatedPoints = 0;
     public boolean consolidated = false;
     Pregunta preguntaActual;
+    public String currentStyle;
+    public final String initialStyle = "-fx-background-color:  rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -72,7 +68,6 @@ public class RetoPreguntaController implements Initializable {
     }
 
     private void loadQuestion(List<Pregunta> preguntas){
-        nextQuestionButton.setVisible(false);
         preguntaActual = preguntas.get(numeroPregunta);
         enunciadoPregunta.setText(preguntaActual.getEnunciado());
         respuesta1.setText(preguntaActual.getRespuesta1());
@@ -102,11 +97,6 @@ public class RetoPreguntaController implements Initializable {
         this.ayudaPulsada = true;
     }
 
-    @FXML
-    void nextQuestionButtonClicked(ActionEvent event) {
-
-    }
-
     private void restoreState(){
         respuesta1.setDisable(false);
         respuesta2.setDisable(false);
@@ -114,12 +104,11 @@ public class RetoPreguntaController implements Initializable {
         respuesta4.setDisable(false);
         ayuda.setDisable(false);
 
-        respuesta1.setTextFill(Color.BLACK);
-        respuesta2.setTextFill(Color.BLACK);
-        respuesta3.setTextFill(Color.BLACK);
-        respuesta4.setTextFill(Color.BLACK);
+        respuesta1.setStyle(initialStyle);
+        respuesta2.setStyle(initialStyle);
+        respuesta3.setStyle(initialStyle);
+        respuesta4.setStyle(initialStyle);
 
-        resultadoRespuesta.setText("");
         respuestaCorrectaSeleccionada = false;
         ayudaPulsada = false;
     }
@@ -153,21 +142,22 @@ public class RetoPreguntaController implements Initializable {
     }
 
     private void checkAnswers(Button respuestaSeleccionada){
-        nextQuestionButton.setVisible(true);
 
         if(respuestaSeleccionada.getText().equals(respuestaCorrecta))
             respuestaCorrectaSeleccionada = true;
 
-        fillAnswerResult();
-
         for(Button respuesta : respuestas){
+            currentStyle = respuesta.getStyle();
+            int index = currentStyle.indexOf(";");
             if(respuesta.getText().equals(respuestaCorrecta)){
-                respuesta.setTextFill(Color.GREEN);
-                respuesta.setDisable(true);
-            }else{
-                respuesta.setTextFill(Color.RED);
+                respuesta.setStyle("-fx-background-color: rgba(184, 218, 186, 0.5)" + currentStyle.substring(index));
                 respuesta.setDisable(true);
             }
+            else if(!respuestaCorrectaSeleccionada){
+                respuestaSeleccionada.setStyle("-fx-background-color: rgba(204, 96, 56, 0.5)" + currentStyle.substring(index));
+                respuestaSeleccionada.setDisable(true);
+            }
+            respuesta.setDisable(true);
 
         }
         ayuda.setDisable(true);
@@ -184,12 +174,6 @@ public class RetoPreguntaController implements Initializable {
                 obtainedPoints = 0;
         }
     }
-
-    private void fillAnswerResult(){
-        resultadoRespuesta.setText(respuestaCorrectaSeleccionada ? "¡RESPUESTA CORRECTA!" : "¡RESPUESTA INCORRECTA!");
-        resultadoRespuesta.setTextFill(respuestaCorrectaSeleccionada ? Color.GREEN : Color.RED);
-    }
-
     private Pregunta getRandomQuestion(List<Pregunta> preguntas){
         return preguntas.get(new Random().nextInt(preguntas.size()));
     }
