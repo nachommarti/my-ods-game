@@ -17,7 +17,6 @@ public class RepositorioPreguntaImpl implements RepositorioPregunta{
         connection = DBConnection.getConnection();
     }
 
-
     public List<Pregunta> getPreguntas() {
         String query = "SELECT * FROM pregunta";
         return getPreguntasHelper(query);

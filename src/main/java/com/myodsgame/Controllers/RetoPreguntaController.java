@@ -57,10 +57,11 @@ public class RetoPreguntaController implements Initializable {
     public boolean consolidated = false;
     Pregunta preguntaActual;
     public String currentStyle;
-    public final String initialStyle = "-fx-background-color:  rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10";
+    public String initialStyle;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.initialStyle = "-fx-background-color:  rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10";
         this.repositorioPregunta = new RepositorioPreguntaImpl();
         this.preguntas = repositorioPregunta.getPreguntas();
         loadQuestion(preguntas);
@@ -222,8 +223,9 @@ public class RetoPreguntaController implements Initializable {
     public void showMessage(boolean answered)
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.initModality(Modality.APPLICATION_MODAL);
         if(answered) {
-            alert.setTitle("Acertada");
+            alert.setTitle("Acierto");
             alert.setHeaderText("¡Acabas de conseguir " + addPoints(preguntaActual.getNivelDificultad()) + " puntos!");
             if (!consolidated) {
                 alert.setContentText("Llevas un total de " + obtainedPoints + " puntos ¿Quieres consolidar?");
@@ -254,7 +256,7 @@ public class RetoPreguntaController implements Initializable {
             }
         }
         else {
-            alert.setTitle("Error");
+            alert.setTitle("Fallo");
             alert.setHeaderText("¡Acabas de perder " + decreasePoints(preguntaActual.getNivelDificultad()) + " puntos!");
             alert.setContentText("Llevas un total de " + obtainedPoints + " puntos");
             ButtonType buttonTypeCancel = new ButtonType("Siguiente Pregunta", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -265,10 +267,8 @@ public class RetoPreguntaController implements Initializable {
                 restoreState();
             }
         }
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage.toFront();
-        alert.initModality(Modality.APPLICATION_MODAL);
-        alert.showAndWait();
+
+        alert.close();
 
     }
 }
