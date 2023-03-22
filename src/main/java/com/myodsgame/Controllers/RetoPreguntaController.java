@@ -227,8 +227,8 @@ public class RetoPreguntaController implements Initializable {
             alert.setHeaderText("¡Acabas de conseguir " + addPoints(preguntaActual.getNivelDificultad()) + " puntos!");
             if (!consolidated) {
                 alert.setContentText("Llevas un total de " + obtainedPoints + " puntos ¿Quieres consolidar?");
-                ButtonType buttonTypeOk = new ButtonType("Vale", ButtonBar.ButtonData.OK_DONE);
-                ButtonType buttonTypeCancel = new ButtonType("Seguir", ButtonBar.ButtonData.CANCEL_CLOSE);
+                ButtonType buttonTypeOk = new ButtonType("Consolidar", ButtonBar.ButtonData.OK_DONE);
+                ButtonType buttonTypeCancel = new ButtonType("Siguiente Pregunta", ButtonBar.ButtonData.CANCEL_CLOSE);
                 alert.getButtonTypes().setAll(buttonTypeOk, buttonTypeCancel);
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.isPresent() && result.get() == buttonTypeOk) {
@@ -244,7 +244,7 @@ public class RetoPreguntaController implements Initializable {
             }
             else {
                 alert.setContentText("Llevas un total de " + obtainedPoints + " puntos");
-                ButtonType buttonTypeCancel = new ButtonType("Seguir", ButtonBar.ButtonData.CANCEL_CLOSE);
+                ButtonType buttonTypeCancel = new ButtonType("Siguiente Pregunta", ButtonBar.ButtonData.CANCEL_CLOSE);
                 alert.getButtonTypes().setAll(buttonTypeCancel);
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.isPresent() && result.get() == buttonTypeCancel) {
@@ -257,7 +257,7 @@ public class RetoPreguntaController implements Initializable {
             alert.setTitle("Error");
             alert.setHeaderText("¡Acabas de perder " + decreasePoints(preguntaActual.getNivelDificultad()) + " puntos!");
             alert.setContentText("Llevas un total de " + obtainedPoints + " puntos");
-            ButtonType buttonTypeCancel = new ButtonType("Seguir", ButtonBar.ButtonData.CANCEL_CLOSE);
+            ButtonType buttonTypeCancel = new ButtonType("Siguiente Pregunta", ButtonBar.ButtonData.CANCEL_CLOSE);
             alert.getButtonTypes().setAll(buttonTypeCancel);
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == buttonTypeCancel) {

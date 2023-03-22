@@ -1,24 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Hyperlink?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.MainScreenController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.MainScreenController">
    <children>
       <HBox layoutX="3.0" prefHeight="400.0" prefWidth="600.0">
          <children>
             <VBox prefHeight="400.0" prefWidth="301.0">
                <children>
-                  <VBox alignment="BOTTOM_CENTER" prefHeight="161.0" prefWidth="296.0">
+                  <VBox alignment="BOTTOM_CENTER" prefHeight="138.0" prefWidth="296.0">
                      <children>
                         <Label prefHeight="15.0" prefWidth="209.0" text="Usuario:">
                            <font>
@@ -72,6 +67,11 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="400.0" prefWidth="310.0">
                <children>
+                  <ImageView fitHeight="232.0" fitWidth="216.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/LogoODS.png" />
+                     </image>
+                  </ImageView>
                   <Label prefHeight="121.0" prefWidth="282.0" text="¿Por qué no juegas una partida rápida para calentar?" />
                   <Button fx:id="fastGameButton" mnemonicParsing="false" onAction="#fastGameButtonClicked" text="¡Que empiece el juego!" />
                </children>

@@ -71,7 +71,7 @@ public class MainScreenController implements Initializable {
         FXMLLoader myLoader = new FXMLLoader(getClass().getResource(viewRoute));
         BorderPane root = myLoader.load();
 
-        Scene scene = new Scene (root);
+        Scene scene = new Scene (root, 600, 600);
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.setTitle(challengeTitle);
