@@ -128,6 +128,7 @@ public class RetoPreguntaController implements Initializable {
         consolidarButton.setDisable(true);
         nextQuestionButton.setDisable(true);
         this.timeCountdown = 15;
+        ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.BLUEVIOLET);
         timeline.playFromStart();
     }
 
@@ -315,6 +316,7 @@ public class RetoPreguntaController implements Initializable {
         if(numeroPregunta < 10)
             nextQuestionButton.setDisable(false);
 
+        ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.RED);
         consolidarButton.setDisable(consolidated);
         ayuda.setDisable(true);
         this.timeCountdown = 15;
@@ -335,6 +337,7 @@ public class RetoPreguntaController implements Initializable {
         perdido = true;
         estatusRespuesta.setText("¡INCORRECTO! " + "Has perdido");
         estatusRespuesta.setTextFill(Color.RED);
+        ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.RED);
         respuesta1.setDisable(true);
         respuesta2.setDisable(true);
         respuesta3.setDisable(true);
