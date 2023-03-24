@@ -121,8 +121,8 @@ public class RetoPreguntaController implements Initializable {
         this.respuestaCorrecta = preguntaActual.getRespuestaCorrecta();
         this.respuestas = List.of(respuesta1, respuesta2, respuesta3, respuesta4);
         numeroPregunta++;
-        currentQuestion.setText(currentQuestion.getText() + " " + numeroPregunta + "/10");
-        currentScore.setText(currentScore.getText() + " " + obtainedPoints);
+        currentQuestion.setText("Question: " + numeroPregunta + "/10");
+        currentScore.setText("Score: " + obtainedPoints);
         consolidarButton.setDisable(true);
         nextQuestionButton.setDisable(true);
         this.timeCountdown = 15;
