@@ -255,7 +255,7 @@ public class RetoPreguntaController implements Initializable {
 
         }
 
-        if(numeroPregunta < 10)
+        if(numeroPregunta < 10 && !perdido)
             nextQuestionButton.setDisable(false);
 
         ayuda.setDisable(true);
