@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
@@ -59,6 +60,8 @@ public class RetoPreguntaController implements Initializable {
 
     @FXML
     private Label estatusRespuesta;
+    @FXML
+    private HBox labelArray;
 
     @FXML
     private Button nextQuestionButton;
@@ -108,6 +111,7 @@ public class RetoPreguntaController implements Initializable {
         loadQuestion(preguntas);
 
     }
+
 
     private void loadQuestion(List<Pregunta> preguntas) {
         preguntaActual = preguntas.get(indicePregunta);
@@ -199,6 +203,9 @@ public class RetoPreguntaController implements Initializable {
         else
             nextQuestion(3);
 
+
+
+
         restoreState();
         timeline.playFromStart();
     }
@@ -224,9 +231,11 @@ public class RetoPreguntaController implements Initializable {
         timeline.stop();
 
         if (respuestaSeleccionada.getText().equals(respuestaCorrecta)) {
+            ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.GREEN);
             respuestaCorrectaSeleccionada = true;
             consolidarButton.setDisable(consolidated);
         } else {
+            ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.RED);
             consolidarButton.setDisable(!consolidated);
             numeroPregunta--;
             nFallos++;
