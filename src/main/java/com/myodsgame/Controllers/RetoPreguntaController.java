@@ -206,16 +206,14 @@ public class RetoPreguntaController implements Initializable {
 
     @FXML
     void siguientePreguntaClicked(ActionEvent event) {
-        if (numeroPregunta < 4)
-            loadQuestion(preguntasFacil);
-        if (numeroPregunta > 3 && numeroPregunta < 7) {
-            if (numeroPregunta == 4) indicePregunta = 0;
-            loadQuestion(preguntasMedio);
-        }
-        if (numeroPregunta > 6) {
-            if (numeroPregunta == 7) indicePregunta = 0;
+        if (numeroPregunta > 5) {
+            if (numeroPregunta == 6) indicePregunta = 0;
             loadQuestion(preguntasDificil);
-        }
+        } else if (numeroPregunta > 2 && numeroPregunta < 6) {
+            if (numeroPregunta == 3) indicePregunta = 0;
+            loadQuestion(preguntasMedio);
+        } else if (numeroPregunta < 3)
+            loadQuestion(preguntasFacil);
         restoreState();
         timeline.playFromStart();
     }
