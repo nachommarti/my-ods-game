@@ -12,6 +12,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -22,6 +24,8 @@ import java.util.*;
 
 public class RetoPreguntaController implements Initializable {
 
+    @FXML
+    private BorderPane borderPane;
     @FXML
     private Label enunciadoPregunta;
 
@@ -68,8 +72,11 @@ public class RetoPreguntaController implements Initializable {
     private boolean respuestaCorrectaSeleccionada;
 
     private int numeroPregunta;
+    private int indicePregunta;
 
-    private List<Pregunta> preguntas;
+    private List<Pregunta> preguntasFacil;
+    private List<Pregunta> preguntasMedio;
+    private List<Pregunta> preguntasDificil;
     private RepositorioPregunta repositorioPregunta;
 
     private final int easyQuestionPoints = 100;
@@ -85,6 +92,8 @@ public class RetoPreguntaController implements Initializable {
     private Timeline timeline;
     private int timeCountdown = 15;
 
+    private int nFallos;
+    private boolean perdido = false;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         timeline = new Timeline();
@@ -106,13 +115,15 @@ public class RetoPreguntaController implements Initializable {
 
         this.initialStyle = "-fx-background-color:  rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10";
         this.repositorioPregunta = new RepositorioPreguntaImpl();
-        this.preguntas = repositorioPregunta.getPreguntas();
-        loadQuestion(preguntas);
+        this.preguntasFacil = repositorioPregunta.getPreguntasPorNivelDificultad(1);
+        this.preguntasMedio = repositorioPregunta.getPreguntasPorNivelDificultad(2);
+        this.preguntasDificil = repositorioPregunta.getPreguntasPorNivelDificultad(3);
+        loadQuestion(preguntasFacil);
 
     }
 
     private void loadQuestion(List<Pregunta> preguntas) {
-        preguntaActual = preguntas.get(numeroPregunta);
+        preguntaActual = preguntas.get(indicePregunta);
         enunciadoPregunta.setText(preguntaActual.getEnunciado());
         respuesta1.setText(preguntaActual.getRespuesta1());
         respuesta2.setText(preguntaActual.getRespuesta2());
@@ -121,6 +132,7 @@ public class RetoPreguntaController implements Initializable {
         this.respuestaCorrecta = preguntaActual.getRespuestaCorrecta();
         this.respuestas = List.of(respuesta1, respuesta2, respuesta3, respuesta4);
         numeroPregunta++;
+        indicePregunta++;
         currentQuestion.setText("Question: " + numeroPregunta + "/10");
         currentScore.setText("Score: " + obtainedPoints);
         consolidarButton.setDisable(true);
@@ -194,7 +206,16 @@ public class RetoPreguntaController implements Initializable {
 
     @FXML
     void siguientePreguntaClicked(ActionEvent event) {
-        loadQuestion(preguntas);
+        if (numeroPregunta < 4)
+            loadQuestion(preguntasFacil);
+        if (numeroPregunta > 3 && numeroPregunta < 7) {
+            if (numeroPregunta == 4) indicePregunta = 0;
+            loadQuestion(preguntasMedio);
+        }
+        if (numeroPregunta > 6) {
+            if (numeroPregunta == 7) indicePregunta = 0;
+            loadQuestion(preguntasDificil);
+        }
         restoreState();
         timeline.playFromStart();
     }
@@ -213,8 +234,12 @@ public class RetoPreguntaController implements Initializable {
         if (respuestaSeleccionada.getText().equals(respuestaCorrecta)) {
             respuestaCorrectaSeleccionada = true;
             if (!consolidated) consolidarButton.setDisable(false);
-        } else
+        } else {
             if (!consolidated) consolidarButton.setDisable(true);
+            numeroPregunta--;
+            nFallos++;
+            if (nFallos == 2) lostGame();
+        }
 
         for (Button respuesta : respuestas) {
             currentStyle = respuesta.getStyle();
@@ -283,7 +308,7 @@ public class RetoPreguntaController implements Initializable {
         }
     }
 
-    private void endTimer(){
+    private void endTimer() {
         respuestas.forEach(respuesta -> respuesta.setDisable(true));
         if(numeroPregunta < 10)
             nextQuestionButton.setDisable(false);
@@ -294,13 +319,25 @@ public class RetoPreguntaController implements Initializable {
     }
 
     private void showMessage(boolean answered) {
-        if(answered){
+        if (perdido) return;
+        if (answered) {
             estatusRespuesta.setText("¡CORRECTO! " + "¡Acabas de conseguir " + addPoints(preguntaActual.getNivelDificultad()) + " puntos!");
             estatusRespuesta.setTextFill(Color.GREEN);
-        }else{
+        } else {
             estatusRespuesta.setText("¡INCORRECTO! " + "¡Acabas de perder " + addPoints(preguntaActual.getNivelDificultad()) + " puntos!");
             estatusRespuesta.setTextFill(Color.RED);
         }
     }
 
+    private void lostGame() {
+        perdido = true;
+        estatusRespuesta.setText("¡INCORRECTO! " + "Has perdido");
+        estatusRespuesta.setTextFill(Color.RED);
+        respuesta1.setDisable(true);
+        respuesta2.setDisable(true);
+        respuesta3.setDisable(true);
+        respuesta4.setDisable(true);
+        ayuda.setDisable(true);
+        nextQuestionButton.setDisable(true);
+    }
 }
