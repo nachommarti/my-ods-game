@@ -8,7 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RepositorioPreguntaImpl implements RepositorioPregunta{
     private Connection connection;
@@ -25,6 +27,12 @@ public class RepositorioPreguntaImpl implements RepositorioPregunta{
     public List<Pregunta> getPreguntasPorNivelDificultad(int nivelDificultad) {
         String query = "SELECT * FROM pregunta WHERE nivel_dificultad = " + nivelDificultad;
         return getPreguntasHelper(query);
+    }
+
+    @Override
+    public List<Pregunta> getPreguntasOrdenadasPorNivelDificultad() {
+        String query = "SELECT * FROM pregunta";
+        return getPreguntasHelper(query).stream().sorted(Comparator.comparingInt(Pregunta::getNivelDificultad)).collect(Collectors.toList());
     }
 
     private List<Pregunta> getPreguntasHelper(String query){

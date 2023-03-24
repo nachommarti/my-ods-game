@@ -8,5 +8,6 @@ public interface RepositorioPregunta {
 
     public List<Pregunta> getPreguntas();
     public List<Pregunta> getPreguntasPorNivelDificultad(int nivelDificultad);
+    public List<Pregunta> getPreguntasOrdenadasPorNivelDificultad();
 
 }

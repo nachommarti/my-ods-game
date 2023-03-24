@@ -62,23 +62,14 @@ public class RetoPreguntaController implements Initializable {
 
     @FXML
     private Button nextQuestionButton;
-
+    private List<Pregunta> preguntas;
     private List<Button> respuestas;
-
     private String respuestaCorrecta;
-
     private boolean ayudaPulsada;
-
     private boolean respuestaCorrectaSeleccionada;
-
     private int numeroPregunta;
     private int indicePregunta;
-
-    private List<Pregunta> preguntasFacil;
-    private List<Pregunta> preguntasMedio;
-    private List<Pregunta> preguntasDificil;
     private RepositorioPregunta repositorioPregunta;
-
     private final int easyQuestionPoints = 100;
     private final int mediumQuestionPoints = 200;
     private final int hardQuestionPoints = 300;
@@ -88,10 +79,8 @@ public class RetoPreguntaController implements Initializable {
     private Pregunta preguntaActual;
     private String currentStyle;
     private String initialStyle;
-
     private Timeline timeline;
     private int timeCountdown = 15;
-
     private int nFallos;
     private boolean perdido = false;
     @Override
@@ -115,10 +104,8 @@ public class RetoPreguntaController implements Initializable {
 
         this.initialStyle = "-fx-background-color:  rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10";
         this.repositorioPregunta = new RepositorioPreguntaImpl();
-        this.preguntasFacil = repositorioPregunta.getPreguntasPorNivelDificultad(1);
-        this.preguntasMedio = repositorioPregunta.getPreguntasPorNivelDificultad(2);
-        this.preguntasDificil = repositorioPregunta.getPreguntasPorNivelDificultad(3);
-        loadQuestion(preguntasFacil);
+        this.preguntas = repositorioPregunta.getPreguntasOrdenadasPorNivelDificultad();
+        loadQuestion(preguntas);
 
     }
 
@@ -132,7 +119,6 @@ public class RetoPreguntaController implements Initializable {
         this.respuestaCorrecta = preguntaActual.getRespuestaCorrecta();
         this.respuestas = List.of(respuesta1, respuesta2, respuesta3, respuesta4);
         numeroPregunta++;
-        indicePregunta++;
         currentQuestion.setText("Question: " + numeroPregunta + "/10");
         currentScore.setText("Score: " + obtainedPoints);
         consolidarButton.setDisable(true);
@@ -206,16 +192,25 @@ public class RetoPreguntaController implements Initializable {
 
     @FXML
     void siguientePreguntaClicked(ActionEvent event) {
-        if (numeroPregunta > 5) {
-            if (numeroPregunta == 6) indicePregunta = 0;
-            loadQuestion(preguntasDificil);
-        } else if (numeroPregunta > 2 && numeroPregunta < 6) {
-            if (numeroPregunta == 3) indicePregunta = 0;
-            loadQuestion(preguntasMedio);
-        } else if (numeroPregunta < 3)
-            loadQuestion(preguntasFacil);
+        if(numeroPregunta < 4)
+            nextQuestion(1);
+        else if(numeroPregunta < 7)
+            nextQuestion(2);
+        else
+            nextQuestion(3);
+
         restoreState();
         timeline.playFromStart();
+    }
+
+    private void nextQuestion(int dificultad) {
+        for(int i = indicePregunta; i < preguntas.size(); i++, indicePregunta++){
+            if(preguntas.get(i).getNivelDificultad() == dificultad) {
+                indicePregunta++;
+                loadQuestion(preguntas);
+                return;
+            }
+        }
     }
 
     @FXML
@@ -226,17 +221,17 @@ public class RetoPreguntaController implements Initializable {
     }
 
     private void checkAnswers(Button respuestaSeleccionada) {
-
         timeline.stop();
 
         if (respuestaSeleccionada.getText().equals(respuestaCorrecta)) {
             respuestaCorrectaSeleccionada = true;
-            if (!consolidated) consolidarButton.setDisable(false);
+            consolidarButton.setDisable(consolidated);
         } else {
-            if (!consolidated) consolidarButton.setDisable(true);
+            consolidarButton.setDisable(!consolidated);
             numeroPregunta--;
             nFallos++;
-            if (nFallos == 2) lostGame();
+            if (nFallos == 2)
+                lostGame();
         }
 
         for (Button respuesta : respuestas) {
