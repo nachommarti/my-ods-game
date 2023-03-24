@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="555.0" prefWidth="705.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.RetoPreguntaController">
+<BorderPane prefHeight="555.0" prefWidth="705.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.RetoPreguntaController">
    <center>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
             <Label fx:id="estatusRespuesta" alignment="CENTER" prefHeight="18.0" prefWidth="510.0" />
             <HBox alignment="CENTER" prefHeight="65.0" prefWidth="704.0" spacing="30.0">
                <children>
-                  <Button fx:id="respuesta1" mnemonicParsing="false" onAction="#respuesta1Clicked" prefHeight="45.0" prefWidth="192.0" style="-fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Respuesta 1" />
-                  <Button fx:id="respuesta2" mnemonicParsing="false" onAction="#respuesta2Clicked" prefHeight="45.0" prefWidth="192.0" style="-fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Respuesta 2">
+                  <Button fx:id="respuesta1" mnemonicParsing="false" onAction="#respuesta1Clicked" prefHeight="60.0" prefWidth="220.0" style="-fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Respuesta 1" textAlignment="CENTER" wrapText="true" />
+                  <Button fx:id="respuesta2" mnemonicParsing="false" onAction="#respuesta2Clicked" prefHeight="60.0" prefWidth="220.0" style="-fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Respuesta 2" textAlignment="CENTER" wrapText="true">
                      <opaqueInsets>
                         <Insets left="10.0" />
                      </opaqueInsets>
@@ -44,8 +41,8 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="70.0" prefWidth="704.0" spacing="30.0">
                <children>
-                  <Button fx:id="respuesta3" mnemonicParsing="false" onAction="#respuesta3Clicked" prefHeight="45.0" prefWidth="192.0" style="-fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Respuesta 3" />
-                  <Button fx:id="respuesta4" mnemonicParsing="false" onAction="#respuesta4Clicked" prefHeight="45.0" prefWidth="192.0" style="-fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Respuesta 4" />
+                  <Button fx:id="respuesta3" mnemonicParsing="false" onAction="#respuesta3Clicked" prefHeight="60.0" prefWidth="220.0" style="-fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Respuesta 3" textAlignment="CENTER" wrapText="true" />
+                  <Button fx:id="respuesta4" mnemonicParsing="false" onAction="#respuesta4Clicked" prefHeight="60.0" prefWidth="220.0" style="-fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Respuesta 4" textAlignment="CENTER" wrapText="true" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="56.0" prefWidth="700.0" spacing="50.0">
@@ -71,13 +68,16 @@
       </Button>
    </bottom>
    <top>
-      <Label fx:id="enunciadoPregunta" alignment="CENTER" prefHeight="90.0" prefWidth="446.0" style="-fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 15; -fx-border-color: black; -fx-border-radius: 15;" text="Enunciado pregunta" BorderPane.alignment="CENTER">
+      <Label fx:id="enunciadoPregunta" alignment="CENTER" prefHeight="90.0" prefWidth="472.0" style="-fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 15; -fx-border-color: black; -fx-border-radius: 15;" text="Enunciado pregunta" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets top="25.0" />
          </BorderPane.margin>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
+         <font>
+            <Font size="18.0" />
+         </font>
       </Label>
    </top>
 </BorderPane>
