@@ -210,8 +210,11 @@ public class RetoPreguntaController implements Initializable {
 
         timeline.stop();
 
-        if (respuestaSeleccionada.getText().equals(respuestaCorrecta))
+        if (respuestaSeleccionada.getText().equals(respuestaCorrecta)) {
             respuestaCorrectaSeleccionada = true;
+            if (!consolidated) consolidarButton.setDisable(false);
+        } else
+            if (!consolidated) consolidarButton.setDisable(true);
 
         for (Button respuesta : respuestas) {
             currentStyle = respuesta.getStyle();
@@ -229,8 +232,6 @@ public class RetoPreguntaController implements Initializable {
 
         if(numeroPregunta < 10)
             nextQuestionButton.setDisable(false);
-
-        consolidarButton.setDisable(consolidated);
 
         ayuda.setDisable(true);
         computePoints();
