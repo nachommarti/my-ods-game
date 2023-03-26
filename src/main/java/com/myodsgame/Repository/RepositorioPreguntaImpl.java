@@ -20,18 +20,18 @@ public class RepositorioPreguntaImpl implements RepositorioPregunta{
     }
 
     public List<Pregunta> getPreguntas() {
-        String query = "SELECT * FROM pregunta";
+        String query = "SELECT * FROM preguntas";
         return getPreguntasHelper(query);
     }
 
     public List<Pregunta> getPreguntasPorNivelDificultad(int nivelDificultad) {
-        String query = "SELECT * FROM pregunta WHERE nivel_dificultad = " + nivelDificultad;
+        String query = "SELECT * FROM preguntas WHERE nivel_dificultad = " + nivelDificultad;
         return getPreguntasHelper(query);
     }
 
     @Override
     public List<Pregunta> getPreguntasOrdenadasPorNivelDificultad() {
-        String query = "SELECT * FROM pregunta";
+        String query = "SELECT * FROM preguntas";
         return getPreguntasHelper(query).stream().sorted(Comparator.comparingInt(Pregunta::getNivelDificultad)).collect(Collectors.toList());
     }
 
