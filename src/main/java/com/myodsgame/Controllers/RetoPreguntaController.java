@@ -238,10 +238,11 @@ public class RetoPreguntaController implements Initializable {
         } else {
             ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.RED);
             consolidarButton.setDisable(!consolidated);
-            numeroPregunta--;
             nFallos++;
             if (nFallos == 2)
                 lostGame();
+            numeroPregunta--;
+
         }
 
         for (Button respuesta : respuestas) {
