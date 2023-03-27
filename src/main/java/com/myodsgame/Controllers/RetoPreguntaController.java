@@ -1,23 +1,17 @@
 package com.myodsgame.Controllers;
 
-import com.myodsgame.DAO.PreguntaDAO;
 import com.myodsgame.Models.Pregunta;
 import com.myodsgame.Repository.RepositorioPregunta;
 import com.myodsgame.Repository.RepositorioPreguntaImpl;
-import com.myodsgame.Utils.TestData;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URL;
