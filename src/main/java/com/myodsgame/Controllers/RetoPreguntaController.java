@@ -198,9 +198,6 @@ public class RetoPreguntaController implements Initializable {
         else
             nextQuestion(3);
 
-
-
-
         restoreState();
         timeline.playFromStart();
     }
