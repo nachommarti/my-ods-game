@@ -1,8 +1,6 @@
 package com.myodsgame;
 
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.media.Media;
@@ -25,16 +23,13 @@ public class ODSGame extends Application {
         File lobby_sound = new File("src/main/resources/sounds/Lobby.mp3");
         Media media = new Media(lobby_sound.toURI().toString());
         mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.play();
+        mediaPlayer.setVolume(0.55);
 
-        scene.getWindow().focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (newValue) {
-                    mediaPlayer.play();
-                } else {
-                    mediaPlayer.pause();
-                }
+        scene.getWindow().focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                mediaPlayer.play();
+            } else {
+                mediaPlayer.pause();
             }
         });
 
