@@ -55,6 +55,8 @@ public class RetoPreguntaController implements Initializable {
     @FXML
     private Label estatusRespuesta;
     @FXML
+    private Label questionProgress;
+    @FXML
     private HBox labelArray;
 
     @FXML
@@ -74,10 +76,11 @@ public class RetoPreguntaController implements Initializable {
     public int consolidatedPoints = 0;
     private boolean consolidated;
     private Pregunta preguntaActual;
-    private String currentStyle;
+    private String currentStyleButton;
+    private String currentStyleLabel;
     private String initialStyle;
     private Timeline timeline;
-    private int timeCountdown = 15;
+    private int timeCountdown = 30;
     private int nFallos;
     private boolean perdido = false;
     @Override
@@ -121,7 +124,7 @@ public class RetoPreguntaController implements Initializable {
         currentScore.setText("Score: " + obtainedPoints);
         consolidarButton.setDisable(true);
         nextQuestionButton.setDisable(true);
-        this.timeCountdown = 15;
+        this.timeCountdown = 30;
         ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.BLUEVIOLET);
         timeline.playFromStart();
     }
@@ -221,13 +224,15 @@ public class RetoPreguntaController implements Initializable {
 
     private void checkAnswers(Button respuestaSeleccionada) {
         timeline.stop();
-
+        currentStyleLabel = labelArray.getStyle();
         if (respuestaSeleccionada.getText().equals(respuestaCorrecta)) {
-            ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.GREEN);
+            ((Label) labelArray.getChildren().get(numeroPregunta-1)).setStyle("-fx-background-color: rgba(184, 218, 186, 1); " + currentStyleLabel);
+            ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.WHITE);
             respuestaCorrectaSeleccionada = true;
             consolidarButton.setDisable(consolidated);
         } else {
-            ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.RED);
+            ((Label) labelArray.getChildren().get(numeroPregunta-1)).setStyle("-fx-background-color: rgba(204, 96, 56, 1); " + currentStyleLabel);
+            ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.WHITE);
             consolidarButton.setDisable(!consolidated);
             nFallos++;
             if (nFallos == 2)
@@ -237,13 +242,13 @@ public class RetoPreguntaController implements Initializable {
         }
 
         for (Button respuesta : respuestas) {
-            currentStyle = respuesta.getStyle();
-            int index = currentStyle.indexOf(";");
+            currentStyleButton = respuesta.getStyle();
+            int index = currentStyleButton.indexOf(";");
             if (respuesta.getText().equals(respuestaCorrecta)) {
-                respuesta.setStyle("-fx-background-color: rgba(184, 218, 186, 0.5)" + currentStyle.substring(index));
+                respuesta.setStyle("-fx-background-color: rgba(184, 218, 186, 1)" + currentStyleButton.substring(index));
                 respuesta.setDisable(true);
             } else if (!respuestaCorrectaSeleccionada) {
-                respuestaSeleccionada.setStyle("-fx-background-color: rgba(204, 96, 56, 0.5)" + currentStyle.substring(index));
+                respuestaSeleccionada.setStyle("-fx-background-color: rgba(204, 96, 56, 1)" + currentStyleButton.substring(index));
                 respuestaSeleccionada.setDisable(true);
             }
             respuesta.setDisable(true);
@@ -311,7 +316,7 @@ public class RetoPreguntaController implements Initializable {
         ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.RED);
         consolidarButton.setDisable(consolidated);
         ayuda.setDisable(true);
-        this.timeCountdown = 15;
+        this.timeCountdown = 30;
     }
 
     private void showMessage(boolean answered) {
