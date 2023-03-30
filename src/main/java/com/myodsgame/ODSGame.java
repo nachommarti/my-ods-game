@@ -20,8 +20,7 @@ public class ODSGame extends Application {
         stage.setScene(scene);
         stage.setResizable(false);
 
-        File lobby_sound = new File("src/main/resources/sounds/Lobby.mp3");
-        Media media = new Media(lobby_sound.toURI().toString());
+        Media media = new Media(new File("src/main/resources/sounds/Lobby.mp3").toURI().toString());
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setVolume(0.55);
 

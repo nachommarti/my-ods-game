@@ -11,9 +11,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.net.URL;
 import java.util.*;
 
@@ -80,6 +83,8 @@ public class RetoPreguntaController implements Initializable {
     private int timeCountdown = 15;
     private int nFallos;
     private boolean perdido = false;
+    private MediaPlayer mediaPlayerSonidos;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         timeline = new Timeline();
@@ -139,7 +144,6 @@ public class RetoPreguntaController implements Initializable {
                 removedElements++;
             }
         }
-
         this.ayuda.setDisable(true);
         this.ayudaPulsada = true;
     }
@@ -198,6 +202,7 @@ public class RetoPreguntaController implements Initializable {
         else
             nextQuestion(3);
 
+        mediaPlayerSonidos.stop();
         restoreState();
         timeline.playFromStart();
     }
@@ -226,12 +231,19 @@ public class RetoPreguntaController implements Initializable {
             ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.GREEN);
             respuestaCorrectaSeleccionada = true;
             consolidarButton.setDisable(consolidated);
+            reproducirSonido("src/main/resources/sounds/Acierto.mp3", 0.15);
+
         } else {
             ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.RED);
             consolidarButton.setDisable(!consolidated);
             nFallos++;
-            if (nFallos == 2)
+            reproducirSonido("src/main/resources/sounds/Fallo.mp3", 0.5);
+
+            if (nFallos == 2) {
+                mediaPlayerSonidos.stop();
                 lostGame();
+                reproducirSonido("src/main/resources/sounds/Partida_Perdida.mp3", 0.5);
+            }
             numeroPregunta--;
 
         }
@@ -336,5 +348,12 @@ public class RetoPreguntaController implements Initializable {
         respuesta4.setDisable(true);
         ayuda.setDisable(true);
         nextQuestionButton.setDisable(true);
+    }
+
+    private void reproducirSonido(String sonidoPath, double volumen){
+        Media media = new Media(new File(sonidoPath).toURI().toString());
+        mediaPlayerSonidos = new MediaPlayer(media);
+        mediaPlayerSonidos.setVolume(volumen);
+        mediaPlayerSonidos.play();
     }
 }
