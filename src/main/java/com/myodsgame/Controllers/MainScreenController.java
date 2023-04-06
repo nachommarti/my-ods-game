@@ -1,6 +1,7 @@
 package com.myodsgame.Controllers;
 
 import com.myodsgame.Utils.UserUtils;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
@@ -14,7 +15,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -25,6 +27,8 @@ import java.util.Random;
 import java.util.ResourceBundle;
 
 public class MainScreenController implements Initializable {
+    @FXML
+    private Pane pane;
     @FXML
     private Button fastGameButton;
 
@@ -97,55 +101,68 @@ public class MainScreenController implements Initializable {
 
     @FXML
     void loginButtonClicked(ActionEvent event) {
-        if(UserUtils.checkUserExists(usernameField.getText(), passwordField.getText())){
+        //if(UserUtils.checkUserExists(usernameField.getText(), passwordField.getText())){
             //logear usuario y cambiar de pantalla
-        }else{
-            clearFields();
-            showErrorMessage();
-        }
+        //}else{
+            //clearFields();
+            //showErrorMessage();
+        //}
     }
 
-    private void clearFields(){
-        usernameField.setText("");
-        passwordField.setText("");
-        notBlankEmail.setValue(Boolean.FALSE);
-        notBlankPassword.setValue(Boolean.FALSE);
-        usernameField.requestFocus();
-    }
+    //private void clearFields(){
+        //usernameField.setText("");
+        //passwordField.setText("");
+        //notBlankEmail.setValue(Boolean.FALSE);
+        //notBlankPassword.setValue(Boolean.FALSE);
+        //usernameField.requestFocus();
+    //}
 
-    private void showErrorMessage(){
-        wrongCredentials.setText("Datos introducidos erróneos");
-        wrongCredentials.setTextFill(Color.RED);
-    }
+    //private void showErrorMessage(){
+        //wrongCredentials.setText("Datos introducidos erróneos");
+        //wrongCredentials.setTextFill(Color.RED);
+    //}
+
+    @FXML
+    void logOutClicked(ActionEvent event) {}
+
+    @FXML
+    void settingsClicked(ActionEvent event) {}
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        notBlankEmail = new SimpleBooleanProperty();
-        notBlankPassword = new SimpleBooleanProperty();
+        Image fondo = new Image("C:/Users/juanm/ProyectoPSW/my-ods-game/src/main/resources/images/mundoGIF.gif");
+        BackgroundImage background = new BackgroundImage(fondo, BackgroundRepeat.REPEAT,
+                BackgroundRepeat.REPEAT,
+                BackgroundPosition.CENTER,
+                BackgroundSize.DEFAULT);
+        Background fondito = new Background(background);
+        pane.setBackground(fondito);
+        //notBlankEmail = new SimpleBooleanProperty();
+        //notBlankPassword = new SimpleBooleanProperty();
 
-        notBlankEmail.setValue(Boolean.FALSE);
-        notBlankPassword.setValue(Boolean.FALSE);
+        //notBlankEmail.setValue(Boolean.FALSE);
+        //notBlankPassword.setValue(Boolean.FALSE);
 
-        usernameField.requestFocus();
+        //usernameField.requestFocus();
 
-        usernameField.textProperty().addListener((observable, oldValue, newValue)->{
-            if (!usernameField.textProperty().getValue().isBlank())
-                notBlankEmail.setValue(Boolean.TRUE);
-            else
-                notBlankEmail.setValue(Boolean.FALSE);
-            wrongCredentials.setText("");
-        });
+        //usernameField.textProperty().addListener((observable, oldValue, newValue)->{
+        //    if (!usernameField.textProperty().getValue().isBlank())
+        //        notBlankEmail.setValue(Boolean.TRUE);
+        //    else
+        //        notBlankEmail.setValue(Boolean.FALSE);
+        //    wrongCredentials.setText("");
+        //});
 
 
-        passwordField.textProperty().addListener((observable, oldValue, newValue) ->{
-            if (!passwordField.textProperty().getValue().isBlank())
-                notBlankPassword.setValue(Boolean.TRUE);
-            else
-                notBlankPassword.setValue(Boolean.FALSE);
-            wrongCredentials.setText("");
-        });
+        //passwordField.textProperty().addListener((observable, oldValue, newValue) ->{
+       //     if (!passwordField.textProperty().getValue().isBlank())
+        //        notBlankPassword.setValue(Boolean.TRUE);
+        //    else
+         //       notBlankPassword.setValue(Boolean.FALSE);
+         //   wrongCredentials.setText("");
+        //});
 
-        BooleanBinding validFields = Bindings.and(notBlankPassword, notBlankPassword);
-        loginButton.disableProperty().bind(Bindings.not(validFields));
+        //BooleanBinding validFields = Bindings.and(notBlankPassword, notBlankPassword);
+        //loginButton.disableProperty().bind(Bindings.not(validFields));
     }
 }

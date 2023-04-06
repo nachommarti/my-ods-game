@@ -2,81 +2,53 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.MainScreenController">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.MainScreenController">
    <children>
-      <HBox layoutX="3.0" prefHeight="400.0" prefWidth="600.0">
+      <VBox alignment="CENTER" prefHeight="400.0" prefWidth="599.0">
          <children>
-            <VBox prefHeight="400.0" prefWidth="301.0">
+            <HBox prefHeight="24.0" prefWidth="599.0" spacing="140.0">
                <children>
-                  <VBox alignment="BOTTOM_CENTER" prefHeight="138.0" prefWidth="296.0">
-                     <children>
-                        <Label prefHeight="15.0" prefWidth="209.0" text="Usuario:">
-                           <font>
-                              <Font name="Arial Rounded MT Bold" size="12.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="usernameField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="211.0" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="78.0" prefWidth="296.0">
-                     <children>
-                        <Label prefHeight="15.0" prefWidth="208.0" text="Contraseña:">
-                           <font>
-                              <Font name="Arial Rounded MT Bold" size="12.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
-                        </Label>
-                        <PasswordField fx:id="passwordField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="211.0" />
-                        <Label fx:id="wrongCredentials" alignment="CENTER" contentDisplay="CENTER" prefHeight="29.0" prefWidth="238.0">
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
-                        </Label>
-                     </children>
-                  </VBox>
-                  <HBox alignment="CENTER" prefHeight="62.0" prefWidth="296.0">
-                     <children>
-                        <Label focusTraversable="false" prefHeight="23.0" prefWidth="137.0" text="¿Aún no tienes cuenta?">
-                           <font>
-                              <Font name="Arial Rounded MT Bold" size="12.0" />
-                           </font>
-                        </Label>
-                        <Hyperlink alignment="BOTTOM_LEFT" focusTraversable="false" onAction="#registerButtonClicked" text="Regístrate" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="88.0" prefWidth="296.0">
-                     <children>
-                        <Button fx:id="loginButton" contentDisplay="CENTER" minWidth="80.0" mnemonicParsing="false" onAction="#loginButtonClicked" prefHeight="30.0" prefWidth="87.0" styleClass="button-accept" text="Login">
-                           <font>
-                              <Font name="Arial Rounded MT Bold" size="13.0" />
-                           </font>
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Button>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-            <VBox alignment="CENTER" prefHeight="400.0" prefWidth="310.0">
-               <children>
-                  <ImageView fitHeight="232.0" fitWidth="216.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="40.0" fitWidth="40.0" onMouseClicked="#settingsClicked" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../images/LogoODS.png" />
+                        <Image url="@../../images/settings.png" />
                      </image>
                   </ImageView>
-                  <Label prefHeight="121.0" prefWidth="282.0" text="¿Por qué no juegas una partida rápida para calentar?" />
-                  <Button fx:id="fastGameButton" mnemonicParsing="false" onAction="#fastGameButtonClicked" text="¡Que empiece el juego!" />
+                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/letras.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="40.0" fitWidth="114.0" onMouseClicked="#logOutClicked" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/logOut.png" />
+                     </image>
+                  </ImageView>
                </children>
-            </VBox>
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="52.0" prefWidth="600.0" spacing="140.0">
+               <children>
+                  <Button fx:id="loginButton" contentDisplay="CENTER" disable="true" minWidth="80.0" mnemonicParsing="false" onAction="#loginButtonClicked" prefHeight="30.0" prefWidth="90.0" text="Login">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="13.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="fastGameButton" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#fastGameButtonClicked" prefHeight="37.0" prefWidth="90.0" style="-fx-background-color: linear-gradient(to bottom, #4E93CC, #2D6FB8); -fx-background-radius: 15; -fx-background-insets: 0, 1; -fx-text-fill: white;" text="Partida rápida" />
+               </children>
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" top="230.0" />
+               </VBox.margin>
+            </HBox>
          </children>
-      </HBox>
+      </VBox>
    </children>
 </Pane>

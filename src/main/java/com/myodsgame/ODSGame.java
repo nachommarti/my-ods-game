@@ -15,7 +15,7 @@ public class ODSGame extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(ODSGame.class.getResource("mainScreen-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 600, 450);
+        Scene scene = new Scene(fxmlLoader.load(), 600, 415);
         stage.setTitle("ODS Game");
         stage.setScene(scene);
         stage.setResizable(false);
