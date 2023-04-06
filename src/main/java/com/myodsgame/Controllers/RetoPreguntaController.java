@@ -86,7 +86,7 @@ public class RetoPreguntaController implements Initializable {
     private int timeCountdown = 30;
     private int nFallos;
     private boolean perdido = false;
-    private MediaPlayer mediaPlayerSonidos;
+    private MediaPlayer mediaPlayerSonidos = null, mediaPlayerMusic = null, mediaPlayerTicTac = new MediaPlayer(new Media(new File("src/main/resources/sounds/10S_tick.mp3").toURI().toString()));
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -99,14 +99,20 @@ public class RetoPreguntaController implements Initializable {
                             timeCountdown--;
                             // update timerLabel
                             timer.setText(Integer.toString(timeCountdown));
+                            if (timeCountdown == 10){
+                                mediaPlayerTicTac.play();
+                                mediaPlayerMusic.setVolume(0.05);
+                            }
                             if (timeCountdown <= 0) {
                                 timeline.stop();
                                 endTimer();
                                 showMessage(respuestaCorrectaSeleccionada);
+                                mediaPlayerMusic.stop();
+                                reproducirSonido("src/main/resources/sounds/Fallo.mp3", 0.5);
                             }
                         })
         );
-
+        reproducirMusica();
         this.initialStyle = "-fx-background-color:  rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10";
         this.repositorioPregunta = new RepositorioPreguntaImpl();
         this.preguntas = repositorioPregunta.getPreguntasOrdenadasPorNivelDificultad();
@@ -136,6 +142,8 @@ public class RetoPreguntaController implements Initializable {
 
     @FXML
     void ayudaClicked(ActionEvent event) {
+        reproducirSonido("src/main/resources/sounds/pista_larga.mp3", 0.5);
+        mediaPlayerMusic.play();
         int removedElements = 0;
         Set<Button> seenElement = new HashSet<>();
 
@@ -166,6 +174,7 @@ public class RetoPreguntaController implements Initializable {
 
         respuestaCorrectaSeleccionada = false;
         ayudaPulsada = false;
+        reproducirMusica();
     }
 
     @FXML
@@ -229,6 +238,8 @@ public class RetoPreguntaController implements Initializable {
 
     private void checkAnswers(Button respuestaSeleccionada) {
         timeline.stop();
+        mediaPlayerMusic.stop();
+        if(mediaPlayerTicTac.getStatus() == MediaPlayer.Status.PLAYING) mediaPlayerTicTac.stop();
         currentStyleLabel = labelArray.getStyle();
         if (respuestaSeleccionada.getText().equals(respuestaCorrecta)) {
             ((Label) labelArray.getChildren().get(numeroPregunta-1)).setStyle("-fx-background-color: rgba(184, 218, 186, 1); " + currentStyleLabel);
@@ -322,13 +333,22 @@ public class RetoPreguntaController implements Initializable {
 
     private void endTimer() {
         respuestas.forEach(respuesta -> respuesta.setDisable(true));
+
         if(numeroPregunta < 10)
             nextQuestionButton.setDisable(false);
+
+        nFallos++;
+        if (nFallos == 2) {
+            mediaPlayerSonidos.stop();
+            lostGame();
+            reproducirSonido("src/main/resources/sounds/Partida_Perdida.mp3", 0.5);
+        }
 
         ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.RED);
         consolidarButton.setDisable(consolidated);
         ayuda.setDisable(true);
         this.timeCountdown = 30;
+        numeroPregunta--;
     }
 
     private void showMessage(boolean answered) {
@@ -356,9 +376,23 @@ public class RetoPreguntaController implements Initializable {
     }
 
     private void reproducirSonido(String sonidoPath, double volumen){
+        mediaPlayerMusic.pause();
         Media media = new Media(new File(sonidoPath).toURI().toString());
         mediaPlayerSonidos = new MediaPlayer(media);
         mediaPlayerSonidos.setVolume(volumen);
         mediaPlayerSonidos.play();
     }
+
+    private void reproducirMusica(){
+        String[] musics = {"src/main/resources/sounds/cancion_1.mp3", "src/main/resources/sounds/cancion_2.mp3","src/main/resources/sounds/cancion_3.mp3"};
+        Random random = new Random();
+        int index = random.nextInt(3);
+        String selected = musics[index];
+
+        mediaPlayerMusic = new MediaPlayer(new Media(new File(selected).toURI().toString()));
+        mediaPlayerMusic.setVolume(0.15);
+        mediaPlayerMusic.play();
+
+    }
+
 }
