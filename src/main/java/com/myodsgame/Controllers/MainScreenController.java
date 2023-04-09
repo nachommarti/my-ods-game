@@ -33,21 +33,20 @@ public class MainScreenController implements Initializable {
     private Pane pane;
     @FXML
     private Button fastGameButton;
-
     @FXML
     private Button loginButton;
 
-    @FXML
-    private PasswordField passwordField;
-
-    @FXML
-    private TextField usernameField;
-
-    @FXML
-    private Label wrongCredentials;
-
-    private BooleanProperty notBlankEmail;
-    private BooleanProperty notBlankPassword;
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        Image image = new Image(Path.of("", "src", "main", "resources", "images", "mundoGIF.gif").toAbsolutePath().toString());
+        BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.REPEAT,
+                BackgroundRepeat.REPEAT,
+                BackgroundPosition.CENTER,
+                BackgroundSize.DEFAULT);
+        Background background = new Background(backgroundImage);
+        pane.setBackground(background);
+        loginButton.setDisable(false);
+    }
 
     @FXML
     void fastGameButtonClicked(ActionEvent event) throws IOException {
@@ -87,42 +86,18 @@ public class MainScreenController implements Initializable {
     }
 
     @FXML
-    void registerButtonClicked(ActionEvent event) throws IOException {
-        FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/registroUsuario-view.fxml"));
+    void loginButtonClicked(ActionEvent event) throws IOException {
+        FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/loginUsuario-view.fxml"));
         BorderPane root = myLoader.load();
 
         Scene scene = new Scene (root);
         Stage stage = new Stage();
         stage.setScene(scene);
-        stage.setTitle("Formulario de registro");
+        stage.setTitle("Login");
         stage.initModality(Modality.WINDOW_MODAL);
         stage.setResizable(false);
         stage.show();
-        System.out.println("hi");
     }
-
-    @FXML
-    void loginButtonClicked(ActionEvent event) {
-        //if(UserUtils.checkUserExists(usernameField.getText(), passwordField.getText())){
-            //logear usuario y cambiar de pantalla
-        //}else{
-            //clearFields();
-            //showErrorMessage();
-        //}
-    }
-
-    //private void clearFields(){
-        //usernameField.setText("");
-        //passwordField.setText("");
-        //notBlankEmail.setValue(Boolean.FALSE);
-        //notBlankPassword.setValue(Boolean.FALSE);
-        //usernameField.requestFocus();
-    //}
-
-    //private void showErrorMessage(){
-        //wrongCredentials.setText("Datos introducidos erróneos");
-        //wrongCredentials.setTextFill(Color.RED);
-    //}
 
     @FXML
     void logOutClicked(ActionEvent event) {}
@@ -130,41 +105,4 @@ public class MainScreenController implements Initializable {
     @FXML
     void settingsClicked(ActionEvent event) {}
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        Image image = new Image(Path.of("", "src", "main", "resources", "images", "mundoGIF.gif").toAbsolutePath().toString());
-        BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.REPEAT,
-                BackgroundRepeat.REPEAT,
-                BackgroundPosition.CENTER,
-                BackgroundSize.DEFAULT);
-        Background background = new Background(backgroundImage);
-        pane.setBackground(background);
-        //notBlankEmail = new SimpleBooleanProperty();
-        //notBlankPassword = new SimpleBooleanProperty();
-
-        //notBlankEmail.setValue(Boolean.FALSE);
-        //notBlankPassword.setValue(Boolean.FALSE);
-
-        //usernameField.requestFocus();
-
-        //usernameField.textProperty().addListener((observable, oldValue, newValue)->{
-        //    if (!usernameField.textProperty().getValue().isBlank())
-        //        notBlankEmail.setValue(Boolean.TRUE);
-        //    else
-        //        notBlankEmail.setValue(Boolean.FALSE);
-        //    wrongCredentials.setText("");
-        //});
-
-
-        //passwordField.textProperty().addListener((observable, oldValue, newValue) ->{
-       //     if (!passwordField.textProperty().getValue().isBlank())
-        //        notBlankPassword.setValue(Boolean.TRUE);
-        //    else
-         //       notBlankPassword.setValue(Boolean.FALSE);
-         //   wrongCredentials.setText("");
-        //});
-
-        //BooleanBinding validFields = Bindings.and(notBlankPassword, notBlankPassword);
-        //loginButton.disableProperty().bind(Bindings.not(validFields));
-    }
 }
