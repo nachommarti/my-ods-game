@@ -23,6 +23,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.util.Objects;
 import java.util.Random;
 import java.util.ResourceBundle;
 
@@ -130,13 +132,13 @@ public class MainScreenController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Image fondo = new Image("C:/Users/juanm/ProyectoPSW/my-ods-game/src/main/resources/images/mundoGIF.gif");
-        BackgroundImage background = new BackgroundImage(fondo, BackgroundRepeat.REPEAT,
+        Image image = new Image(Path.of("", "src", "main", "resources", "images", "mundoGIF.gif").toAbsolutePath().toString());
+        BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.REPEAT,
                 BackgroundRepeat.REPEAT,
                 BackgroundPosition.CENTER,
                 BackgroundSize.DEFAULT);
-        Background fondito = new Background(background);
-        pane.setBackground(fondito);
+        Background background = new Background(backgroundImage);
+        pane.setBackground(background);
         //notBlankEmail = new SimpleBooleanProperty();
         //notBlankPassword = new SimpleBooleanProperty();
 
