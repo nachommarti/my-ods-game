@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-    private static final String HOST = "budafriends1.ch7fznyynumz.eu-central-1.rds.amazonaws.com";
+    private static final String HOST = "budafriends3.ch7fznyynumz.eu-central-1.rds.amazonaws.com";
     private static final int PUERTO = 3306;
     private static final String DB = "budafriends1";
     private static final String USER = "admin";
