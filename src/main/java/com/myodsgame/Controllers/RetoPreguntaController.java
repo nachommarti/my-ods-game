@@ -34,8 +34,6 @@ public class RetoPreguntaController implements Initializable {
 
     @FXML
     private Button ayuda;
-    @FXML
-    private ImageView ayudaImagen;
 
     @FXML
     private Button respuesta1;
@@ -62,7 +60,7 @@ public class RetoPreguntaController implements Initializable {
     @FXML
     private Label estatusRespuesta;
     @FXML
-    private Label questionProgress;
+    private ImageView imagenODS;
     @FXML
     private HBox labelArray;
 
@@ -141,6 +139,9 @@ public class RetoPreguntaController implements Initializable {
         this.timeCountdown = 30;
         ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.BLUEVIOLET);
         timeline.playFromStart();
+
+        // TODO: Hacer que la imagen coincida con el ODS al que pertenece
+        imagenODS.setImage(new Image(Path.of("", "src", "main", "resources", "images", "ods.jpg").toAbsolutePath().toString()));
     }
 
     @FXML
