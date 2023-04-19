@@ -2,30 +2,33 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
 <BorderPane prefHeight="681.0" prefWidth="673.0" style="-fx-background-color: #21315A;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.RetoPreguntaController">
-   <bottom>
-      <Button fx:id="ayuda" mnemonicParsing="false" onAction="#ayudaClicked" text="Ayuda" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets bottom="30.0" />
-         </BorderPane.margin>
-      </Button>
-   </bottom>
    <center>
       <VBox alignment="CENTER" prefHeight="657.0" prefWidth="673.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="76.0" prefWidth="673.0">
+            <HBox alignment="CENTER" prefHeight="76.0" prefWidth="673.0" spacing="150.0">
                <children>
                   <Label fx:id="timer" alignment="CENTER" prefHeight="50.0" prefWidth="50.0" style="-fx-border-color: black; -fx-border-radius: 5000; -fx-text-fill: white;" text="30">
                      <font>
                         <Font size="26.0" />
                      </font>
                   </Label>
+                  <ImageView fx:id="vidas" fitHeight="41.0" fitWidth="141.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/vidas.png" />
+                     </image>
+                  </ImageView>
+                  <Button fx:id="ayuda" mnemonicParsing="false" onAction="#ayudaClicked" prefHeight="50.0" prefWidth="43.0" style="-fx-background-color: null;" textFill="RED">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin></Button>
                </children>
                <padding>
-                  <Insets left="30.0" />
+                  <Insets left="30.0" right="30.0" />
                </padding>
             </HBox>
             <Label fx:id="enunciadoPregunta" alignment="CENTER" prefHeight="90.0" prefWidth="472.0" style="-fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 15; -fx-border-color: black; -fx-border-radius: 15; -fx-text-fill: white;" text="Enunciado pregunta" textAlignment="CENTER" wrapText="true">
@@ -94,6 +97,7 @@
                </padding>
             </HBox>
             <Label fx:id="estatusRespuesta" alignment="CENTER" prefHeight="18.0" prefWidth="510.0" />
+            <Label fx:id="currentScore" alignment="CENTER" prefHeight="18.0" prefWidth="76.0" text="Score:" textFill="WHITE" />
             <HBox alignment="CENTER" prefHeight="65.0" prefWidth="704.0" spacing="30.0">
                <children>
                   <Button fx:id="respuesta1" mnemonicParsing="false" onAction="#respuesta1Clicked" prefHeight="60.0" prefWidth="220.0" style="-fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10; -fx-text-fill: white;" text="Respuesta 1" textAlignment="CENTER" wrapText="true" />
@@ -110,20 +114,14 @@
                   <Insets top="15.0" />
                </VBox.margin>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="38.0" prefWidth="704.0" spacing="50.0">
-               <children>
-                  <Label fx:id="currentQuestion" alignment="CENTER" prefHeight="18.0" prefWidth="88.0" text="Question:" />
-                  <Label fx:id="currentScore" alignment="CENTER" prefHeight="18.0" prefWidth="76.0" text="Score:" />
-               </children>
-               <VBox.margin>
-                  <Insets bottom="10.0" top="10.0" />
-               </VBox.margin>
-            </HBox>
             <HBox alignment="CENTER" prefHeight="70.0" prefWidth="704.0" spacing="30.0">
                <children>
                   <Button fx:id="respuesta3" mnemonicParsing="false" onAction="#respuesta3Clicked" prefHeight="60.0" prefWidth="220.0" style="-fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10; -fx-text-fill: white;" text="Respuesta 3" textAlignment="CENTER" wrapText="true" />
                   <Button fx:id="respuesta4" mnemonicParsing="false" onAction="#respuesta4Clicked" prefHeight="60.0" prefWidth="220.0" style="-fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10; -fx-text-fill: white;" text="Respuesta 4" textAlignment="CENTER" wrapText="true" />
                </children>
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
             </HBox>
             <HBox alignment="CENTER" prefHeight="56.0" prefWidth="700.0" spacing="50.0">
                <children>

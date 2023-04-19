@@ -6,9 +6,13 @@ import com.myodsgame.Repository.RepositorioPreguntaImpl;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
@@ -18,6 +22,7 @@ import javafx.util.Duration;
 
 import java.io.File;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.*;
 
 public class RetoPreguntaController implements Initializable {
@@ -29,6 +34,8 @@ public class RetoPreguntaController implements Initializable {
 
     @FXML
     private Button ayuda;
+    @FXML
+    private ImageView ayudaImagen;
 
     @FXML
     private Button respuesta1;
@@ -43,15 +50,12 @@ public class RetoPreguntaController implements Initializable {
     private Button respuesta4;
 
     @FXML
-    private Label currentQuestion;
-
-    @FXML
     private Label currentScore;
 
     @FXML
     private Label timer;
-
-
+    @FXML
+    private ImageView vidas;
     @FXML
     private Button consolidarButton;
 
@@ -116,6 +120,7 @@ public class RetoPreguntaController implements Initializable {
         this.initialStyle = "-fx-background-color:  rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10";
         this.repositorioPregunta = new RepositorioPreguntaImpl();
         this.preguntas = repositorioPregunta.getPreguntasOrdenadasPorNivelDificultad();
+        ayuda.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "ayuda.png").toAbsolutePath().toString())));
         loadQuestion(preguntas);
 
     }
@@ -131,8 +136,6 @@ public class RetoPreguntaController implements Initializable {
         this.respuestaCorrecta = preguntaActual.getRespuestaCorrecta();
         this.respuestas = List.of(respuesta1, respuesta2, respuesta3, respuesta4);
         numeroPregunta++;
-        currentQuestion.setText("Question: " + numeroPregunta + "/10");
-        currentScore.setText("Score: " + obtainedPoints);
         consolidarButton.setDisable(true);
         nextQuestionButton.setDisable(true);
         this.timeCountdown = 30;
@@ -141,6 +144,7 @@ public class RetoPreguntaController implements Initializable {
     }
 
     @FXML
+
     void ayudaClicked(ActionEvent event) {
         reproducirSonido("src/main/resources/sounds/pista_larga.mp3", 0.5);
         mediaPlayerMusic.play();
@@ -249,16 +253,18 @@ public class RetoPreguntaController implements Initializable {
             reproducirSonido("src/main/resources/sounds/Acierto.mp3", 0.15);
 
         } else {
-            ((Label) labelArray.getChildren().get(numeroPregunta-1)).setStyle("-fx-background-color: rgba(204, 96, 56, 1); " + currentStyleLabel);
+            ((Label) labelArray.getChildren().get(numeroPregunta-1)).setStyle("-fx-background-color: rgb(255,25,25); " + currentStyleLabel);
             ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.WHITE);
             consolidarButton.setDisable(!consolidated);
             nFallos++;
             reproducirSonido("src/main/resources/sounds/Fallo.mp3", 0.5);
+            vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
 
             if (nFallos == 2) {
                 mediaPlayerSonidos.stop();
                 lostGame();
                 reproducirSonido("src/main/resources/sounds/Partida_Perdida.mp3", 0.5);
+                vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
             }
             numeroPregunta--;
 
@@ -283,6 +289,7 @@ public class RetoPreguntaController implements Initializable {
 
         ayuda.setDisable(true);
         computePoints();
+        currentScore.setText("Score: " + obtainedPoints);
     }
 
     private void computePoints() {
@@ -338,10 +345,15 @@ public class RetoPreguntaController implements Initializable {
             nextQuestionButton.setDisable(false);
 
         nFallos++;
+        if (nFallos == 1) {
+            vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
+        }
         if (nFallos == 2) {
             mediaPlayerSonidos.stop();
+            vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
             lostGame();
             reproducirSonido("src/main/resources/sounds/Partida_Perdida.mp3", 0.5);
+
         }
 
         ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.RED);
