@@ -257,7 +257,6 @@ public class RetoPreguntaController implements Initializable {
         } else {
             ((Label) labelArray.getChildren().get(numeroPregunta-1)).setStyle("-fx-background-color: rgb(255,25,25); " + currentStyleLabel);
             ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.WHITE);
-            consolidarButton.setDisable(!consolidated);
             nFallos++;
             reproducirSonido("src/main/resources/sounds/Fallo.mp3", 0.5);
             vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
@@ -299,12 +298,10 @@ public class RetoPreguntaController implements Initializable {
             obtainedPoints += addPoints(preguntaActual.getNivelDificultad());
         } else {
             decreasedPoints = decreasePoints(preguntaActual.getNivelDificultad());
-            // obtainedPoints -= decreasePoints(preguntaActual.getNivelDificultad());
-            if (decreasedPoints > obtainedPoints)
+            if (decreasedPoints > obtainedPoints) {
                 decreasedPoints = obtainedPoints;
                 obtainedPoints = 0;
-            //if (obtainedPoints < 0)
-                //obtainedPoints = 0;
+            }
         }
     }
 
