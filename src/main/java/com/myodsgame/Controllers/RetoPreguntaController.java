@@ -81,6 +81,7 @@ public class RetoPreguntaController implements Initializable {
     private final int hardQuestionPoints = 300;
     public int obtainedPoints = 0;
     public int consolidatedPoints = 0;
+    public int decreasedPoints = 0;
     private boolean consolidated;
     private Pregunta preguntaActual;
     private String currentStyleButton;
@@ -296,9 +297,13 @@ public class RetoPreguntaController implements Initializable {
         if (respuestaCorrectaSeleccionada) {
             obtainedPoints += addPoints(preguntaActual.getNivelDificultad());
         } else {
-            obtainedPoints -= decreasePoints(preguntaActual.getNivelDificultad());
-            if (obtainedPoints < 0)
+            decreasedPoints = decreasePoints(preguntaActual.getNivelDificultad());
+            // obtainedPoints -= decreasePoints(preguntaActual.getNivelDificultad());
+            if (decreasedPoints > obtainedPoints)
+                decreasedPoints = obtainedPoints;
                 obtainedPoints = 0;
+            //if (obtainedPoints < 0)
+                //obtainedPoints = 0;
         }
     }
 
@@ -369,7 +374,7 @@ public class RetoPreguntaController implements Initializable {
             estatusRespuesta.setText("¡CORRECTO! " + "¡Acabas de conseguir " + addPoints(preguntaActual.getNivelDificultad()) + " puntos!");
             estatusRespuesta.setTextFill(Color.GREEN);
         } else {
-            estatusRespuesta.setText("¡INCORRECTO! " + "¡Acabas de perder " + addPoints(preguntaActual.getNivelDificultad()) + " puntos!");
+            estatusRespuesta.setText("¡INCORRECTO! " + "¡Acabas de perder " + decreasedPoints + " puntos!");
             estatusRespuesta.setTextFill(Color.RED);
         }
     }
