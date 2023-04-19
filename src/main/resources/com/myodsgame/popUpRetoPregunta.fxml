@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="167.0" prefWidth="341.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.PopUpRetoPreguntaController">
+   <children>
+      <VBox prefHeight="200.0" prefWidth="341.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label text="Label" />
+               </children></HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button mnemonicParsing="false" text="Consolidar" />
+                  <Button mnemonicParsing="false" text="Siguiente pregunta" />
+               </children></HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
