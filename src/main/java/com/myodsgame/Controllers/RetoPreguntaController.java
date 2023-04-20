@@ -142,7 +142,7 @@ public class RetoPreguntaController implements Initializable {
         timeline.playFromStart();
 
         // TODO: Hacer que la imagen coincida con el ODS al que pertenece
-        imagenODS.setImage(new Image(Path.of("", "src", "main", "resources", "images", "ods.jpg").toAbsolutePath().toString()));
+        imagenODS.setImage(new Image(Path.of("", "src", "main", "resources", "images", "ODS_0.jpg").toAbsolutePath().toString()));
     }
 
     @FXML
