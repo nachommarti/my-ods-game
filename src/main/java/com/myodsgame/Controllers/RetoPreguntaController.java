@@ -301,6 +301,8 @@ public class RetoPreguntaController implements Initializable {
             if (decreasedPoints > obtainedPoints) {
                 decreasedPoints = obtainedPoints;
                 obtainedPoints = 0;
+            } else {
+                obtainedPoints -= decreasedPoints;
             }
         }
     }
