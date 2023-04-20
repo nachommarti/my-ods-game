@@ -41,7 +41,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <ImageView fx:id="imagenODS" fitHeight="97.0" fitWidth="124.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="imagenODS" fitHeight="97.0" fitWidth="97.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </HBox>
             <HBox fx:id="labelArray" alignment="CENTER" prefHeight="17.0" prefWidth="673.0" spacing="20.0">

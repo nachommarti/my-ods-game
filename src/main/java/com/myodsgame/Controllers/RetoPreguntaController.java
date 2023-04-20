@@ -18,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -125,7 +126,10 @@ public class RetoPreguntaController implements Initializable {
         this.preguntas = repositorioPregunta.getPreguntasOrdenadasPorNivelDificultad();
         ayuda.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "ayuda.png").toAbsolutePath().toString())));
         loadQuestion(preguntas);
-
+        Rectangle clip = new Rectangle(imagenODS.getFitWidth(), imagenODS.getFitHeight());
+        clip.setArcWidth(40);
+        clip.setArcHeight(40);
+        imagenODS.setClip(clip);
     }
 
 
