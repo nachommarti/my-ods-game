@@ -18,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
@@ -53,6 +54,8 @@ public class RetoPreguntaController implements Initializable {
     @FXML
     private Label timer;
     @FXML
+    private Label consolidatedScore;
+    @FXML
     private ImageView vidas;
     @FXML
     private Button consolidarButton;
@@ -63,7 +66,8 @@ public class RetoPreguntaController implements Initializable {
     private ImageView imagenODS;
     @FXML
     private HBox labelArray;
-
+    @FXML
+    private Button botonSalir;
     @FXML
     private Button nextQuestionButton;
     private List<Pregunta> preguntas;
@@ -141,8 +145,8 @@ public class RetoPreguntaController implements Initializable {
         ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.BLUEVIOLET);
         timeline.playFromStart();
 
-        // TODO: Hacer que la imagen coincida con el ODS al que pertenece
-        imagenODS.setImage(new Image(Path.of("", "src", "main", "resources", "images", "ODS_0.jpg").toAbsolutePath().toString()));
+        String odsString = "ODS_" + preguntaActual.getOds() + ".jpg";
+        imagenODS.setImage(new Image(Path.of("", "src", "main", "resources", "images", odsString).toAbsolutePath().toString()));
     }
 
     @FXML
@@ -163,6 +167,13 @@ public class RetoPreguntaController implements Initializable {
         }
         this.ayuda.setDisable(true);
         this.ayudaPulsada = true;
+    }
+    @FXML
+    void botonSalirPulsado(ActionEvent event) {
+        if(mediaPlayerTicTac.getStatus() == MediaPlayer.Status.PLAYING) mediaPlayerTicTac.stop();
+        if(mediaPlayerMusic.getStatus() == MediaPlayer.Status.PLAYING) mediaPlayerMusic.stop();
+        Stage stage = (Stage) botonSalir.getScene().getWindow();
+        stage.close();
     }
 
     private void restoreState() {
@@ -240,6 +251,8 @@ public class RetoPreguntaController implements Initializable {
         consolidarButton.setDisable(true);
         consolidatedPoints = obtainedPoints;
         consolidated = true;
+        consolidatedScore.setVisible(true);
+        consolidatedScore.setText("Consolidated Score: " + consolidatedPoints);
     }
 
     private void checkAnswers(Button respuestaSeleccionada) {

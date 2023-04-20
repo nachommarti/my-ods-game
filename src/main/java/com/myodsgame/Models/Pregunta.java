@@ -9,6 +9,7 @@ public class Pregunta {
     private String respuesta4;
     private String respuestaCorrecta;
     private int nivelDificultad;
+    private String ods;
 
     public int getId() {
         return id;
@@ -73,6 +74,8 @@ public class Pregunta {
     public void setNivelDificultad(int nivelDificultad) {
         this.nivelDificultad = nivelDificultad;
     }
+    public String getOds(){ return ods; }
+    public void setOds(String ods){ this.ods = ods; }
 
     private Pregunta(Builder builder) {
         id = builder.id;
@@ -83,6 +86,7 @@ public class Pregunta {
         respuesta4 = builder.respuesta4;
         respuestaCorrecta = builder.respuestaCorrecta;
         nivelDificultad = builder.nivelDificultad;
+        ods = builder.ods;
     }
 
     // getters de cada atributo
@@ -111,6 +115,7 @@ public class Pregunta {
         private String respuesta4;
         private String respuestaCorrecta;
         private int nivelDificultad;
+        private String ods;
 
         public Builder setId(int id) {
             this.id = id;
@@ -149,6 +154,10 @@ public class Pregunta {
 
         public Builder setNivelDificultad(int nivelDificultad) {
             this.nivelDificultad = nivelDificultad;
+            return this;
+        }
+        public Builder setOds(String ods){
+            this.ods = ods;
             return this;
         }
 

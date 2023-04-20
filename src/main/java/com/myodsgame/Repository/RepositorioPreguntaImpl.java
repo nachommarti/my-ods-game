@@ -50,6 +50,7 @@ public class RepositorioPreguntaImpl implements RepositorioPregunta{
                         .setRespuesta4(rs.getString("respuesta4"))
                         .setRespuestaCorrecta(rs.getString("respuesta_correcta"))
                         .setNivelDificultad(rs.getInt("nivel_dificultad"))
+                        .setOds(rs.getString("ods"))
                         .build());
             }
             return list;
