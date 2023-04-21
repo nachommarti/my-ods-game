@@ -3,11 +3,13 @@ package com.myodsgame;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 public class ODSGame extends Application {
 
@@ -19,6 +21,7 @@ public class ODSGame extends Application {
         stage.setTitle("ODS Game");
         stage.setScene(scene);
         stage.setResizable(false);
+        stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
 
         Media media = new Media(new File("src/main/resources/sounds/Lobby.mp3").toURI().toString());
         mediaPlayer = new MediaPlayer(media);
