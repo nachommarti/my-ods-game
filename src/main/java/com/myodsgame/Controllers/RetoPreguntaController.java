@@ -257,6 +257,7 @@ public class RetoPreguntaController implements Initializable {
         consolidated = true;
         consolidatedScore.setVisible(true);
         consolidatedScore.setText("Consolidated Score: " + consolidatedPoints);
+        botonSalir.setDisable(false);
     }
 
     private void checkAnswers(Button respuestaSeleccionada) {
@@ -407,6 +408,7 @@ public class RetoPreguntaController implements Initializable {
         respuesta4.setDisable(true);
         ayuda.setDisable(true);
         nextQuestionButton.setDisable(true);
+        botonSalir.setDisable(false);
     }
 
     private void reproducirSonido(String sonidoPath, double volumen){

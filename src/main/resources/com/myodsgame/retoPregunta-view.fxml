@@ -131,7 +131,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="56.0" prefWidth="700.0" spacing="50.0">
                <children>
-                  <Button fx:id="botonSalir" mnemonicParsing="false" onAction="#botonSalirPulsado" style="-fx-background-color: RED;" text="Abandonar partida" />
+                  <Button fx:id="botonSalir" disable="true" mnemonicParsing="false" onAction="#botonSalirPulsado" style="-fx-background-color: RED;" text="Abandonar partida" />
                   <Button fx:id="consolidarButton" alignment="CENTER" mnemonicParsing="false" onAction="#consolidarButtonClicked" text="Consolidar puntuación" />
                   <Button fx:id="nextQuestionButton" mnemonicParsing="false" onAction="#siguientePreguntaClicked" prefHeight="26.0" prefWidth="136.0" style="-fx-background-color: linear-gradient(to bottom, #4E93CC, #2D6FB8);" text="Siguiente pregunta" />
                </children>
