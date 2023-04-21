@@ -239,8 +239,11 @@ public class RetoPreguntaController implements Initializable {
         mediaPlayerSonidos.stop();
         restoreState();
         timeline.playFromStart();
-        botonSalir.setDisable(contAbandonar == 0);
-        if(consolidated) contAbandonar--;
+
+        if(consolidated && contAbandonar >= 0){
+            botonSalir.setDisable(contAbandonar == 0);
+            contAbandonar--;
+        }
     }
 
     private void nextQuestion(int dificultad) {
@@ -306,8 +309,13 @@ public class RetoPreguntaController implements Initializable {
 
         }
 
-        if(numeroPregunta < 10 && !perdido)
-            nextQuestionButton.setDisable(false);
+        if(numeroPregunta < 10){
+            if (!perdido) nextQuestionButton.setDisable(false);
+        }
+        else{
+            botonSalir.setDisable(false);
+        }
+
 
         ayuda.setDisable(true);
         computePoints();
