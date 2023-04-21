@@ -102,7 +102,7 @@
                </padding>
             </HBox>
             <Label fx:id="estatusRespuesta" alignment="CENTER" prefHeight="18.0" prefWidth="510.0" />
-            <Label fx:id="currentScore" alignment="CENTER" prefHeight="18.0" prefWidth="101.0" text="Score:" textFill="WHITE" />
+            <Label fx:id="currentScore" alignment="CENTER" prefHeight="18.0" prefWidth="101.0" text="Score: 0" textFill="WHITE" />
             <Label fx:id="consolidatedScore" alignment="CENTER" layoutX="309.0" layoutY="344.0" prefHeight="18.0" prefWidth="170.0" text="Consolidated Score:" textFill="WHITE" visible="false" />
             <HBox alignment="CENTER" prefHeight="65.0" prefWidth="704.0" spacing="30.0">
                <children>

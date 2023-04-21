@@ -94,6 +94,7 @@ public class RetoPreguntaController implements Initializable {
     private int timeCountdown = 30;
     private int nFallos;
     private boolean perdido = false;
+    private int contAbandonar = 1;
     private MediaPlayer mediaPlayerSonidos = null, mediaPlayerMusic = null, mediaPlayerTicTac = new MediaPlayer(new Media(new File("src/main/resources/sounds/10S_tick.mp3").toURI().toString()));
 
     @Override
@@ -238,6 +239,8 @@ public class RetoPreguntaController implements Initializable {
         mediaPlayerSonidos.stop();
         restoreState();
         timeline.playFromStart();
+        botonSalir.setDisable(contAbandonar == 0);
+        if(consolidated) contAbandonar--;
     }
 
     private void nextQuestion(int dificultad) {
