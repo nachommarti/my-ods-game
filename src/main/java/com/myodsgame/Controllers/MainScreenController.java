@@ -75,7 +75,7 @@ public class MainScreenController implements Initializable {
 
     @FXML
     void loginButtonClicked(ActionEvent event) throws IOException {
-        FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/loginUsuario-view.fxml"));
+        FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/pantallaPartidas.fxml"));
         BorderPane root = myLoader.load();
 
         Scene scene = new Scene (root);

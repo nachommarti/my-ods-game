@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #21315A;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.PantallaPartidasController">
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="123.0" prefWidth="600.0" spacing="280.0">
+               <children>
+                  <VBox alignment="CENTER_LEFT" prefHeight="123.0" prefWidth="178.0" spacing="20.0">
+                     <children>
+                        <Button fx:id="botonAtras" mnemonicParsing="false" style="-fx-background-color: null;" />
+                        <Label fx:id="puntosAlmacenados" text="Puntos almacenados" textFill="WHITE" />
+                     </children></VBox>
+                  <ComboBox fx:id="desplegablePerfil" prefHeight="93.0" prefWidth="110.0" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="125.0" prefWidth="600.0" spacing="30.0">
+               <children>
+                  <Button fx:id="retoPregunta" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: null;" />
+                  <Button fx:id="retoAhorcado" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: null;" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="150.0" prefWidth="600.0">
+               <children>
+                  <Button fx:id="retoMixto" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: null;" />
+               </children></HBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
