@@ -1,5 +1,6 @@
 package com.myodsgame.Controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -34,6 +35,19 @@ public class PantallaPartidasController implements Initializable {
         retoPregunta.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "ayuda.png").toAbsolutePath().toString())));
         retoMixto.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "mixto.png").toAbsolutePath().toString())));
         botonAtras.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "flechaAtras.png").toAbsolutePath().toString())));
-
+        desplegablePerfil.getItems().add("Perfil");
+        desplegablePerfil.getItems().add("Estadísticas");
+        desplegablePerfil.getItems().add("Cerrar sesión");
+        //TODO: poner que los retos se desbloqueen con puntos
+        //TODO: poner la funcionalidad de dar click al desplegable
     }
+
+    @FXML
+    void botonAtrasPulsado (ActionEvent event){}
+    @FXML
+    void retoPreguntaPulsado (ActionEvent event){}
+    @FXML
+    void retoMixtoPulsado (ActionEvent event){}
+    @FXML
+    void retoAhorcadoPulsado (ActionEvent event){}
 }
