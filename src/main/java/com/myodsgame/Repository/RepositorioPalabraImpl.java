@@ -1,7 +1,7 @@
 package com.myodsgame.Repository;
 
-import com.myodsgame.Models.Palabra;
-import com.myodsgame.Models.Pregunta;
+import com.myodsgame.Factory.RetoFactory;
+import com.myodsgame.Models.RetoAhorcado;
 import com.myodsgame.Utils.DBConnection;
 
 import java.sql.Connection;
@@ -9,9 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class RepositorioPalabraImpl implements RepositorioPalabra{
 
@@ -22,22 +20,25 @@ public class RepositorioPalabraImpl implements RepositorioPalabra{
     }
 
     @Override
-    public List<Palabra> getPalabras() {
+    public List<RetoAhorcado> getPalabras() {
         String query = "SELECT * FROM palabras";
         return getPalabrasHelper(query);
     }
 
-    private List<Palabra> getPalabrasHelper(String query){
-        List<Palabra> list = new ArrayList<>();
+    private List<RetoAhorcado> getPalabrasHelper(String query){
+        List<RetoAhorcado> list = new ArrayList<>();
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                list.add(new Palabra.Builder()
-                        .setId(rs.getInt("id"))
-                        .setPalabra(rs.getString("palabra"))
-                        .setNivelDificultad(rs.getInt("nivel_dificultad"))
-                        .build());
+                list.add((RetoAhorcado) RetoFactory.crearReto(
+                        false,30,
+                        rs.getInt("dificultad"),
+                        rs.getInt("dificultad") * 100,
+                        rs.getString("tipo"),
+                        null,null, null, null, null, null,
+                        rs.getString("palabra"), new ArrayList<>(), 6
+                ));
             }
             return list;
         } catch (SQLException e) {

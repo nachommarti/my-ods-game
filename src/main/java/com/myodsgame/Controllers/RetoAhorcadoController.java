@@ -1,6 +1,6 @@
 package com.myodsgame.Controllers;
 
-import com.myodsgame.Models.Palabra;
+import com.myodsgame.Models.RetoAhorcado;
 import com.myodsgame.Repository.RepositorioPalabra;
 import com.myodsgame.Repository.RepositorioPalabraImpl;
 import javafx.event.ActionEvent;
@@ -54,21 +54,21 @@ public class RetoAhorcadoController implements Initializable {
     }
 
     private RepositorioPalabra repositorioPalabra;
-    private List<Palabra> palabras;
-    private Palabra palabraActual;
+    private List<RetoAhorcado> retoAhorcados;
+    private RetoAhorcado retoAhorcadoActual;
     private int indicePalabra;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.repositorioPalabra = new RepositorioPalabraImpl();
-        palabras = repositorioPalabra.getPalabras();
+        retoAhorcados = repositorioPalabra.getPalabras();
         loadPalabra();
 
     }
 
     private void loadPalabra(){
-        this.palabraActual = palabras.get(indicePalabra++);
+        this.retoAhorcadoActual = retoAhorcados.get(indicePalabra++);
 
-        palabraDisplay.setText(palabraActual.getPalabra());
+        palabraDisplay.setText(retoAhorcadoActual.getPalabra());
     }
 }

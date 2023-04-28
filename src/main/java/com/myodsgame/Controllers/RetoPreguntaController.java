@@ -1,18 +1,16 @@
 package com.myodsgame.Controllers;
 
-import com.myodsgame.Models.Pregunta;
+import com.myodsgame.Models.RetoPregunta;
 import com.myodsgame.Repository.RepositorioPregunta;
 import com.myodsgame.Repository.RepositorioPreguntaImpl;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
@@ -71,7 +69,7 @@ public class RetoPreguntaController implements Initializable {
     private Button botonSalir;
     @FXML
     private Button nextQuestionButton;
-    private List<Pregunta> preguntas;
+    private List<RetoPregunta> retoPreguntas;
     private List<Button> respuestas;
     private String respuestaCorrecta;
     private boolean ayudaPulsada;
@@ -86,7 +84,7 @@ public class RetoPreguntaController implements Initializable {
     public int consolidatedPoints = 0;
     public int decreasedPoints = 0;
     private boolean consolidated;
-    private Pregunta preguntaActual;
+    private RetoPregunta retoPreguntaActual;
     private String currentStyleButton;
     private String currentStyleLabel;
     private String initialStyle;
@@ -124,9 +122,9 @@ public class RetoPreguntaController implements Initializable {
         reproducirMusica();
         this.initialStyle = "-fx-background-color:  rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10";
         this.repositorioPregunta = new RepositorioPreguntaImpl();
-        this.preguntas = repositorioPregunta.getPreguntasOrdenadasPorNivelDificultad();
+        this.retoPreguntas = repositorioPregunta.getPreguntasOrdenadasPorNivelDificultad();
         ayuda.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "ayuda.png").toAbsolutePath().toString())));
-        loadQuestion(preguntas);
+        loadQuestion(retoPreguntas);
         Rectangle clip = new Rectangle(imagenODS.getFitWidth(), imagenODS.getFitHeight());
         clip.setArcWidth(40);
         clip.setArcHeight(40);
@@ -134,14 +132,14 @@ public class RetoPreguntaController implements Initializable {
     }
 
 
-    private void loadQuestion(List<Pregunta> preguntas) {
-        preguntaActual = preguntas.get(indicePregunta);
-        enunciadoPregunta.setText(preguntaActual.getEnunciado());
-        respuesta1.setText(preguntaActual.getRespuesta1());
-        respuesta2.setText(preguntaActual.getRespuesta2());
-        respuesta3.setText(preguntaActual.getRespuesta3());
-        respuesta4.setText(preguntaActual.getRespuesta4());
-        this.respuestaCorrecta = preguntaActual.getRespuestaCorrecta();
+    private void loadQuestion(List<RetoPregunta> retoPreguntas) {
+        retoPreguntaActual = retoPreguntas.get(indicePregunta);
+        enunciadoPregunta.setText(retoPreguntaActual.getEnunciado());
+        respuesta1.setText(retoPreguntaActual.getRespuesta1());
+        respuesta2.setText(retoPreguntaActual.getRespuesta2());
+        respuesta3.setText(retoPreguntaActual.getRespuesta3());
+        respuesta4.setText(retoPreguntaActual.getRespuesta4());
+        this.respuestaCorrecta = retoPreguntaActual.getRespuestaCorrecta();
         this.respuestas = List.of(respuesta1, respuesta2, respuesta3, respuesta4);
         numeroPregunta++;
         consolidarButton.setDisable(true);
@@ -150,7 +148,7 @@ public class RetoPreguntaController implements Initializable {
         ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.BLUEVIOLET);
         timeline.playFromStart();
 
-        String odsString = "ODS_" + preguntaActual.getOds() + ".jpg";
+        String odsString = "ODS_" + retoPreguntaActual.getOds() + ".jpg";
         imagenODS.setImage(new Image(Path.of("", "src", "main", "resources", "images", odsString).toAbsolutePath().toString()));
     }
 
@@ -247,10 +245,10 @@ public class RetoPreguntaController implements Initializable {
     }
 
     private void nextQuestion(int dificultad) {
-        for(int i = indicePregunta; i < preguntas.size(); i++, indicePregunta++){
-            if(preguntas.get(i).getNivelDificultad() == dificultad) {
+        for(int i = indicePregunta; i < retoPreguntas.size(); i++, indicePregunta++){
+            if(retoPreguntas.get(i).getNivelDificultad() == dificultad) {
                 indicePregunta++;
-                loadQuestion(preguntas);
+                loadQuestion(retoPreguntas);
                 return;
             }
         }
@@ -324,9 +322,9 @@ public class RetoPreguntaController implements Initializable {
 
     private void computePoints() {
         if (respuestaCorrectaSeleccionada) {
-            obtainedPoints += addPoints(preguntaActual.getNivelDificultad());
+            obtainedPoints += addPoints(retoPreguntaActual.getNivelDificultad());
         } else {
-            decreasedPoints = decreasePoints(preguntaActual.getNivelDificultad());
+            decreasedPoints = decreasePoints(retoPreguntaActual.getNivelDificultad());
             if (decreasedPoints > obtainedPoints) {
                 decreasedPoints = obtainedPoints;
                 obtainedPoints = 0;
@@ -400,7 +398,7 @@ public class RetoPreguntaController implements Initializable {
     private void showMessage(boolean answered) {
         if (perdido) return;
         if (answered) {
-            estatusRespuesta.setText("¡CORRECTO! " + "¡Acabas de conseguir " + addPoints(preguntaActual.getNivelDificultad()) + " puntos!");
+            estatusRespuesta.setText("¡CORRECTO! " + "¡Acabas de conseguir " + addPoints(retoPreguntaActual.getNivelDificultad()) + " puntos!");
             estatusRespuesta.setTextFill(Color.GREEN);
         } else {
             estatusRespuesta.setText("¡INCORRECTO! " + "¡Acabas de perder " + decreasedPoints + " puntos!");
