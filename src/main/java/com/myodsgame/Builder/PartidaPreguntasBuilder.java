@@ -22,7 +22,7 @@ public class PartidaPreguntasBuilder extends PartidaBuilder{
     @Override
     public void BuildImagenes() {
         super.BuildImagenes();
-        imagenFondo = new Image(Path.of("", "src", "main", "resources", "images", "preguntas.png")
+        imagenFondo = new Image(Path.of("", "src", "main", "resources", "images", "fondo_preguntas.png")
                 .toAbsolutePath().toString());
     }
 
