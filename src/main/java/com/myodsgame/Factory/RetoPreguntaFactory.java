@@ -1,7 +1,6 @@
 package com.myodsgame.Factory;
 
 import com.myodsgame.Models.Pregunta;
-import com.myodsgame.Models.Reto;
 import com.myodsgame.Models.RetoPregunta;
 import com.myodsgame.Repository.RepositorioPregunta;
 import com.myodsgame.Repository.RepositorioPreguntaImpl;

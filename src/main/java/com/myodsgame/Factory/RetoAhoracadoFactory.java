@@ -3,8 +3,6 @@ package com.myodsgame.Factory;
 import com.myodsgame.Models.*;
 import com.myodsgame.Repository.RepositorioPalabra;
 import com.myodsgame.Repository.RepositorioPalabraImpl;
-import com.myodsgame.Repository.RepositorioPregunta;
-import com.myodsgame.Repository.RepositorioPreguntaImpl;
 import com.myodsgame.Utils.TipoReto;
 
 import java.util.HashSet;
