@@ -1,48 +1,192 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.RetoAhorcadoController">
-   <left>
-      <ImageView fx:id="ahorcadoDisplay" fitHeight="257.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
-   </left>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #21315A;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.RetoAhorcadoController">
    <center>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="100.0" prefWidth="200.0" />
-            <Label fx:id="palabraDisplay" alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="267.0" text="Label">
-               <VBox.margin>
-                  <Insets top="30.0" />
-               </VBox.margin>
-            </Label>
-            <HBox alignment="CENTER" prefHeight="40.0" prefWidth="400.0">
+            <HBox prefHeight="51.0" prefWidth="600.0" spacing="150.0">
                <children>
-                  <TextField fx:id="wordField" alignment="CENTER" prefHeight="26.0" prefWidth="29.0" />
-                  <Button fx:id="sendWordButton" alignment="CENTER" mnemonicParsing="false" onAction="#sendWordButtonClicked" text="OK" />
-                  <Label prefHeight="24.0" prefWidth="314.0" text="Label" />
+                  <Label alignment="CENTER" prefHeight="50.0" prefWidth="50.0" style="-fx-border-color: black; -fx-border-radius: 5000;" text="30" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="26.0" />
+                     </font></Label>
+                  <ImageView fitHeight="41.0" fitWidth="141.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/vidas.png" />
+                     </image>
+                  </ImageView>
+                  <Button fx:id="ayudaButton" mnemonicParsing="false" onAction="#ayudaButtonClicked" style="-fx-background-color: null;" />
+               </children>
+               <padding>
+                  <Insets left="30.0" right="30.0" />
+               </padding></HBox>
+            <HBox alignment="CENTER" prefHeight="86.0" prefWidth="600.0">
+               <children>
+                  <Label fx:id="frasePista" alignment="CENTER" prefHeight="90.0" prefWidth="359.0" style="-fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 15; -fx-border-color: black; -fx-border-radius: 15;" text="Pista ahoracado" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Label>
+                  <ImageView fx:id="imagenODS" fitHeight="97.0" fitWidth="97.0" pickOnBounds="true" preserveRatio="true" />
+               </children></HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="110.0" prefWidth="600.0">
+               <children>
+                  <ImageView fitHeight="113.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/ahorcado.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="20.0" top="5.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Label alignment="CENTER" text="_ _ _ _ _ _" textFill="WHITE">
+                     <font>
+                        <Font size="42.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="200.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="31.0" prefWidth="600.0" spacing="3.0">
+               <children>
+                  <Button fx:id="botonQ" mnemonicParsing="false" onAction="#botonQPulsado" prefHeight="31.0" prefWidth="32.0" text="Q">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="botonW" mnemonicParsing="false" onAction="#botonWPulsado" prefHeight="31.0" prefWidth="32.0" text="W">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="botonE" mnemonicParsing="false" onAction="#botonEPulsado" prefHeight="31.0" prefWidth="32.0" text="E">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="botonR" mnemonicParsing="false" onAction="#botonRPulsado" prefHeight="31.0" prefWidth="32.0" text="R">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="botonT" mnemonicParsing="false" onAction="#botonTPulsado" prefHeight="31.0" prefWidth="32.0" text="T">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="botonY" maxWidth="32.0" mnemonicParsing="false" onAction="#botonYPulsado" prefHeight="31.0" prefWidth="32.0" text="Y">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="botonU" mnemonicParsing="false" onAction="#botonUPulsado" prefHeight="31.0" prefWidth="32.0" text="U">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="botonI" mnemonicParsing="false" onAction="#botonIPulsado" prefHeight="31.0" prefWidth="32.0" text="I">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="botonO" mnemonicParsing="false" onAction="#botonOPulsado" prefHeight="31.0" prefWidth="32.0" text="O">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="botonP" mnemonicParsing="false" onAction="#botonPPulsado" prefHeight="31.0" prefWidth="32.0" text="P">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
                </children>
                <VBox.margin>
-                  <Insets top="30.0" />
+                  <Insets bottom="3.0" right="10.0" />
                </VBox.margin>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="34.0" prefWidth="600.0" spacing="3.0">
                <children>
-                  <TextField fx:id="palabraField" />
-                  <Button fx:id="sendPalabraButton" mnemonicParsing="false" onAction="#sendPalabraButtonClicked" text="OK" />
+                  <Button fx:id="botonA" mnemonicParsing="false" onAction="#botonAPulsado" prefHeight="31.0" prefWidth="32.0" text="A">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="botonS" mnemonicParsing="false" onAction="#botonSPulsado" prefHeight="31.0" prefWidth="32.0" text="S">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="botonD" mnemonicParsing="false" onAction="#botonDPulsado" prefHeight="31.0" prefWidth="32.0" text="D">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="botonF" mnemonicParsing="false" onAction="#botonFPulsado" prefHeight="31.0" prefWidth="32.0" text="F">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="botonG" mnemonicParsing="false" onAction="#botonGPulsado" prefHeight="31.0" prefWidth="32.0" text="G">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="botonH" mnemonicParsing="false" onAction="#botonHPulsado" prefHeight="31.0" prefWidth="32.0" text="H">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="botonJ" mnemonicParsing="false" onAction="#botonJPulsado" prefHeight="31.0" prefWidth="32.0" text="J">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="botonK" mnemonicParsing="false" onAction="#botonKPulsado" prefHeight="31.0" prefWidth="32.0" text="K">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="botonL" mnemonicParsing="false" onAction="#botonLPulsado" prefHeight="31.0" prefWidth="32.0" text="L">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="botonÑ" mnemonicParsing="false" onAction="#botonÑPulsado" prefHeight="31.0" prefWidth="32.0" text="Ñ">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
                </children>
+               <VBox.margin>
+                  <Insets bottom="3.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="32.0" prefWidth="600.0" spacing="3.0">
+               <children>
+                  <Button fx:id="botonZ" mnemonicParsing="false" onAction="#botonZPulsado" prefHeight="31.0" prefWidth="32.0" text="Z">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="botonX" mnemonicParsing="false" onAction="#botonXPulsado" prefHeight="31.0" prefWidth="32.0" text="X">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="botonC" mnemonicParsing="false" onAction="#botonCPulsado" prefHeight="31.0" prefWidth="32.0" text="C">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="botonV" mnemonicParsing="false" onAction="#botonVPulsado" prefHeight="31.0" prefWidth="32.0" text="V">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="botonB" mnemonicParsing="false" onAction="#botonBPulsado" prefHeight="31.0" prefWidth="32.0" text="B">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="botonN" mnemonicParsing="false" onAction="#botonNPulsado" prefHeight="31.0" prefWidth="32.0" text="N">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="botonM" alignment="CENTER" mnemonicParsing="false" onAction="#botonMPulsado" prefHeight="31.0" prefWidth="32.0" text="M">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets right="90.0" />
+               </VBox.margin>
             </HBox>
          </children>
-      </VBox>
+         <BorderPane.margin>
+            <Insets top="15.0" />
+         </BorderPane.margin></VBox>
    </center>
-   <bottom>
-      <Button fx:id="ayudaButton" mnemonicParsing="false" onAction="#ayudaButtonClicked" text="Ayuda" BorderPane.alignment="CENTER" />
-   </bottom>
 </BorderPane>
