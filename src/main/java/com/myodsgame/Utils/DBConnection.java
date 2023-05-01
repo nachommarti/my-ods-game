@@ -5,11 +5,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-    private static final String HOST = "budafriends3.ch7fznyynumz.eu-central-1.rds.amazonaws.com";
+    private static final String HOST = "odsgamedatabase.ccuybsqtevai.eu-west-3.rds.amazonaws.com";
     private static final int PUERTO = 3306;
-    private static final String DB = "budafriends1";
-    private static final String USER = "admin";
-    private static final String PASSWORD = "12345678";
+    private static final String DB = "odsGameDatabase";
+    private static final String USER = "adminUsername";
+    private static final String PASSWORD = "adminPassword";
     private static final String URL = "jdbc:mysql://" + HOST + ":" + PUERTO + "/" + DB;
 
     private static Connection conn = null;
