@@ -5,6 +5,7 @@ import com.myodsgame.Models.Reto;
 import com.myodsgame.Models.RetoPregunta;
 import com.myodsgame.Repository.RepositorioPregunta;
 import com.myodsgame.Repository.RepositorioPreguntaImpl;
+import com.myodsgame.Utils.TipoReto;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class RetoPreguntaFactory implements RetoFactory{
                     30,
                     pregunta.getNivelDificultad(),
                     pregunta.getNivelDificultad()*100,
-                    "PREGUNTA",
+                    TipoReto.PREGUNTA,
                     pregunta.getEnunciado(),
                     pregunta.getRespuesta1(),
                     pregunta.getRespuesta2(),

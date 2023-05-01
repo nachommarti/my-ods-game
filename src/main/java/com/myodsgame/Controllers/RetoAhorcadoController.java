@@ -60,15 +60,11 @@ public class RetoAhorcadoController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.repositorioPalabra = new RepositorioPalabraImpl();
-        retoAhorcados = repositorioPalabra.getPalabras();
-        loadPalabra();
+
 
     }
 
     private void loadPalabra(){
-        this.retoAhorcadoActual = retoAhorcados.get(indicePalabra++);
 
-        palabraDisplay.setText(retoAhorcadoActual.getPalabra());
     }
 }

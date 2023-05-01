@@ -1,5 +1,7 @@
 package com.myodsgame.Models;
 
+import com.myodsgame.Utils.TipoReto;
+
 public class RetoPregunta extends Reto{
     private String enunciado;
     private String respuesta1;
@@ -8,10 +10,10 @@ public class RetoPregunta extends Reto{
     private String respuesta4;
     private String respuestaCorrecta;
 
-    public RetoPregunta(boolean ayudaUsada, int duracion, int dificultad, int puntuacion, String tipo,
+    public RetoPregunta(boolean ayudaUsada, int duracion, int dificultad, int puntuacion, TipoReto tipoReto,
                         String enunciado, String respuesta1, String respuesta2, String respuesta3,
                         String respuesta4, String respuestaCorrecta) {
-        super(ayudaUsada, duracion, dificultad, puntuacion, tipo);
+        super(ayudaUsada, duracion, dificultad, puntuacion, tipoReto);
         this.enunciado = enunciado;
         this.respuesta1 = respuesta1;
         this.respuesta2 = respuesta2;

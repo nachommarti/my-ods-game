@@ -1,18 +1,20 @@
 package com.myodsgame.Models;
 
+import com.myodsgame.Utils.TipoReto;
+
 public abstract class Reto {
     private boolean ayudaUsada;
     private int duracion;
     private int dificultad;
     private int puntuacion;
-    private String tipo;
+    private TipoReto tipoReto;
 
-    public Reto(boolean ayudaUsada, int duracion, int dificultad, int puntuacion, String tipo) {
+    public Reto(boolean ayudaUsada, int duracion, int dificultad, int puntuacion, TipoReto tipoReto) {
         this.ayudaUsada = ayudaUsada;
         this.duracion = duracion;
         this.dificultad = dificultad;
         this.puntuacion = puntuacion;
-        this.tipo = tipo;
+        this.tipoReto = tipoReto;
     }
 
 
@@ -48,11 +50,11 @@ public abstract class Reto {
         this.puntuacion = puntuacion;
     }
 
-    public String getTipo() {
-        return tipo;
+    public TipoReto getTipo() {
+        return tipoReto;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setTipo(TipoReto tipoReto) {
+        this.tipoReto = tipoReto;
     }
 }

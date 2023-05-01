@@ -1,6 +1,7 @@
 package com.myodsgame.Repository;
 
 import com.myodsgame.Factory.RetoFactory;
+import com.myodsgame.Models.Palabra;
 import com.myodsgame.Models.RetoAhorcado;
 import com.myodsgame.Utils.DBConnection;
 
@@ -20,28 +21,25 @@ public class RepositorioPalabraImpl implements RepositorioPalabra{
     }
 
     @Override
-    public List<RetoAhorcado> getPalabras() {
+    public List<Palabra> getPalabras() {
         String query = "SELECT * FROM palabras";
         return getPalabrasHelper(query);
     }
 
-    private List<RetoAhorcado> getPalabrasHelper(String query){
-        List<RetoAhorcado> list = new ArrayList<>();
+    private List<Palabra> getPalabrasHelper(String query){
+        List<Palabra> palabras = new ArrayList<>();
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                list.add(new RetoAhorcado(
-                        false,30,
-                        rs.getInt("dificultad"),
-                        rs.getInt("dificultad") * 100,
-                        rs.getString("tipo"),
-                        rs.getString("palabra"), new ArrayList<>(), 6
+                palabras.add(new Palabra(
+                        rs.getString("palabra"),
+                        rs.getInt("nivelDificultad")
                 ));
             }
-            return list;
+            return palabras;
         } catch (SQLException e) {
-            System.err.println("Error al obtener personas: " + e.getMessage());
+            System.err.println("Error al obtener palabras: " + e.getMessage());
             return null;
         }
     }
