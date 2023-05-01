@@ -1,6 +1,6 @@
 package com.myodsgame.Models;
 
-public class Reto {
+public abstract class Reto {
     private boolean ayudaUsada;
     private int duracion;
     private int dificultad;
@@ -14,6 +14,7 @@ public class Reto {
         this.puntuacion = puntuacion;
         this.tipo = tipo;
     }
+
 
     public boolean isAyudaUsada() {
         return ayudaUsada;

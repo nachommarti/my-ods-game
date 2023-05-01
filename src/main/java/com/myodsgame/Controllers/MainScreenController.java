@@ -1,5 +1,11 @@
 package com.myodsgame.Controllers;
 
+import com.myodsgame.Builder.PartidaDirector;
+import com.myodsgame.Builder.PartidaPreguntasBuilder;
+import com.myodsgame.Models.Partida;
+import com.myodsgame.Models.Reto;
+import com.myodsgame.Models.RetoPregunta;
+import com.myodsgame.Utils.EstadoJuego;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,40 +43,36 @@ public class MainScreenController implements Initializable {
 
     @FXML
     void fastGameButtonClicked(ActionEvent event) throws IOException {
-        int randomChallenge = 1 + new Random().nextInt(4);
-        String viewRoute = null;
-        String challengeTitle = null;
+        partidaRetoPreguntaClicked();
+    }
 
-        switch (randomChallenge){
-            case 1:
-                viewRoute = "/com/myodsgame/retoPregunta-view.fxml";
-                challengeTitle = "Reto Pregunta";
-                break;
-            case 2:
-                viewRoute = "/com/myodsgame/retoPregunta-view.fxml";
-                challengeTitle = "Reto Sopa Letras";
-                break;
-            case 3:
-                viewRoute = "/com/myodsgame/retoPregunta-view.fxml";
-                challengeTitle = "Reto Ahorcado";
-                break;
-            case 4:
-                viewRoute = "/com/myodsgame/retoPregunta-view.fxml";
-                challengeTitle = "Reto ni idea";
-                break;
+    void partidaRetoPreguntaClicked(){
+        PartidaDirector partidaDirector = new PartidaDirector(new PartidaPreguntasBuilder());
+        Partida partida = partidaDirector.BuildPartida();
+        EstadoJuego.getInstance().setPartida(partida);
+
+        for(int i = 0; i < partida.getRetos().length; i++){
+            loadRetoWindow("/com/myodsgame/retoPregunta-view.fxml", "Reto Pregunta");
+        }
+    }
+
+    private void loadRetoWindow(String viewRoute, String tituloReto){
+        FXMLLoader myLoader = new FXMLLoader(getClass().getResource(viewRoute));
+        try {
+            BorderPane root = myLoader.load();
+            Scene scene = new Scene (root, 600, 600);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle(tituloReto);
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.setResizable(false);
+            stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
+            stage.show();
+        }catch (IOException e){
+            System.out.println("Error loading the view for route: " + viewRoute);
         }
 
-        FXMLLoader myLoader = new FXMLLoader(getClass().getResource(viewRoute));
-        BorderPane root = myLoader.load();
 
-        Scene scene = new Scene (root, 600, 600);
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.setTitle(challengeTitle);
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.setResizable(false);
-        stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
-        stage.show();
     }
 
     @FXML

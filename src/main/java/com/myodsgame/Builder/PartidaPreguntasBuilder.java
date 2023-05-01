@@ -1,5 +1,6 @@
 package com.myodsgame.Builder;
 
+import com.myodsgame.Factory.RetoPreguntaFactory;
 import com.myodsgame.Models.Partida;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,7 +12,7 @@ import java.nio.file.Path;
 public class PartidaPreguntasBuilder extends PartidaBuilder{
     @Override
     public void BuildRetos() {
-
+        retos = new RetoPreguntaFactory().crearRetos();
     }
 
     @Override

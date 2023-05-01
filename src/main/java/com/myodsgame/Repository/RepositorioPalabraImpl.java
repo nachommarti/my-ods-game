@@ -31,12 +31,11 @@ public class RepositorioPalabraImpl implements RepositorioPalabra{
             PreparedStatement pstmt = connection.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                list.add((RetoAhorcado) RetoFactory.crearReto(
+                list.add(new RetoAhorcado(
                         false,30,
                         rs.getInt("dificultad"),
                         rs.getInt("dificultad") * 100,
                         rs.getString("tipo"),
-                        null,null, null, null, null, null,
                         rs.getString("palabra"), new ArrayList<>(), 6
                 ));
             }

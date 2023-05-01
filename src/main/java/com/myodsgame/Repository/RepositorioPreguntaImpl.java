@@ -1,6 +1,7 @@
 package com.myodsgame.Repository;
 
 import com.myodsgame.Factory.RetoFactory;
+import com.myodsgame.Models.Pregunta;
 import com.myodsgame.Models.RetoPregunta;
 import com.myodsgame.Utils.DBConnection;
 
@@ -20,46 +21,40 @@ public class RepositorioPreguntaImpl implements RepositorioPregunta{
         connection = DBConnection.getConnection();
     }
 
-    public List<RetoPregunta> getPreguntas() {
+    public List<Pregunta> getPreguntas() {
         String query = "SELECT * FROM preguntas";
         return getPreguntasHelper(query);
     }
 
-    public List<RetoPregunta> getPreguntasPorNivelDificultad(int nivelDificultad) {
-        String query = "SELECT * FROM preguntas WHERE nivel_dificultad = " + nivelDificultad;
+    public List<Pregunta> getPreguntasPorNivelDificultad(int nivelDificultad) {
+        String query = "SELECT * FROM preguntas WHERE nivel_dificultad <= " + nivelDificultad;
         return getPreguntasHelper(query);
     }
 
     @Override
-    public List<RetoPregunta> getPreguntasOrdenadasPorNivelDificultad() {
-        String query = "SELECT * FROM preguntas";
-        return getPreguntasHelper(query).stream().sorted(Comparator.comparingInt(RetoPregunta::getDificultad))
-                .collect(Collectors.toList());
+    public List<Pregunta> getPreguntasOrdenadasPorNivelDificultad() {
+        return null;
     }
 
-    private List<RetoPregunta> getPreguntasHelper(String query){
-        List<RetoPregunta> list = new ArrayList<>();
+    private List<Pregunta> getPreguntasHelper(String query){
+        List<Pregunta> preguntas = new ArrayList<>();
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                list.add((RetoPregunta) RetoFactory.crearReto(
-                        false,30,
-                        rs.getInt("dificultad"),
-                        rs.getInt("dificultad") * 100,
-                        rs.getString("tipo"),
+                preguntas.add( new Pregunta(
                         rs.getString("enunciado"),
                         rs.getString("respuesta1"),
                         rs.getString("respuesta2"),
                         rs.getString("respuesta3"),
                         rs.getString("respuesta4"),
                         rs.getString("respuestaCorrecta"),
-                        null, null, 0
+                        rs.getInt("nivelDificultad")
                 ));
             }
-            return list;
+            return preguntas;
         } catch (SQLException e) {
-            System.err.println("Error al obtener personas: " + e.getMessage());
+            System.err.println("Error al obtener preguntas: " + e.getMessage());
             return null;
         }
     }

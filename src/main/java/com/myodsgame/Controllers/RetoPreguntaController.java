@@ -1,8 +1,10 @@
 package com.myodsgame.Controllers;
 
+import com.myodsgame.Models.Partida;
 import com.myodsgame.Models.RetoPregunta;
 import com.myodsgame.Repository.RepositorioPregunta;
 import com.myodsgame.Repository.RepositorioPreguntaImpl;
+import com.myodsgame.Utils.EstadoJuego;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -69,7 +71,6 @@ public class RetoPreguntaController implements Initializable {
     private Button botonSalir;
     @FXML
     private Button nextQuestionButton;
-    private List<RetoPregunta> retoPreguntas;
     private List<Button> respuestas;
     private String respuestaCorrecta;
     private boolean ayudaPulsada;
@@ -84,7 +85,6 @@ public class RetoPreguntaController implements Initializable {
     public int consolidatedPoints = 0;
     public int decreasedPoints = 0;
     private boolean consolidated;
-    private RetoPregunta retoPreguntaActual;
     private String currentStyleButton;
     private String currentStyleLabel;
     private String initialStyle;
@@ -94,6 +94,10 @@ public class RetoPreguntaController implements Initializable {
     private boolean perdido = false;
     private int contAbandonar = 1;
     private MediaPlayer mediaPlayerSonidos = null, mediaPlayerMusic = null, mediaPlayerTicTac = new MediaPlayer(new Media(new File("src/main/resources/sounds/10S_tick.mp3").toURI().toString()));
+
+    private Partida partidaActual;
+
+    private RetoPregunta retoActual;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -121,10 +125,11 @@ public class RetoPreguntaController implements Initializable {
         );
         reproducirMusica();
         this.initialStyle = "-fx-background-color:  rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10";
-        this.repositorioPregunta = new RepositorioPreguntaImpl();
-        this.retoPreguntas = repositorioPregunta.getPreguntasOrdenadasPorNivelDificultad();
         ayuda.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "ayuda.png").toAbsolutePath().toString())));
-        loadQuestion(retoPreguntas);
+        this.partidaActual = EstadoJuego.getInstance().getPartida();
+        this.retoActual = (RetoPregunta) partidaActual.getRetos()[partidaActual.getRetoActual()];
+
+        loadQuestion(retoActual);
         Rectangle clip = new Rectangle(imagenODS.getFitWidth(), imagenODS.getFitHeight());
         clip.setArcWidth(40);
         clip.setArcHeight(40);
@@ -132,8 +137,7 @@ public class RetoPreguntaController implements Initializable {
     }
 
 
-    private void loadQuestion(List<RetoPregunta> retoPreguntas) {
-        retoPreguntaActual = retoPreguntas.get(indicePregunta);
+    private void loadQuestion(RetoPregunta retoPreguntaActual) {
         enunciadoPregunta.setText(retoPreguntaActual.getEnunciado());
         respuesta1.setText(retoPreguntaActual.getRespuesta1());
         respuesta2.setText(retoPreguntaActual.getRespuesta2());
@@ -148,8 +152,8 @@ public class RetoPreguntaController implements Initializable {
         ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.BLUEVIOLET);
         timeline.playFromStart();
 
-        String odsString = "ODS_" + retoPreguntaActual.getOds() + ".jpg";
-        imagenODS.setImage(new Image(Path.of("", "src", "main", "resources", "images", odsString).toAbsolutePath().toString()));
+        //String odsString = "ODS_" + retoPreguntaActual.getOds() + ".jpg";
+        //imagenODS.setImage(new Image(Path.of("", "src", "main", "resources", "images", odsString).toAbsolutePath().toString()));
     }
 
     @FXML
@@ -227,7 +231,12 @@ public class RetoPreguntaController implements Initializable {
 
     @FXML
     void siguientePreguntaClicked(ActionEvent event) {
-        if(numeroPregunta < 4)
+
+        EstadoJuego.getInstance().getPartida().setRetoActual(partidaActual.getRetoActual()+1);
+        Stage stage = (Stage)nextQuestionButton.getScene().getWindow();
+        stage.close();
+
+        /*if(numeroPregunta < 4)
             nextQuestion(1);
         else if(numeroPregunta < 7)
             nextQuestion(2);
@@ -241,10 +250,10 @@ public class RetoPreguntaController implements Initializable {
         if(consolidated && contAbandonar >= 0){
             botonSalir.setDisable(contAbandonar == 0);
             contAbandonar--;
-        }
+        } */
     }
 
-    private void nextQuestion(int dificultad) {
+   /* private void nextQuestion(int dificultad) {
         for(int i = indicePregunta; i < retoPreguntas.size(); i++, indicePregunta++){
             if(retoPreguntas.get(i).getNivelDificultad() == dificultad) {
                 indicePregunta++;
@@ -252,7 +261,7 @@ public class RetoPreguntaController implements Initializable {
                 return;
             }
         }
-    }
+    }*/
 
     @FXML
     void consolidarButtonClicked(ActionEvent event) {
@@ -322,9 +331,9 @@ public class RetoPreguntaController implements Initializable {
 
     private void computePoints() {
         if (respuestaCorrectaSeleccionada) {
-            obtainedPoints += addPoints(retoPreguntaActual.getNivelDificultad());
+            obtainedPoints += addPoints(retoActual.getDificultad());
         } else {
-            decreasedPoints = decreasePoints(retoPreguntaActual.getNivelDificultad());
+            decreasedPoints = decreasePoints(retoActual.getDificultad());
             if (decreasedPoints > obtainedPoints) {
                 decreasedPoints = obtainedPoints;
                 obtainedPoints = 0;
@@ -398,7 +407,7 @@ public class RetoPreguntaController implements Initializable {
     private void showMessage(boolean answered) {
         if (perdido) return;
         if (answered) {
-            estatusRespuesta.setText("¡CORRECTO! " + "¡Acabas de conseguir " + addPoints(retoPreguntaActual.getNivelDificultad()) + " puntos!");
+            estatusRespuesta.setText("¡CORRECTO! " + "¡Acabas de conseguir " + addPoints(retoActual.getDificultad()) + " puntos!");
             estatusRespuesta.setTextFill(Color.GREEN);
         } else {
             estatusRespuesta.setText("¡INCORRECTO! " + "¡Acabas de perder " + decreasedPoints + " puntos!");
