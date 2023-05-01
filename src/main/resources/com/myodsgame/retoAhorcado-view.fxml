@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #21315A;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.RetoAhorcadoController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #21315A;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.RetoAhorcadoController">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
@@ -44,7 +44,7 @@
                         <Insets bottom="10.0" left="20.0" top="5.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Label alignment="CENTER" text="_ _ _ _ _ _" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="62.0" prefWidth="218.0" text="_ _ _ _ _ _" textFill="WHITE">
                      <font>
                         <Font size="42.0" />
                      </font>
@@ -60,7 +60,7 @@
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonW" mnemonicParsing="false" onAction="#botonWPulsado" prefHeight="31.0" prefWidth="32.0" text="W">
+                  <Button fx:id="botonW" mnemonicParsing="false" onAction="#botonWPulsado" prefHeight="31.0" prefWidth="35.0" text="W">
                      <font>
                         <Font size="14.0" />
                      </font></Button>

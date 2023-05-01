@@ -48,8 +48,8 @@ public class RepositorioPreguntaImpl implements RepositorioPregunta{
                         rs.getString("respuesta2"),
                         rs.getString("respuesta3"),
                         rs.getString("respuesta4"),
-                        rs.getString("respuestaCorrecta"),
-                        rs.getInt("nivelDificultad")
+                        rs.getString("respuesta_correcta"),
+                        rs.getInt("nivel_dificultad")
                 ));
             }
             return preguntas;

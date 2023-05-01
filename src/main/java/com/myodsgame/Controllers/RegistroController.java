@@ -10,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
@@ -32,8 +31,6 @@ public class RegistroController implements Initializable {
     private Label lPassdontmatch;
     @FXML
     private Text usernameErrorText;
-    @FXML
-    private ImageView avatar;
     @FXML
     private Label lBirthdate;
     @FXML
@@ -248,6 +245,10 @@ public class RegistroController implements Initializable {
 
     @FXML
     void acceptButtonClicked(ActionEvent event) {
+
+
+
+
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Registration confirmed");
         alert.setHeaderText(null);
@@ -287,10 +288,6 @@ public class RegistroController implements Initializable {
         alert.showAndWait();
     }
 
-    @FXML
-    void selectAvatarClicked(ActionEvent event) {
-
-    }
 
 
 }
