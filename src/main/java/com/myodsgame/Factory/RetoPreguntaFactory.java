@@ -15,7 +15,7 @@ public class RetoPreguntaFactory implements RetoFactory{
         List<Pregunta> preguntas = repositorioPregunta.getPreguntas();
         RetoPregunta [] retosPregunta = new RetoPregunta[10];
 
-        for(int i = 0; i < preguntas.size(); i++){
+        for(int i = 0; i < 10; i++){
             Pregunta pregunta = preguntas.get(i);
 
             retosPregunta[i] = new RetoPregunta(
