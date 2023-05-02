@@ -1,5 +1,9 @@
 package com.myodsgame.Controllers;
 
+import com.myodsgame.Models.Estadisticas;
+import com.myodsgame.Models.Usuario;
+import com.myodsgame.Repository.RepositorioUsuario;
+import com.myodsgame.Repository.RepositorioUsuarioImpl;
 import com.myodsgame.Utils.UserUtils;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -19,6 +23,8 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -54,6 +60,8 @@ public class RegistroController implements Initializable {
     private BooleanProperty validUsername;
     private BooleanProperty validBirthdate;
     private BooleanBinding validFields;
+
+    private RepositorioUsuario repositorioUsuario;
 
     private void manageError(Label errorLabel, TextField textField, BooleanProperty boolProp) {
         boolProp.setValue(Boolean.FALSE);
@@ -165,6 +173,8 @@ public class RegistroController implements Initializable {
                 .and(equalPasswords).and(validUsername).and(validBirthdate);
 
         acceptButton.disableProperty().bind(Bindings.not(validFields));
+
+        this.repositorioUsuario = new RepositorioUsuarioImpl();
     }
 
     ;
@@ -176,7 +186,12 @@ public class RegistroController implements Initializable {
                     "contains uppercase or lowercase letters or the " +
                     "hyphens '-' and '_' . (cannot appear consecutive nor first nor last)");
             manageError(usernameErrorText, usernameField, validUsername);
-        } else {
+        }
+        else if(UserUtils.checkUserExists(usernameField.textProperty().getValueSafe())){
+            usernameErrorText.textProperty().setValue("Ya existe un usuario con este nombre!");
+            manageError(usernameErrorText, usernameField, validUsername);
+        }
+        else {
             usernameErrorText.textProperty().setValue("");
             manageCorrect(usernameErrorText, usernameField, validUsername);
         }
@@ -246,8 +261,14 @@ public class RegistroController implements Initializable {
     @FXML
     void acceptButtonClicked(ActionEvent event) {
 
+        Usuario usuario = new Usuario();
+        usuario.setUsername(usernameField.getText());
+        usuario.setPassword(passwordField.getText());
+        usuario.setEmail(emailField.getText());
+        usuario.setBirthdate(Date.from(birthdateSelector.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        usuario.setEstadistica(new Estadisticas());
 
-
+        repositorioUsuario.saveUsuario(usuario);
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Registration confirmed");

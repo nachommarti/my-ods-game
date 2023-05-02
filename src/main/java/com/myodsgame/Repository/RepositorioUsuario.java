@@ -6,4 +6,6 @@ public interface RepositorioUsuario {
 
     Usuario getUsuarioPorUsernameYContraseña(String username, String password);
     boolean checkIfUserExists(String username);
+
+    void saveUsuario(Usuario user);
 }

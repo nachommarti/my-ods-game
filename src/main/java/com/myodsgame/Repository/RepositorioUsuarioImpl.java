@@ -52,7 +52,7 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
                 estadisticas.setProgresoTotalOds(result.getInt("progreso_total_ods"));
 
                 // Parse progresoIndividualOds from the database result
-                String progresoIndividualOdsString = result.getString("progresoIndividualOds");
+                String progresoIndividualOdsString = result.getString("progreso_individual_ods");
                 String[] progresoIndividualOdsArray = progresoIndividualOdsString.split(",");
                 int[] progresoIndividualOds = new int[18];
                 for (int i = 0; i < progresoIndividualOdsArray.length; i++) {
@@ -78,7 +78,8 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
     @Override
     public boolean checkIfUserExists(String username) {
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * from usuarios where username = " + username);
+            PreparedStatement statement = connection.prepareStatement("SELECT * from usuarios where username = ?");
+            statement.setString(1, username);
             ResultSet result = statement.executeQuery();
             return result.next();
         }catch (SQLException e){
@@ -88,7 +89,7 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
     }
 
 
-    public void saveUsuario(Usuario user) throws SQLException {
+    public void saveUsuario(Usuario user) {
         try {
             // Insert statement for the usuario table
             String usuarioInsert = "INSERT INTO usuarios (username, email, password, birthdate) " +
@@ -103,8 +104,8 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
             usuarioStatement.close();
 
             // Insert statement for the estadisticas table
-            String estadisticasInsert = "INSERT INTO estadisticas (username, puntosTotales, partidasJugadas, " +
-                    "numeroAciertos, numeroFallos, progresoTotalOds, progresoIndividualOds) " +
+            String estadisticasInsert = "INSERT INTO estadisticas (username, puntos_totales, partidas_jugadas, " +
+                    "numero_aciertos, numero_fallos, progreso_total_ods, progreso_individual_ods) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             PreparedStatement estadisticasStatement = connection.prepareStatement(estadisticasInsert);

@@ -18,6 +18,11 @@ public class UserUtils {
         return email.matches(EMAIL_REGEX);
     }
 
+    public static boolean checkUserExists(String username){
+        RepositorioUsuario repositorioUsuario = new RepositorioUsuarioImpl();
+        return repositorioUsuario.checkIfUserExists(username);
+    }
+
     public static boolean checkUsername(String username) {
         return username.matches(USERNAME_REGEX);
     }
