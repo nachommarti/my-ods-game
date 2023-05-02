@@ -56,7 +56,7 @@ public class MainScreenController implements Initializable {
         }
     }
 
-    private void loadRetoWindow(String viewRoute, String tituloReto){
+    private void loadRetoWindow(String viewRoute, String tituloReto) {
         FXMLLoader myLoader = new FXMLLoader(getClass().getResource(viewRoute));
         try {
             BorderPane root = myLoader.load();
@@ -67,9 +67,11 @@ public class MainScreenController implements Initializable {
             stage.initModality(Modality.WINDOW_MODAL);
             stage.setResizable(false);
             stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
-            stage.show();
+            stage.showAndWait();
         }catch (IOException e){
+
             System.out.println("Error loading the view for route: " + viewRoute);
+
         }
 
 

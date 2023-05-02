@@ -119,7 +119,7 @@ public class RetoPreguntaController implements Initializable {
         this.initialStyle = "-fx-background-color:  rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10";
         ayuda.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "ayuda.png").toAbsolutePath().toString())));
         this.partidaActual = EstadoJuego.getInstance().getPartida();
-        this.retoActual = (RetoPregunta) partidaActual.getRetos()[partidaActual.getRetoActual()];
+        this.retoActual = (RetoPregunta) partidaActual.getRetos()[partidaActual.getRetoActual()-1];
         this.numeroPregunta = partidaActual.getRetoActual();
 
         loadQuestion(retoActual);
