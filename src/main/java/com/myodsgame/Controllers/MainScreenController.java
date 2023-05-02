@@ -51,9 +51,11 @@ public class MainScreenController implements Initializable {
         Partida partida = partidaDirector.BuildPartida();
         EstadoJuego.getInstance().setPartida(partida);
 
-        for(int i = 0; i < partida.getRetos().length; i++){
+        /*for(int i = 0; i < partida.getRetos().length; i++){
             loadRetoWindow("/com/myodsgame/retoPregunta-view.fxml", "Reto Pregunta");
-        }
+        }*/
+
+        loadRetoWindow("/com/myodsgame/retoAhorcado-view.fxml", "Reto ahorcado");
     }
 
     private void loadRetoWindow(String viewRoute, String tituloReto) {

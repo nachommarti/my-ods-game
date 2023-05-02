@@ -1,16 +1,23 @@
 package com.myodsgame.Controllers;
 
+import com.myodsgame.Models.Partida;
 import com.myodsgame.Models.RetoAhorcado;
+import com.myodsgame.Models.RetoPregunta;
 import com.myodsgame.Repository.RepositorioPalabra;
 import com.myodsgame.Repository.RepositorioPalabraImpl;
+import com.myodsgame.Utils.EstadoJuego;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 
 import java.net.URL;
 import java.nio.file.Path;
@@ -88,25 +95,87 @@ public class RetoAhorcadoController implements Initializable {
     @FXML
     private Button botonZ;
 
+    @FXML
+    private HBox botones1;
+
+    @FXML
+    private HBox botones2;
+
+    @FXML
+    private HBox botones3;
+
+    @FXML
+    private Label palabraMostrada;
+
 
 
     @FXML
     void ayudaButtonClicked(ActionEvent event) {
 
     }
-    private RepositorioPalabra repositorioPalabra;
-    private List<RetoAhorcado> retoAhorcados;
-    private RetoAhorcado retoAhorcadoActual;
-    private int indicePalabra;
+
+    private Partida partidaActual;
+
+    private RetoAhorcado retoActual;
+    private String palabra;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ayudaButton.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "ayuda.png").toAbsolutePath().toString())));
+        setKeyBoardListeners(botones1);
+        setKeyBoardListeners(botones2);
+        setKeyBoardListeners(botones3);
+
+        //partidaActual = EstadoJuego.getInstance().getPartida();
+        //retoActual = (RetoAhorcado) EstadoJuego.getInstance().getPartida().getRetos()[partidaActual.getRetoActual()-1];
+        //palabra = retoActual.getPalabra();
+
+        palabra = "CACAHUETETITO";
+        loadPalabra();
+
 
     }
 
-    private void loadPalabra(){
+    private void setKeyBoardListeners(HBox botones){
 
+        for(Node node : botones.getChildren()){
+            Button button = (Button) node;
+            button.setOnAction(eventHandler);
+        }
+    }
+
+    EventHandler<ActionEvent> eventHandler = event -> {
+        // Handle the button click
+       Button pressedButton = (Button) event.getSource();
+       char selectedChar = pressedButton.getText().charAt(0);
+
+       if(palabra.contains(selectedChar+"")) {
+           pressedButton.setTextFill(Color.GREEN);
+           loadChar(selectedChar);
+       }
+       else {
+           pressedButton.setTextFill(Color.RED);
+       }
+
+       pressedButton.setDisable(true);
+
+
+
+    };
+
+    private void loadPalabra(){
+        for(int i = 0; i < palabra.length(); i++)
+            palabraMostrada.setText(palabraMostrada.getText() + "_");
+    }
+
+    private void loadChar(char selectedChar){
+        for(int i = 0; i < palabra.length(); i++) {
+            if(palabra.charAt(i) == selectedChar) {
+                StringBuilder sb = new StringBuilder(palabraMostrada.getText());
+                sb.setCharAt(i, selectedChar);
+                palabraMostrada.setText(sb.toString());
+            }
+        }
     }
 
     @FXML
