@@ -70,9 +70,22 @@ public class LoginController implements Initializable {
     }
 
     @FXML
-    void loginButtonClicked(ActionEvent event) {
+    void loginButtonClicked(ActionEvent event) throws IOException {
         if (UserUtils.checkAndSetUser(usernameField.getText(), passwordField.getText())) {
-            //cambiar de pantalla
+            FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/pantallaPartidas.fxml"));
+            BorderPane root = myLoader.load();
+
+            Scene scene = new Scene (root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Menú");
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.setResizable(false);
+            stage.show();
+
+            Node source = (Node) event.getSource();
+            Stage oldStage = (Stage) source.getScene().getWindow();
+            oldStage.close();
         } else {
             clearFields();
             showErrorMessage();
