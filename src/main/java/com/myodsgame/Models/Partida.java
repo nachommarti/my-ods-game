@@ -17,6 +17,24 @@ public class Partida {
     private Media musica, sonidoAyuda, sonidoAcierto, sondioFallo, sonidoVictoria, sonidoDerrota, diezsecs;
     private Image imagenVidas, imagenFondo;
 
+    public boolean[] getRetosFallados() {
+        return retosFallados;
+    }
+
+    public void setRetosFallados(boolean[] retosFallados) {
+        this.retosFallados = retosFallados;
+    }
+
+    public boolean isPartidaPerdida() {
+        return partidaPerdida;
+    }
+
+    public void setPartidaPerdida(boolean partidaPerdida) {
+        this.partidaPerdida = partidaPerdida;
+    }
+
+    private boolean partidaPerdida;
+
     public Partida() {
         puntuacion = 0;
         vidas = 2;
@@ -24,6 +42,7 @@ public class Partida {
         consolidado = false;
         ayudasRestantes = 3;
         retosFallados = new boolean[10];
+        partidaPerdida = false;
     }
 
     public Partida(int puntuacion, int vidas, int retoActual, boolean consolidado, int ayudasRestantes,  List<? extends Reto> retos, Media musica, Media sonidoAyuda, Media sonidoAcierto, Media sondioFallo, Media sonidoVictoria, Media sonidoDerrota, Media diezsecs, Image imagenVidas, Image imagenFondo) {

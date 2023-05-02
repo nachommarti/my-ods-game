@@ -52,6 +52,10 @@ public class MainScreenController implements Initializable {
         EstadoJuego.getInstance().setPartida(partida);
 
         for(int i = 0; i < partida.getRetos().size(); i++){
+            if(EstadoJuego.getInstance().getPartida().isPartidaPerdida()) {
+                //TODO:show message saying how many points the user has won during this game
+                break;
+            }
             loadRetoWindow("/com/myodsgame/retoPregunta-view.fxml", "Reto Pregunta");
         }
 
@@ -69,7 +73,11 @@ public class MainScreenController implements Initializable {
             stage.initModality(Modality.WINDOW_MODAL);
             stage.setResizable(false);
             stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
+            stage.setOnCloseRequest(e -> {
+                System.exit(0);
+            });
             stage.showAndWait();
+
         }catch (IOException e){
             System.out.println("Error loading the view for route: " + viewRoute);
         }

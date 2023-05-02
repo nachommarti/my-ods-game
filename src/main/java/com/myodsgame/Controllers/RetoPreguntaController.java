@@ -90,6 +90,7 @@ public class RetoPreguntaController implements Initializable {
     private Partida partidaActual;
 
     private RetoPregunta retoActual;
+    private boolean fallado;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -122,11 +123,21 @@ public class RetoPreguntaController implements Initializable {
         this.retoActual = (RetoPregunta) partidaActual.getRetos().get(partidaActual.getRetoActual()-1);
         this.numeroPregunta = partidaActual.getRetoActual();
 
+        loadRetosState();
         loadQuestion(retoActual);
+
+
         Rectangle clip = new Rectangle(imagenODS.getFitWidth(), imagenODS.getFitHeight());
         clip.setArcWidth(40);
         clip.setArcHeight(40);
         imagenODS.setClip(clip);
+    }
+
+    private void loadRetosState(){
+        for(int i = 0; i < numeroPregunta; i++){
+            ((Label) labelArray.getChildren().get(i))
+                    .setStyle(partidaActual.getRetosFallados()[i] ? "-fx-background-color: rgb(255,25,25); " : "-fx-background-color: rgba(184, 218, 186, 1)");
+        }
     }
 
 
@@ -141,7 +152,7 @@ public class RetoPreguntaController implements Initializable {
         consolidarButton.setDisable(true);
         nextQuestionButton.setDisable(true);
         this.timeCountdown = 30;
-        ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.BLUEVIOLET);
+        ((Label) labelArray.getChildren().get(numeroPregunta-1)).setStyle("-fx-background-color: rgb(202,184,218)");
         timeline.playFromStart();
 
         //String odsString = "ODS_" + retoPreguntaActual.getOds() + ".jpg";
@@ -231,6 +242,7 @@ public class RetoPreguntaController implements Initializable {
             respuestaCorrectaSeleccionada = true;
             consolidarButton.setDisable(consolidated);
             reproducirSonido("src/main/resources/sounds/Acierto.mp3", 0.15);
+            EstadoJuego.getInstance().getPartida().getRetosFallados()[numeroPregunta-1] = false;
 
         } else {
             ((Label) labelArray.getChildren().get(numeroPregunta-1)).setStyle("-fx-background-color: rgb(255,25,25); " + currentStyleLabel);
@@ -238,10 +250,11 @@ public class RetoPreguntaController implements Initializable {
             EstadoJuego.getInstance().getPartida().setVidas(partidaActual.getVidas()-1);
             reproducirSonido("src/main/resources/sounds/Fallo.mp3", 0.5);
             vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
-
+            EstadoJuego.getInstance().getPartida().getRetosFallados()[numeroPregunta-1] = true;
             if ( EstadoJuego.getInstance().getPartida().getVidas() == 0) {
                 mediaPlayerSonidos.stop();
                 lostGame();
+                EstadoJuego.getInstance().getPartida().setPartidaPerdida(true);
                 reproducirSonido("src/main/resources/sounds/Partida_Perdida.mp3", 0.5);
                 vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
             }
@@ -338,7 +351,6 @@ public class RetoPreguntaController implements Initializable {
         perdido = true;
         estatusRespuesta.setText("¡INCORRECTO! " + "Has perdido");
         estatusRespuesta.setTextFill(Color.RED);
-        ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.RED);
         respuesta1.setDisable(true);
         respuesta2.setDisable(true);
         respuesta3.setDisable(true);
