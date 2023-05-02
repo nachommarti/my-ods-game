@@ -42,6 +42,7 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         notBlankEmail = new SimpleBooleanProperty();
         notBlankPassword = new SimpleBooleanProperty();
+        wrongCredentials.setVisible(true);
 
         notBlankEmail.setValue(Boolean.FALSE);
         notBlankPassword.setValue(Boolean.FALSE);
@@ -75,6 +76,7 @@ public class LoginController implements Initializable {
         } else {
             clearFields();
             showErrorMessage();
+            System.out.println(wrongCredentials.getText());
         }
     }
 
