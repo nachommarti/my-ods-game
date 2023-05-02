@@ -7,5 +7,5 @@ import com.myodsgame.Models.RetoPregunta;
 import java.util.List;
 
 public interface RetoFactory {
-    public Reto [] crearRetos();
+    public List<? extends Reto> crearRetos();
 }

@@ -119,7 +119,7 @@ public class RetoPreguntaController implements Initializable {
         this.initialStyle = "-fx-background-color:  rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10";
         ayuda.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "ayuda.png").toAbsolutePath().toString())));
         this.partidaActual = EstadoJuego.getInstance().getPartida();
-        this.retoActual = (RetoPregunta) partidaActual.getRetos()[partidaActual.getRetoActual()-1];
+        this.retoActual = (RetoPregunta) partidaActual.getRetos().get(partidaActual.getRetoActual()-1);
         this.numeroPregunta = partidaActual.getRetoActual();
 
         loadQuestion(retoActual);
@@ -138,7 +138,6 @@ public class RetoPreguntaController implements Initializable {
         respuesta4.setText(retoPreguntaActual.getRespuesta4());
         this.respuestaCorrecta = retoPreguntaActual.getRespuestaCorrecta();
         this.respuestas = List.of(respuesta1, respuesta2, respuesta3, respuesta4);
-        numeroPregunta++;
         consolidarButton.setDisable(true);
         nextQuestionButton.setDisable(true);
         this.timeCountdown = 30;
@@ -206,7 +205,6 @@ public class RetoPreguntaController implements Initializable {
 
     @FXML
     void siguientePreguntaClicked(ActionEvent event) {
-        EstadoJuego.getInstance().getPartida().setRetoActual(partidaActual.getRetoActual() + 1);
         Stage stage = (Stage) nextQuestionButton.getScene().getWindow();
         stage.close();
     }
@@ -226,6 +224,7 @@ public class RetoPreguntaController implements Initializable {
         mediaPlayerMusic.stop();
         if(mediaPlayerTicTac.getStatus() == MediaPlayer.Status.PLAYING) mediaPlayerTicTac.stop();
         currentStyleLabel = labelArray.getStyle();
+        EstadoJuego.getInstance().getPartida().setRetoActual(numeroPregunta+1);
         if (respuestaSeleccionada.getText().equals(respuestaCorrecta)) {
             ((Label) labelArray.getChildren().get(numeroPregunta-1)).setStyle("-fx-background-color: rgba(184, 218, 186, 1); " + currentStyleLabel);
             ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.WHITE);
