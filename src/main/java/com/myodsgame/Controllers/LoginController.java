@@ -70,8 +70,8 @@ public class LoginController implements Initializable {
 
     @FXML
     void loginButtonClicked(ActionEvent event) {
-        if (UserUtils.checkUserExists(usernameField.getText(), passwordField.getText())) {
-            //logear usuario y cambiar de pantalla
+        if (UserUtils.checkAndSetUser(usernameField.getText(), passwordField.getText())) {
+            //cambiar de pantalla
         } else {
             clearFields();
             showErrorMessage();

@@ -7,7 +7,7 @@ public class Usuario {
     private String email;
     private String password;
     private Date birthdate;
-    private Estadistica estadistica;
+    private Estadisticas estadisticas;
 
     public String getUsername() {
         return username;
@@ -41,11 +41,11 @@ public class Usuario {
         this.birthdate = birthdate;
     }
 
-    public Estadistica getEstadistica() {
-        return estadistica;
+    public Estadisticas getEstadistica() {
+        return estadisticas;
     }
 
-    public void setEstadistica(Estadistica estadistica) {
-        this.estadistica = estadistica;
+    public void setEstadistica(Estadisticas estadistica) {
+        this.estadisticas = estadistica;
     }
 }

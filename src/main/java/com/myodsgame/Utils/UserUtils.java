@@ -1,5 +1,9 @@
 package com.myodsgame.Utils;
 
+import com.myodsgame.Models.Usuario;
+import com.myodsgame.Repository.RepositorioUsuario;
+import com.myodsgame.Repository.RepositorioUsuarioImpl;
+
 public class UserUtils {
 
     public static String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
@@ -18,7 +22,16 @@ public class UserUtils {
         return username.matches(USERNAME_REGEX);
     }
 
-    public static boolean checkUserExists(String username, String password){
+    public static boolean checkAndSetUser(String username, String password){
+        RepositorioUsuario repositorioUsuario = new RepositorioUsuarioImpl();
+        Usuario user = repositorioUsuario.getUsuarioPorUsernameYContraseña(username, password);
+
+        if(user != null) {
+            EstadoJuego.getInstance().setUsuario(user);
+            return true;
+        }
+
         return false;
+
     }
 }
