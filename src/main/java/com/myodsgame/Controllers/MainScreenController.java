@@ -69,9 +69,7 @@ public class MainScreenController implements Initializable {
             stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
             stage.showAndWait();
         }catch (IOException e){
-
             System.out.println("Error loading the view for route: " + viewRoute);
-
         }
 
 

@@ -12,24 +12,23 @@ import java.nio.file.Path;
 public class PartidaPreguntasBuilder extends PartidaBuilder{
     @Override
     public void BuildRetos() {
-        retos = new RetoPreguntaFactory().crearRetos();
+        partida.setRetos(new RetoPreguntaFactory().crearRetos());
     }
 
     @Override
     public void BuildMusica() {
-        musica = new Media(new File("src/main/resources/sounds/cancion_1.mp3").toURI().toString());
+        partida.setMusica(new Media(new File("src/main/resources/sounds/cancion_1.mp3").toURI().toString()));
     }
 
     @Override
     public void BuildImagenes() {
         super.BuildImagenes();
-        imagenFondo = new Image(Path.of("", "src", "main", "resources", "images", "fondo_preguntas.png")
-                .toAbsolutePath().toString());
+        partida.setImagenFondo(new Image(Path.of("", "src", "main", "resources", "images", "fondo_preguntas.png")
+                .toAbsolutePath().toString()));
     }
 
     @Override
     public Partida getPartida() {
-        return new Partida(puntuacion, vidas, retoActual, consolidado, ayudasRestantes, retos, musica, sonidoAyuda,
-                sonidoAcierto, sondioFallo, sonidoVictoria, sonidoDerrota, diezsecs, imagenVidas, imagenFondo);
+        return partida;
     }
 }

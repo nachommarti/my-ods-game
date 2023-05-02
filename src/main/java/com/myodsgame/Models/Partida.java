@@ -9,11 +9,19 @@ public class Partida {
     private int vidas;
     private int retoActual;
     private boolean consolidado;
-    private int ayudasRestantes = 3;
+    private int ayudasRestantes;
     private Reto[] retos;
     private Media musica, sonidoAyuda, sonidoAcierto, sondioFallo, sonidoVictoria, sonidoDerrota, diezsecs;
-    private Image imagenVidas, imagenOds, imagenFondo;
-    
+    private Image imagenVidas, imagenFondo;
+
+    public Partida() {
+        puntuacion = 0;
+        vidas = 2;
+        retoActual = 1;
+        consolidado = false;
+        ayudasRestantes = 3;
+    }
+
     public Partida(int puntuacion, int vidas, int retoActual, boolean consolidado, int ayudasRestantes, Reto[] retos, Media musica, Media sonidoAyuda, Media sonidoAcierto, Media sondioFallo, Media sonidoVictoria, Media sonidoDerrota, Media diezsecs, Image imagenVidas, Image imagenFondo) {
         this.puntuacion = puntuacion;
         this.vidas = vidas;
