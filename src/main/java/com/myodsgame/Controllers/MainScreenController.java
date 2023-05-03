@@ -78,7 +78,8 @@ public class MainScreenController implements Initializable {
             });
             stage.showAndWait();
 
-        }catch (IOException e){
+        }
+        catch (IOException e){
             System.out.println("Error loading the view for route: " + viewRoute);
         }
 
