@@ -1,5 +1,6 @@
 package com.myodsgame.Controllers;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -22,6 +24,8 @@ import java.util.ResourceBundle;
 
 
 public class PantallaPartidasController implements Initializable {
+    @FXML
+    private BorderPane borderPane;
     @FXML
     private Button retoPregunta;
     @FXML
@@ -44,7 +48,38 @@ public class PantallaPartidasController implements Initializable {
         desplegablePerfil.getItems().add("Cerrar sesión");
 
         //TODO: poner que los retos se desbloqueen con puntos
-        //TODO: poner la funcionalidad de dar click al desplegable
+        desplegablePerfil.valueProperty().addListener((ov, p1, p2) ->
+                {
+                    if (desplegablePerfil.getValue() == "Perfil")
+                    {
+                        //hacer que lleve al perfil
+                    }
+                    else if (desplegablePerfil.getValue() == "Estadísticas")
+                    {
+                        FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/estadisticas.fxml"));
+                        BorderPane root = null;
+                        try {
+                            root = myLoader.load();
+                        }
+                        catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        Scene scene = new Scene (root);
+                        Stage stage = new Stage();
+                        stage.setScene(scene);
+                        stage.setTitle("Estadísticas");
+                        stage.initModality(Modality.WINDOW_MODAL);
+                        stage.setResizable(false);
+                        stage.show();
+                    }
+                    else if (desplegablePerfil.getValue() == "Cerrar sesión")
+                    {
+                        Stage stage = (Stage) desplegablePerfil.getScene().getWindow();
+                        stage.close();
+                    }
+                }
+                );
     }
     @FXML
     void retoPreguntaPulsado (ActionEvent event) throws IOException {
@@ -66,7 +101,15 @@ public class PantallaPartidasController implements Initializable {
     @FXML
     void retoMixtoPulsado (ActionEvent event)
     {
-
+        double aux = Math.random();
+        if (aux < 0.5)
+        {
+            retoPregunta.fire();
+        }
+        else
+        {
+            retoAhorcado.fire();
+        }
     }
     @FXML
     void retoAhorcadoPulsado (ActionEvent event) throws IOException {
