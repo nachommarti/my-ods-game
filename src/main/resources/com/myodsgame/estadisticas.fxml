@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.EstadisticaController">
+   <top>
+      <Button fx:id="botonAtras" mnemonicParsing="false" onAction="#botonAtrasPulsado" text="Atrás" BorderPane.alignment="CENTER_LEFT">
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </BorderPane.margin>
+      </Button>
+   </top>
+   <center>
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="545.0" prefWidth="411.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label fx:id="tusPuntos" alignment="CENTER" text="Tus Puntos" textAlignment="CENTER" />
+                        <Label fx:id="labelPuntos" text="Label" textAlignment="CENTER" />
+                     </children>
+                     <padding>
+                        <Insets bottom="50.0" left="160.0" right="50.0" top="50.0" />
+                     </padding>
+                  </VBox>
+                  <BarChart fx:id="graficaOds" prefHeight="300.0" prefWidth="150.0">
+                    <xAxis>
+                      <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis autoRanging="false" prefHeight="232.0" prefWidth="16.0" side="LEFT" />
+                    </yAxis>
+                  </BarChart>
+               </children>
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin></VBox>
+            <VBox prefHeight="554.0" prefWidth="378.0">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+               <children>
+                  <TableView fx:id="ranking" prefHeight="538.0" prefWidth="374.0">
+                    <columns>
+                      <TableColumn fx:id="colPosicion" prefWidth="59.999940514564514" text="Posición" />
+                      <TableColumn fx:id="colPuntos" prefWidth="133.59996795654297" text="Puntos" />
+                        <TableColumn fx:id="colUsuarios" prefWidth="109.5999755859375" text="Usuario" />
+                        <TableColumn fx:id="colAciertos" prefWidth="71.20013427734375" text="\% aciertos" />
+                    </columns>
+                  </TableView>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </center>
+</BorderPane>
