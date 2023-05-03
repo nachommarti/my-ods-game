@@ -152,9 +152,16 @@ public class RetoPreguntaController implements Initializable {
         consolidarButton.setDisable(true);
         nextQuestionButton.setDisable(true);
         this.timeCountdown = 30;
-        ((Label) labelArray.getChildren().get(numeroPregunta-1)).setStyle("-fx-background-color: rgb(202,184,218)");
+        ((Label) labelArray.getChildren().get(numeroPregunta - 1)).setStyle("-fx-background-color: rgb(202,184,218)");
         timeline.playFromStart();
 
+        if (EstadoJuego.getInstance().getPartida().getVidas() == 1) {
+            vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
+        }
+        else if (EstadoJuego.getInstance().getPartida().getVidas() == 0)
+        {
+            vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
+        }
         //String odsString = "ODS_" + retoPreguntaActual.getOds() + ".jpg";
         //imagenODS.setImage(new Image(Path.of("", "src", "main", "resources", "images", odsString).toAbsolutePath().toString()));
     }
@@ -244,7 +251,8 @@ public class RetoPreguntaController implements Initializable {
             reproducirSonido("src/main/resources/sounds/Acierto.mp3", 0.15);
             EstadoJuego.getInstance().getPartida().getRetosFallados()[numeroPregunta-1] = false;
 
-        } else {
+        }
+        else {
             ((Label) labelArray.getChildren().get(numeroPregunta-1)).setStyle("-fx-background-color: rgb(255,25,25); " + currentStyleLabel);
             ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.WHITE);
             EstadoJuego.getInstance().getPartida().setVidas(partidaActual.getVidas()-1);
