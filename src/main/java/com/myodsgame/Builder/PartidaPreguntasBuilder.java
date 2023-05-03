@@ -1,9 +1,7 @@
 package com.myodsgame.Builder;
 
-import com.myodsgame.Factory.RetoPreguntaFactory;
 import com.myodsgame.Models.Partida;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 
 import java.io.File;
@@ -12,7 +10,8 @@ import java.nio.file.Path;
 public class PartidaPreguntasBuilder extends PartidaBuilder{
     @Override
     public void BuildRetos() {
-        partida.setRetos(new RetoPreguntaFactory().crearRetos());
+        //TODO - CUADRAR CON VICTOR E IMPLEMENTAR EN REPO LO NECESARIO (addAll)
+        partida.setRetos(null);
     }
 
     @Override

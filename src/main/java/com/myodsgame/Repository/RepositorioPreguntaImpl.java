@@ -2,17 +2,16 @@ package com.myodsgame.Repository;
 
 import com.myodsgame.Factory.RetoFactory;
 import com.myodsgame.Models.Pregunta;
+import com.myodsgame.Models.Reto;
 import com.myodsgame.Models.RetoPregunta;
 import com.myodsgame.Utils.DBConnection;
+import com.myodsgame.Utils.TipoReto;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class RepositorioPreguntaImpl implements RepositorioPregunta{
     private Connection connection;
@@ -21,36 +20,37 @@ public class RepositorioPreguntaImpl implements RepositorioPregunta{
         connection = DBConnection.getConnection();
     }
 
-    public List<Pregunta> getPreguntas() {
+    public List<Reto> getPreguntas() {
         String query = "SELECT * FROM preguntas";
         return getPreguntasHelper(query);
     }
 
-    public List<Pregunta> getPreguntasPorNivelDificultad(int nivelDificultad) {
-        String query = "SELECT * FROM preguntas WHERE nivel_dificultad <= " + nivelDificultad;
+    public List<Reto> getPreguntasPorNivelDificultad(int nivelDificultad) {
+        String query = "SELECT * FROM preguntas WHERE nivel_dificultad == " + nivelDificultad;
         return getPreguntasHelper(query);
     }
 
     @Override
-    public List<Pregunta> getPreguntasOrdenadasPorNivelDificultad() {
+    public List<Reto> getPreguntasOrdenadasPorNivelDificultad() {
         return null;
     }
 
-    private List<Pregunta> getPreguntasHelper(String query){
-        List<Pregunta> preguntas = new ArrayList<>();
+    private List<Reto> getPreguntasHelper(String query){
+        List<Reto> preguntas = new ArrayList<>();
+        HashMap<String, Object> map = new HashMap<>();
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                preguntas.add( new Pregunta(
-                        rs.getString("enunciado"),
-                        rs.getString("respuesta1"),
-                        rs.getString("respuesta2"),
-                        rs.getString("respuesta3"),
-                        rs.getString("respuesta4"),
-                        rs.getString("respuesta_correcta"),
-                        rs.getInt("nivel_dificultad")
-                ));
+                map.put("enunciado", rs.getString("enunciado"));
+                map.put("respuesta1", rs.getString("respuesta1"));
+                map.put("respuesta2", rs.getString("respuesta2"));
+                map.put("respuesta3", rs.getString("respuesta3"));
+                map.put("respuesta4", rs.getString("respuesta4"));
+                map.put("respuesta_correcta", rs.getString("respuesta_correcta"));
+                preguntas.add(RetoFactory.crearReto(false, 30,
+                        rs.getInt("nivel_dificultad"), rs.getInt("nivel_dificultad")*100,
+                        TipoReto.PREGUNTA, map));
             }
             return preguntas;
         } catch (SQLException e) {

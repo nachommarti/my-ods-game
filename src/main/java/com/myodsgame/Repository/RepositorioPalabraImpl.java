@@ -2,14 +2,18 @@ package com.myodsgame.Repository;
 
 import com.myodsgame.Factory.RetoFactory;
 import com.myodsgame.Models.Palabra;
+import com.myodsgame.Models.Reto;
 import com.myodsgame.Models.RetoAhorcado;
 import com.myodsgame.Utils.DBConnection;
+import com.myodsgame.Utils.TipoReto;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class RepositorioPalabraImpl implements RepositorioPalabra{
@@ -21,21 +25,23 @@ public class RepositorioPalabraImpl implements RepositorioPalabra{
     }
 
     @Override
-    public List<Palabra> getPalabras() {
+    public List<Reto> getPalabras() {
         String query = "SELECT * FROM palabras";
         return getPalabrasHelper(query);
     }
 
-    private List<Palabra> getPalabrasHelper(String query){
-        List<Palabra> palabras = new ArrayList<>();
+    private List<Reto> getPalabrasHelper(String query){
+        List<Reto> palabras = new ArrayList<>();
+        HashMap<String, Object> map = new HashMap<>();
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                palabras.add(new Palabra(
-                        rs.getString("palabra"),
-                        rs.getInt("nivelDificultad")
-                ));
+                map.put("palabra", rs.getString("palabra"));
+                map.put("intentos", 0);
+                palabras.add(RetoFactory.crearReto(false, 30,
+                        rs.getInt("nivel_dificultad"), rs.getInt("nivel_dificultad")*100,
+                        TipoReto.AHORACADO, map));
             }
             return palabras;
         } catch (SQLException e) {
