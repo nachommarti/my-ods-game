@@ -2,10 +2,6 @@ package com.myodsgame.Controllers;
 
 import com.myodsgame.Models.Partida;
 import com.myodsgame.Models.RetoAhorcado;
-import com.myodsgame.Models.RetoPregunta;
-import com.myodsgame.Repository.RepositorioPalabra;
-import com.myodsgame.Repository.RepositorioPalabraImpl;
-import com.myodsgame.Utils.EstadoJuego;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -13,7 +9,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -21,7 +16,6 @@ import javafx.scene.paint.Color;
 
 import java.net.URL;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class RetoAhorcadoController implements Initializable {

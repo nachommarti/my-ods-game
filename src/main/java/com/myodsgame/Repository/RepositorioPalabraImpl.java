@@ -1,9 +1,8 @@
 package com.myodsgame.Repository;
 
 import com.myodsgame.Factory.RetoFactory;
-import com.myodsgame.Models.Palabra;
 import com.myodsgame.Models.Reto;
-import com.myodsgame.Models.RetoAhorcado;
+import com.myodsgame.Services.Services;
 import com.myodsgame.Utils.DBConnection;
 import com.myodsgame.Utils.TipoReto;
 
@@ -13,40 +12,30 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
-public class RepositorioPalabraImpl implements RepositorioPalabra{
+public class RepositorioPalabraImpl implements RepositorioRetos {
 
-    private Connection connection;
+    private final Connection connection;
+    private final Services services;
 
     public RepositorioPalabraImpl() {
         connection = DBConnection.getConnection();
+        services = new Services();
     }
 
-    @Override
-    public List<Reto> getPalabras() {
-        String query = "SELECT * FROM palabras";
-        return getPalabrasHelper(query);
-    }
-
-    private List<Reto> getPalabrasHelper(String query){
-        List<Reto> palabras = new ArrayList<>();
-        HashMap<String, Object> map = new HashMap<>();
-        try {
-            PreparedStatement pstmt = connection.prepareStatement(query);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                map.put("palabra", rs.getString("palabra"));
-                map.put("intentos", 0);
-                palabras.add(RetoFactory.crearReto(false, 30,
-                        rs.getInt("nivel_dificultad"), rs.getInt("nivel_dificultad")*100,
-                        TipoReto.AHORACADO, map));
-            }
-            return palabras;
-        } catch (SQLException e) {
-            System.err.println("Error al obtener palabras: " + e.getMessage());
-            return null;
-        }
+    public List<Reto> getRetosPorNivelDificultadInicial(int nivelDificultad) {
+        String query =
+                "SELECT * FROM " +
+                        "(SELECT * FROM palabras WHERE nivel_dificultad = " + nivelDificultad +
+                        " ORDER BY RAND() LIMIT 5) AS dificultad_incial " +
+                        "UNION ALL" +
+                        "(SELECT * FROM palabras WHERE nivel_dificultad = " + ++nivelDificultad +
+                        " ORDER BY RAND() LIMIT 4) " +
+                        "UNION ALL" +
+                        "(SELECT * FROM palabras WHERE nivel_dificultad = " + ++nivelDificultad +
+                        " ORDER BY RAND() LIMIT 4) "
+                ;
+        return services.getPalabrasHelper(connection, query);
     }
 }
