@@ -11,10 +11,9 @@
                <children>
                   <VBox alignment="CENTER_LEFT" prefHeight="123.0" prefWidth="178.0" spacing="20.0">
                      <children>
-                        <Button fx:id="botonAtras" mnemonicParsing="false" onAction="#botonAtrasPulsado" style="-fx-background-color: null;" />
                         <Label fx:id="puntosAlmacenados" text="Puntos almacenados" textFill="WHITE" />
                      </children></VBox>
-                  <ComboBox fx:id="desplegablePerfil" prefHeight="93.0" prefWidth="110.0" />
+                  <ComboBox fx:id="desplegablePerfil" accessibleRole="BUTTON" prefHeight="93.0" prefWidth="110.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="125.0" prefWidth="600.0" spacing="30.0">
