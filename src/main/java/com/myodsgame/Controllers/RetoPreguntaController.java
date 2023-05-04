@@ -96,6 +96,9 @@ public class RetoPreguntaController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
+        this.partidaActual = EstadoJuego.getInstance().getPartida();
+        this.retoActual = (RetoPregunta) partidaActual.getRetos().get(partidaActual.getRetoActual()-1);
+        this.numeroPregunta = partidaActual.getRetoActual();
         // KeyFrame event handler
         timeline.getKeyFrames().add(
                 new KeyFrame(Duration.seconds(1),
@@ -103,7 +106,7 @@ public class RetoPreguntaController implements Initializable {
                             timeCountdown--;
                             // update timerLabel
                             timer.setText(Integer.toString(timeCountdown));
-                            if (timeCountdown == 10){
+                            if (timeCountdown == retoActual.getTiempoTicTac()){
                                 mediaPlayerTicTac.play();
                                 mediaPlayerMusic.setVolume(0.05);
                             }
@@ -119,9 +122,6 @@ public class RetoPreguntaController implements Initializable {
         reproducirMusica();
         this.initialStyle = "-fx-background-color:  rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10";
         ayuda.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "ayuda.png").toAbsolutePath().toString())));
-        this.partidaActual = EstadoJuego.getInstance().getPartida();
-        this.retoActual = (RetoPregunta) partidaActual.getRetos().get(partidaActual.getRetoActual()-1);
-        this.numeroPregunta = partidaActual.getRetoActual();
 
         loadRetosState();
         loadQuestion(retoActual);
