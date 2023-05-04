@@ -10,9 +10,9 @@ public class RetoAhorcado extends Reto{
     private Set<Character> letrasUsadas;
     private int intentos;
 
-    public RetoAhorcado(boolean ayudaUsada, int duracion, int dificultad, int puntuacion, TipoReto tipoReto,
-                        String palabra, Set<Character> letrasUsadas, int intentos) {
-        super(ayudaUsada, duracion, dificultad, puntuacion, tipoReto);
+    public RetoAhorcado(boolean ayudaUsada, int duracion, int tiempoTicTac, int dificultad, int puntuacion,
+                        TipoReto tipoReto, String palabra, Set<Character> letrasUsadas, int intentos) {
+        super(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipoReto);
         this.palabra = palabra;
         this.letrasUsadas = letrasUsadas;
         this.intentos = intentos;

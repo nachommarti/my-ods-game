@@ -5,13 +5,15 @@ import com.myodsgame.Utils.TipoReto;
 public abstract class Reto {
     private boolean ayudaUsada;
     private int duracion;
+    private int tiempoTicTac;
     private int dificultad;
     private int puntuacion;
     private TipoReto tipoReto;
 
-    public Reto(boolean ayudaUsada, int duracion, int dificultad, int puntuacion, TipoReto tipoReto) {
+    public Reto(boolean ayudaUsada, int duracion, int tiempoTicTac, int dificultad, int puntuacion, TipoReto tipoReto) {
         this.ayudaUsada = ayudaUsada;
         this.duracion = duracion;
+        this.tiempoTicTac = tiempoTicTac;
         this.dificultad = dificultad;
         this.puntuacion = puntuacion;
         this.tipoReto = tipoReto;
@@ -34,6 +36,14 @@ public abstract class Reto {
         this.duracion = duracion;
     }
 
+    public int getTiempoTicTac() {
+        return tiempoTicTac;
+    }
+
+    public void setTiempoTicTac(int tiempoTicTac) {
+        this.tiempoTicTac = tiempoTicTac;
+    }
+
     public int getDificultad() {
         return dificultad;
     }
@@ -50,11 +60,11 @@ public abstract class Reto {
         this.puntuacion = puntuacion;
     }
 
-    public TipoReto getTipo() {
+    public TipoReto getTipoReto() {
         return tipoReto;
     }
 
-    public void setTipo(TipoReto tipoReto) {
+    public void setTipoReto(TipoReto tipoReto) {
         this.tipoReto = tipoReto;
     }
 }

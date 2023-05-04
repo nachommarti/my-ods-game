@@ -27,7 +27,7 @@ public class Services implements IServices {
                 map.put("respuesta3", rs.getString("respuesta3"));
                 map.put("respuesta4", rs.getString("respuesta4"));
                 map.put("respuesta_correcta", rs.getString("respuesta_correcta"));
-                preguntas.add(RetoFactory.crearReto(false, 30,
+                preguntas.add(RetoFactory.crearReto(false, 30, 10,
                         rs.getInt("nivel_dificultad"), rs.getInt("nivel_dificultad")*100,
                         TipoReto.PREGUNTA, map));
             }
@@ -47,7 +47,7 @@ public class Services implements IServices {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 map.put("palabra", rs.getString("palabra"));
-                palabras.add(RetoFactory.crearReto(false, 30,
+                palabras.add(RetoFactory.crearReto(false, 120, 20,
                         rs.getInt("nivel_dificultad"), rs.getInt("nivel_dificultad")*100,
                         TipoReto.AHORACADO, map));
             }

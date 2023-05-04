@@ -11,15 +11,16 @@ import java.util.Set;
 
 public class RetoFactory {
     // De momento se pone el map de objetos, pero si al implementar todos los retos, todos son strings, se pasa a string
-    public static Reto crearReto(boolean ayudaUsada, int duracion, int dificultad, int puntuacion, TipoReto tipo,
-                                 HashMap<String, Object> params) {
+    public static Reto crearReto(boolean ayudaUsada, int duracion, int tiempoTicTac, int dificultad, int puntuacion,
+                                 TipoReto tipo, HashMap<String, Object> params) {
         if (tipo.equals(TipoReto.PREGUNTA))
-            return new RetoPregunta(ayudaUsada, duracion, dificultad, puntuacion, tipo, (String) params.get("enunciado"),
-                    (String) params.get("respuesta1"), (String) params.get("respuesta2"), (String) params.get("respuesta3"),
+            return new RetoPregunta(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo,
+                    (String) params.get("enunciado"), (String) params.get("respuesta1"),
+                    (String) params.get("respuesta2"), (String) params.get("respuesta3"),
                     (String) params.get("respuesta4"), (String) params.get("respuesta_correcta"));
         else if (tipo.equals(TipoReto.AHORACADO))
-            return new RetoAhorcado(ayudaUsada, duracion, dificultad, puntuacion, tipo, (String) params.get("palabra"),
-                    new HashSet<Character>(), 0);
+            return new RetoAhorcado(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo,
+                    (String) params.get("palabra"), new HashSet<Character>(), 0);
         else
             throw new IllegalArgumentException("Tipo de reto desconocido.");
 
