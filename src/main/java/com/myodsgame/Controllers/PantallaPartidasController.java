@@ -1,21 +1,28 @@
 package com.myodsgame.Controllers;
 
+import com.myodsgame.Builder.PartidaAhorcadoBuilder;
+import com.myodsgame.Builder.PartidaDirector;
+import com.myodsgame.Builder.PartidaPreguntasBuilder;
+import com.myodsgame.Models.Partida;
+import com.myodsgame.Models.Usuario;
+import com.myodsgame.Utils.EstadoJuego;
+import com.myodsgame.Utils.TipoReto;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,6 +43,8 @@ public class PantallaPartidasController implements Initializable {
     private ComboBox<String> desplegablePerfil;
     @FXML
     private Label puntosAlmacenados;
+    int puntosJugador = EstadoJuego.getInstance().getUsuario().getEstadistica().getPuntosTotales();
+    final int puntosNecesarios = 1000;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -46,8 +55,14 @@ public class PantallaPartidasController implements Initializable {
         desplegablePerfil.getItems().add("Perfil");
         desplegablePerfil.getItems().add("Estadísticas");
         desplegablePerfil.getItems().add("Cerrar sesión");
+        puntosAlmacenados.setText("Puntos totales: " + puntosJugador);
 
-        //TODO: poner que los retos se desbloqueen con puntos
+        if (puntosJugador < puntosNecesarios)
+        {
+            retoAhorcado.setDisable(true);
+            retoMixto.setDisable(true);
+        }
+
         desplegablePerfil.valueProperty().addListener((ov, p1, p2) ->
                 {
                     if (desplegablePerfil.getValue() == "Perfil")
@@ -83,49 +98,68 @@ public class PantallaPartidasController implements Initializable {
     }
     @FXML
     void retoPreguntaPulsado (ActionEvent event) throws IOException {
-        FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/retoPregunta-viex.fxml"));
-        BorderPane root = myLoader.load();
-
-        Scene scene = new Scene (root);
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.setTitle("Reto Pregunta");
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.setResizable(false);
-        stage.show();
-
+        PartidaDirector partidaDirector = new PartidaDirector(new PartidaPreguntasBuilder());
+        Partida partida = partidaDirector.BuildPartida();
+        EstadoJuego.getInstance().setPartida(partida);
+        for(int i = 0; i < partida.getRetos().size(); i++){
+            loadReto("retoPregunta", "Reto Pregunta", false);
+        }
         Node source = (Node) event.getSource();
         Stage oldStage = (Stage) source.getScene().getWindow();
         oldStage.close();
     }
+
+
+
     @FXML
     void retoMixtoPulsado (ActionEvent event)
     {
-        double aux = Math.random();
-        if (aux < 0.5)
-        {
-            retoPregunta.fire();
-        }
-        else
-        {
-            retoAhorcado.fire();
-        }
-    }
-    @FXML
-    void retoAhorcadoPulsado (ActionEvent event) throws IOException {
-        FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/retoAhorcado-view.fxml"));
-        BorderPane root = myLoader.load();
-
-        Scene scene = new Scene (root);
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.setTitle("Reto Ahorcado");
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.setResizable(false);
-        stage.show();
 
         Node source = (Node) event.getSource();
         Stage oldStage = (Stage) source.getScene().getWindow();
         oldStage.close();
+    }
+    @FXML
+    void retoAhorcadoPulsado (ActionEvent event) throws IOException {
+        PartidaDirector partidaDirector = new PartidaDirector(new PartidaAhorcadoBuilder());
+        Partida partida = partidaDirector.BuildPartida();
+        EstadoJuego.getInstance().setPartida(partida);
+        for(int i = 0; i < partida.getRetos().size(); i++){
+            loadReto("retoAhorcado", "Reto Ahorcado", false);
+        }
+
+        Node source = (Node) event.getSource();
+        Stage oldStage = (Stage) source.getScene().getWindow();
+        oldStage.close();
+    }
+
+    private void loadReto(String reto, String titulo, boolean mixto) throws IOException {
+        if (mixto)
+        {
+            double aux = Math.random();
+            if (aux < 0.5)
+            {
+                reto = "retoPregunta";
+                titulo = "Reto Pregunta";
+            }
+            else
+            {
+                reto = "retoAhorcado";
+                titulo = "Reto Ahorcado";
+            }
+        }
+        FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/" + reto + "-view.fxml"));
+        BorderPane root = myLoader.load();
+        Scene scene = new Scene (root, 600, 600);
+        Stage  stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle(titulo);
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.setResizable(false);
+        stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
+        stage.setOnCloseRequest(e -> {
+            System.exit(0);
+        });
+        stage.showAndWait();
     }
 }
