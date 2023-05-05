@@ -14,7 +14,7 @@ import java.util.*;
 
 public class RepositorioPreguntaImpl implements RepositorioRetos{
     private final Connection connection;
-    private Services services;
+    private Services services = new Services();
 
     public RepositorioPreguntaImpl() {
         connection = DBConnection.getConnection();
