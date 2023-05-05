@@ -7,14 +7,14 @@ import java.util.Set;
 
 public class RetoAhorcado extends Reto{
     private String palabra;
-    private Set<Character> letrasUsadas;
+    private String pista;
     private int intentos;
 
     public RetoAhorcado(boolean ayudaUsada, int duracion, int tiempoTicTac, int dificultad, int puntuacion,
-                        TipoReto tipoReto, String palabra, Set<Character> letrasUsadas, int intentos) {
+                        TipoReto tipoReto, String palabra, String pista, int intentos) {
         super(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipoReto);
         this.palabra = palabra;
-        this.letrasUsadas = letrasUsadas;
+        this.pista = pista;
         this.intentos = intentos;
     }
 
@@ -26,12 +26,12 @@ public class RetoAhorcado extends Reto{
         this.palabra = palabra;
     }
 
-    public Set<Character> getLetrasUsadas() {
-        return letrasUsadas;
+    public String getPista() {
+        return pista;
     }
 
-    public void setLetrasUsadas(Set<Character> letrasUsadas) {
-        this.letrasUsadas = letrasUsadas;
+    public void setPista(String pista) {
+        this.pista = pista;
     }
 
     public int getIntentos() {

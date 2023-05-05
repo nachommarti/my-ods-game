@@ -20,7 +20,7 @@ public class RetoFactory {
                     (String) params.get("respuesta4"), (String) params.get("respuesta_correcta"));
         else if (tipo.equals(TipoReto.AHORACADO))
             return new RetoAhorcado(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo,
-                    (String) params.get("palabra"), new HashSet<Character>(), 0);
+                    (String) params.get("palabra"), (String) params.get("pista"),0);
         else
             throw new IllegalArgumentException("Tipo de reto desconocido.");
 
