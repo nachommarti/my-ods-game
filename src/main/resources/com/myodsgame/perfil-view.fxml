@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="429.0" prefWidth="387.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <HBox prefHeight="416.0" prefWidth="387.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox alignment="CENTER_LEFT" prefHeight="471.0" prefWidth="207.0">
+               <children>
+                  <ImageView fx:id="fotoUsuario" fitHeight="202.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" prefHeight="471.0" prefWidth="196.0">
+               <children>
+                  <Label text="Usuario" />
+                  <TextField fx:id="usuarioField">
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Label text="Email" />
+                  <TextField fx:id="emailField">
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Label fx:id="puntosAcumulados" text="Puntos acumulados:" />
+               </children>
+               <HBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </HBox.margin>
+            </VBox>
+         </children>
+      </HBox>
+   </center>
+   <bottom>
+      <ProgressBar prefHeight="25.0" prefWidth="200.0" progress="0.0" BorderPane.alignment="CENTER" />
+   </bottom>
+</BorderPane>

@@ -74,7 +74,22 @@ public class PantallaPartidasController implements Initializable {
                 {
                     if (desplegablePerfil.getValue() == "Perfil")
                     {
-                        //hacer que lleve al perfil
+                        FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/perfil-view.fxml"));
+                        BorderPane root = null;
+                        try {
+                            root = myLoader.load();
+                        }
+                        catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        Scene scene = new Scene (root);
+                        Stage stage = new Stage();
+                        stage.setScene(scene);
+                        stage.setTitle("Estadísticas");
+                        stage.initModality(Modality.WINDOW_MODAL);
+                        stage.setResizable(false);
+                        stage.show();
                     }
                     else if (desplegablePerfil.getValue() == "Estadísticas")
                     {
