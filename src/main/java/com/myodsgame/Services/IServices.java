@@ -1,5 +1,6 @@
 package com.myodsgame.Services;
 
+import com.myodsgame.Models.Estadisticas;
 import com.myodsgame.Models.Reto;
 
 import java.sql.Connection;
@@ -16,5 +17,6 @@ public interface IServices {
             Collections.swap(retos, oldIndex, newIndex);
         }
     }
+    public List<Estadisticas> getEstadisticas(Connection connection, String query);
 
 }

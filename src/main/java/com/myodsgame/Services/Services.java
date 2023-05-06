@@ -1,6 +1,7 @@
 package com.myodsgame.Services;
 
 import com.myodsgame.Factory.RetoFactory;
+import com.myodsgame.Models.Estadisticas;
 import com.myodsgame.Models.Reto;
 import com.myodsgame.Utils.TipoReto;
 
@@ -54,6 +55,40 @@ public class Services implements IServices {
             return palabras;
         } catch (SQLException e) {
             System.err.println("Error al obtener palabras: " + e.getMessage());
+            return null;
+        }
+    }
+
+
+    @Override
+    public List<Estadisticas> getEstadisticas(Connection connection, String query){
+        List<Estadisticas> estadisticas = new ArrayList<>();
+
+        try{
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()){
+                Estadisticas est = new Estadisticas();
+
+                String pIndOds = rs.getString("progreso_individual_ods");
+                String[] progresoIndOds = pIndOds.split(",");
+                int[] progresoIndividualOds = new int[progresoIndOds.length];
+                for(int i = 0; i < progresoIndOds.length; i++){
+                    progresoIndividualOds[i] = Integer.parseInt(progresoIndOds[i].trim());
+                }
+
+                est.setProgresoIndividualOds(progresoIndividualOds);
+                est.setPuntosTotales(rs.getInt("puntos_totales"));
+                est.setNumeroAciertos(rs.getInt("numero_aciertos"));
+                est.setNumeroFallos(rs.getInt("numero_fallos"));
+                est.setProgresoTotalOds(rs.getInt("progreso_total_ods"));
+                est.setUsuario(rs.getString("username"));
+
+                estadisticas.add(est);
+            }
+            return estadisticas;
+        }catch(SQLException e){
+            System.err.println("Error al obtener estadísticas: " + e.getMessage());
             return null;
         }
     }

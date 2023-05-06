@@ -1,5 +1,8 @@
 package com.myodsgame.Controllers;
 
+import com.myodsgame.Models.Estadisticas;
+import com.myodsgame.Repository.RepositorioEstadisticas;
+import com.myodsgame.Repository.RepositorioEstadisticasImpl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,8 +13,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class EstadisticaController implements Initializable {
@@ -25,25 +30,24 @@ public class EstadisticaController implements Initializable {
     private Button botonAtras;
 
     @FXML
-    private TableView<?> ranking;
+    private TableView<Estadisticas> ranking;
 
     @FXML
-    private TableColumn<?, ?> colPosicion;
+    private TableColumn<Estadisticas, Integer> colPuntos;
 
     @FXML
-    private TableColumn<?, ?> colPuntos;
+    private TableColumn<Estadisticas, String> colUsuarios;
 
     @FXML
-    private TableColumn<?, ?> colUsuarios;
-
-    @FXML
-    private TableColumn<?, ?> colAciertos;
+    private TableColumn<Estadisticas, Integer> colAciertos;
 
     @FXML
     private BarChart<?, ?> graficaOds;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        List<Estadisticas> estadisticas = new RepositorioEstadisticasImpl().getEstadisticas();
+
 
     }
     @FXML
