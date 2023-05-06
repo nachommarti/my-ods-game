@@ -2,6 +2,7 @@ package com.myodsgame.Controllers;
 
 import com.myodsgame.Builder.PartidaAhorcadoBuilder;
 import com.myodsgame.Builder.PartidaDirector;
+import com.myodsgame.Builder.PartidaMixtaBuilder;
 import com.myodsgame.Builder.PartidaPreguntasBuilder;
 import com.myodsgame.Models.Partida;
 import com.myodsgame.Models.Usuario;
@@ -59,8 +60,14 @@ public class PantallaPartidasController implements Initializable {
 
         if (puntosJugador < puntosNecesarios)
         {
-            retoAhorcado.setDisable(true);
-            retoMixto.setDisable(true);
+            Tooltip mensajeBloqueado = new Tooltip("Debes conseguir "  + puntosNecesarios + " puntos para poder jugar esta partida");
+            mensajeBloqueado.setShowDelay(Duration.seconds(0));
+            retoAhorcado.setTooltip(mensajeBloqueado);
+            retoMixto.setTooltip(mensajeBloqueado);
+
+            retoAhorcado.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "ahorcado sin desbloquear.png").toAbsolutePath().toString())));
+            retoMixto.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "mixto sin desbloquear.png").toAbsolutePath().toString())));
+
         }
 
         desplegablePerfil.valueProperty().addListener((ov, p1, p2) ->
@@ -112,25 +119,37 @@ public class PantallaPartidasController implements Initializable {
 
 
     @FXML
-    void retoMixtoPulsado (ActionEvent event)
+    void retoMixtoPulsado (ActionEvent event) throws IOException
     {
+        if (puntosJugador >= puntosNecesarios)
+        {
+            PartidaDirector partidaDirector = new PartidaDirector(new PartidaMixtaBuilder());
+            Partida partida = partidaDirector.BuildPartida();
+            EstadoJuego.getInstance().setPartida(partida);
+            for(int i = 0; i < partida.getRetos().size(); i++){
+                loadReto("retoPregunta", "Reto Pregunta", true);
+            }
+            Node source = (Node) event.getSource();
+            Stage oldStage = (Stage) source.getScene().getWindow();
+            oldStage.close();
+        }
 
-        Node source = (Node) event.getSource();
-        Stage oldStage = (Stage) source.getScene().getWindow();
-        oldStage.close();
     }
     @FXML
     void retoAhorcadoPulsado (ActionEvent event) throws IOException {
-        PartidaDirector partidaDirector = new PartidaDirector(new PartidaAhorcadoBuilder());
-        Partida partida = partidaDirector.BuildPartida();
-        EstadoJuego.getInstance().setPartida(partida);
-        for(int i = 0; i < partida.getRetos().size(); i++){
-            loadReto("retoAhorcado", "Reto Ahorcado", false);
-        }
+        if (puntosJugador >= puntosNecesarios)
+        {
+            PartidaDirector partidaDirector = new PartidaDirector(new PartidaAhorcadoBuilder());
+            Partida partida = partidaDirector.BuildPartida();
+            EstadoJuego.getInstance().setPartida(partida);
+            for(int i = 0; i < partida.getRetos().size(); i++){
+                loadReto("retoAhorcado", "Reto Ahorcado", false);
+            }
 
-        Node source = (Node) event.getSource();
-        Stage oldStage = (Stage) source.getScene().getWindow();
-        oldStage.close();
+            Node source = (Node) event.getSource();
+            Stage oldStage = (Stage) source.getScene().getWindow();
+            oldStage.close();
+        }
     }
 
     private void loadReto(String reto, String titulo, boolean mixto) throws IOException {
