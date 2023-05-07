@@ -43,7 +43,7 @@ public class MainScreenController implements Initializable {
 
     @FXML
     void fastGameButtonClicked(ActionEvent event) throws IOException {
-        partidaRetoPreguntaClicked();
+
     }
 
     void partidaRetoPreguntaClicked(){

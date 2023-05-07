@@ -1,5 +1,7 @@
 package com.myodsgame.Utils;
 
+import com.myodsgame.Models.Estadisticas;
+import com.myodsgame.Models.Reto;
 import com.myodsgame.Models.Usuario;
 import com.myodsgame.Repository.RepositorioUsuario;
 import com.myodsgame.Repository.RepositorioUsuarioImpl;
@@ -39,4 +41,32 @@ public class UserUtils {
         return false;
 
     }
+
+
+    public static void saveUserScore(int score){
+        Usuario user = EstadoJuego.getInstance().getUsuario();
+        Estadisticas estadisticas = user.getEstadistica();
+        estadisticas.setPuntosTotales(estadisticas.getPuntosTotales() + score);
+        user.setEstadistica(estadisticas);
+        RepositorioUsuario repositorioUsuario = new RepositorioUsuarioImpl();
+        repositorioUsuario.updateUsuarioEstadisticas(user);
+    }
+
+    public static int computePoints(Reto retoActual, boolean ayudaUsada, boolean retoAcertado) {
+        int obtainedPoints;
+
+        if (retoAcertado) {
+            if (ayudaUsada)
+                obtainedPoints = retoActual.getPuntuacion() / 2;
+            else
+                obtainedPoints = retoActual.getPuntuacion();
+        } else {
+            obtainedPoints = -retoActual.getDificultad()*2*50;
+            if (EstadoJuego.getInstance().getPartida().getPuntuacion() + obtainedPoints < 0)
+                obtainedPoints = 0;
+
+        }
+        return obtainedPoints;
+    }
+
 }

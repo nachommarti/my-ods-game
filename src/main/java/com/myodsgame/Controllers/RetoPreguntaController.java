@@ -3,6 +3,7 @@ package com.myodsgame.Controllers;
 import com.myodsgame.Models.Partida;
 import com.myodsgame.Models.RetoPregunta;
 import com.myodsgame.Utils.EstadoJuego;
+import com.myodsgame.Utils.UserUtils;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -75,8 +76,6 @@ public class RetoPreguntaController implements Initializable {
     private boolean respuestaCorrectaSeleccionada;
     private int numeroPregunta;
     public int obtainedPoints = 0;
-    public int consolidatedPoints = 0;
-    public int decreasedPoints = 0;
     private boolean consolidated;
     private String currentStyleButton;
     private String currentStyleLabel;
@@ -125,6 +124,8 @@ public class RetoPreguntaController implements Initializable {
 
         loadRetosState();
         loadQuestion(retoActual);
+
+        currentScore.setText("Score:" + EstadoJuego.getInstance().getPartida().getPuntuacion());
 
 
         Rectangle clip = new Rectangle(imagenODS.getFitWidth(), imagenODS.getFitHeight());
@@ -229,12 +230,13 @@ public class RetoPreguntaController implements Initializable {
 
     @FXML
     void consolidarButtonClicked(ActionEvent event) {
+        int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
         consolidarButton.setDisable(true);
-        consolidatedPoints = obtainedPoints;
         consolidated = true;
         consolidatedScore.setVisible(true);
-        consolidatedScore.setText("Consolidated Score: " + consolidatedPoints);
+        consolidatedScore.setText("Consolidated Score: " + puntosPartida);
         botonSalir.setDisable(false);
+        UserUtils.saveUserScore(puntosPartida);
     }
 
     private void checkAnswers(Button respuestaSeleccionada) {
@@ -294,30 +296,13 @@ public class RetoPreguntaController implements Initializable {
 
         ayuda.setDisable(true);
         computePoints();
-        currentScore.setText("Score: " + obtainedPoints);
+        EstadoJuego.getInstance().getPartida().setPuntuacion(EstadoJuego.getInstance().getPartida().getPuntuacion() + obtainedPoints);
+        currentScore.setText("Score: " + EstadoJuego.getInstance().getPartida().getPuntuacion());
     }
 
     private void computePoints() {
-        if (respuestaCorrectaSeleccionada) {
-            obtainedPoints += addPoints();
-        } else {
-            decreasedPoints = retoActual.getDificultad()*2;
-            if (decreasedPoints > obtainedPoints) {
-                decreasedPoints = obtainedPoints;
-                obtainedPoints = 0;
-            } else {
-                obtainedPoints -= decreasedPoints;
-            }
-        }
+        obtainedPoints = UserUtils.computePoints(retoActual, ayudaPulsada, respuestaCorrectaSeleccionada);
     }
-
-    private int addPoints() {
-        if (ayudaPulsada)
-            return retoActual.getPuntuacion() / 2;
-        else
-            return retoActual.getPuntuacion();
-    }
-
 
     private void endTimer() {
         respuestas.forEach(respuesta -> respuesta.setDisable(true));
@@ -347,10 +332,10 @@ public class RetoPreguntaController implements Initializable {
     private void showMessage(boolean answered) {
         if (perdido) return;
         if (answered) {
-            estatusRespuesta.setText("¡CORRECTO! " + "¡Acabas de conseguir " + addPoints() + " puntos!");
+            estatusRespuesta.setText("¡CORRECTO! " + "¡Acabas de conseguir " + obtainedPoints + " puntos!");
             estatusRespuesta.setTextFill(Color.GREEN);
         } else {
-            estatusRespuesta.setText("¡INCORRECTO! " + "¡Acabas de perder " + decreasedPoints + " puntos!");
+            estatusRespuesta.setText("¡INCORRECTO! " + "¡Acabas de perder " + obtainedPoints + " puntos!");
             estatusRespuesta.setTextFill(Color.RED);
         }
     }

@@ -137,4 +137,40 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
         }
     }
 
+    public void updateUsuarioEstadisticas(Usuario user) {
+        try {
+            // Update statement for the estadisticas table
+            String estadisticasUpdate = "UPDATE estadisticas SET puntos_totales=?, partidas_jugadas=?, " +
+                    "numero_aciertos=?, numero_fallos=?, progreso_total_ods=?, progreso_individual_ods=? " +
+                    "WHERE username=?";
+
+            PreparedStatement estadisticasStatement = connection.prepareStatement(estadisticasUpdate);
+            estadisticasStatement.setInt(1, user.getEstadistica().getPuntosTotales());
+            estadisticasStatement.setInt(2, user.getEstadistica().getPartidasJugadas());
+            estadisticasStatement.setInt(3, user.getEstadistica().getNumeroAciertos());
+            estadisticasStatement.setInt(4, user.getEstadistica().getNumeroFallos());
+            estadisticasStatement.setInt(5, user.getEstadistica().getProgresoTotalOds());
+
+            // Convert progresoIndividualOds array to a comma-separated string
+            int[] progresoIndividualOds = user.getEstadistica().getProgresoIndividualOds();
+            StringBuilder progresoIndividualOdsBuilder = new StringBuilder();
+            for (int i = 1; i < progresoIndividualOds.length; i++) {
+                progresoIndividualOdsBuilder.append(progresoIndividualOds[i]);
+                if (i < progresoIndividualOds.length - 1) {
+                    progresoIndividualOdsBuilder.append(",");
+                }
+            }
+            estadisticasStatement.setString(6, progresoIndividualOdsBuilder.toString());
+
+            estadisticasStatement.setString(7, user.getUsername());
+            estadisticasStatement.executeUpdate();
+            estadisticasStatement.close();
+
+            // Close JDBC objects
+            connection.close();
+        } catch (SQLException e) {
+            System.err.println("Error al actualizar usuario: " + e.getMessage());
+        }
+    }
+
 }

@@ -8,4 +8,6 @@ public interface RepositorioUsuario {
     boolean checkIfUserExists(String username);
 
     void saveUsuario(Usuario user);
+
+    void updateUsuarioEstadisticas(Usuario user);
 }

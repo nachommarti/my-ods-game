@@ -124,8 +124,14 @@ public class PantallaPartidasController implements Initializable {
         Partida partida = partidaDirector.BuildPartida();
         EstadoJuego.getInstance().setPartida(partida);
         for(int i = 0; i < partida.getRetos().size(); i++){
+            if(EstadoJuego.getInstance().getPartida().isPartidaPerdida()) {
+                //TODO:show message saying how many points the user has won during this game
+                break;
+            }
             loadReto("retoPregunta", "Reto Pregunta", false);
         }
+        puntosJugador = EstadoJuego.getInstance().getUsuario().getEstadistica().getPuntosTotales();
+        puntosAlmacenados.setText("Puntos totales: " + puntosJugador);
         Node source = (Node) event.getSource();
         Stage oldStage = (Stage) source.getScene().getWindow();
         oldStage.close();
@@ -158,9 +164,14 @@ public class PantallaPartidasController implements Initializable {
             Partida partida = partidaDirector.BuildPartida();
             EstadoJuego.getInstance().setPartida(partida);
             for(int i = 0; i < partida.getRetos().size(); i++){
+                if(EstadoJuego.getInstance().getPartida().isPartidaPerdida()) {
+                    //TODO:show message saying how many points the user has won during this game
+                    break;
+                }
                 loadReto("retoAhorcado", "Reto Ahorcado", false);
             }
-
+            puntosJugador = EstadoJuego.getInstance().getUsuario().getEstadistica().getPuntosTotales();
+            puntosAlmacenados.setText("Puntos totales: " + puntosJugador);
             Node source = (Node) event.getSource();
             Stage oldStage = (Stage) source.getScene().getWindow();
             oldStage.close();
