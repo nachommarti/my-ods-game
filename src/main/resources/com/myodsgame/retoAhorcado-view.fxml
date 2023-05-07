@@ -117,43 +117,43 @@
             </HBox>
             <HBox fx:id="botones1" alignment="CENTER" prefHeight="31.0" prefWidth="600.0" spacing="3.0">
                <children>
-                  <Button fx:id="botonQ" mnemonicParsing="false" onAction="#botonQPulsado" prefHeight="31.0" prefWidth="32.0" text="Q">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="Q">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonW" mnemonicParsing="false" onAction="#botonWPulsado" prefHeight="31.0" prefWidth="35.0" text="W">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="35.0" text="W">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonE" mnemonicParsing="false" onAction="#botonEPulsado" prefHeight="31.0" prefWidth="32.0" text="E">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="E">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonR" mnemonicParsing="false" onAction="#botonRPulsado" prefHeight="31.0" prefWidth="32.0" text="R">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="R">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonT" mnemonicParsing="false" onAction="#botonTPulsado" prefHeight="31.0" prefWidth="32.0" text="T">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="T">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonY" maxWidth="32.0" mnemonicParsing="false" onAction="#botonYPulsado" prefHeight="31.0" prefWidth="32.0" text="Y">
+                  <Button maxWidth="32.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="Y">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonU" mnemonicParsing="false" onAction="#botonUPulsado" prefHeight="31.0" prefWidth="32.0" text="U">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="U">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonI" mnemonicParsing="false" onAction="#botonIPulsado" prefHeight="31.0" prefWidth="32.0" text="I">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="I">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonO" mnemonicParsing="false" onAction="#botonOPulsado" prefHeight="31.0" prefWidth="32.0" text="O">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="O">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonP" mnemonicParsing="false" onAction="#botonPPulsado" prefHeight="31.0" prefWidth="32.0" text="P">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="P">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
@@ -164,43 +164,43 @@
             </HBox>
             <HBox fx:id="botones2" alignment="CENTER" prefHeight="34.0" prefWidth="600.0" spacing="3.0">
                <children>
-                  <Button fx:id="botonA" mnemonicParsing="false" onAction="#botonAPulsado" prefHeight="31.0" prefWidth="32.0" text="A">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="A">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonS" mnemonicParsing="false" onAction="#botonSPulsado" prefHeight="31.0" prefWidth="32.0" text="S">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="S">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonD" mnemonicParsing="false" onAction="#botonDPulsado" prefHeight="31.0" prefWidth="32.0" text="D">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="D">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonF" mnemonicParsing="false" onAction="#botonFPulsado" prefHeight="31.0" prefWidth="32.0" text="F">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="F">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonG" mnemonicParsing="false" onAction="#botonGPulsado" prefHeight="31.0" prefWidth="32.0" text="G">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="G">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonH" mnemonicParsing="false" onAction="#botonHPulsado" prefHeight="31.0" prefWidth="32.0" text="H">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="H">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonJ" mnemonicParsing="false" onAction="#botonJPulsado" prefHeight="31.0" prefWidth="32.0" text="J">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="J">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonK" mnemonicParsing="false" onAction="#botonKPulsado" prefHeight="31.0" prefWidth="32.0" text="K">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="K">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonL" mnemonicParsing="false" onAction="#botonLPulsado" prefHeight="31.0" prefWidth="32.0" text="L">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="L">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonÑ" mnemonicParsing="false" onAction="#botonÑPulsado" prefHeight="31.0" prefWidth="32.0" text="Ñ">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="Ñ">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
@@ -211,31 +211,31 @@
             </HBox>
             <HBox fx:id="botones3" alignment="CENTER" prefHeight="32.0" prefWidth="600.0" spacing="3.0">
                <children>
-                  <Button fx:id="botonZ" mnemonicParsing="false" onAction="#botonZPulsado" prefHeight="31.0" prefWidth="32.0" text="Z">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="Z">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonX" mnemonicParsing="false" onAction="#botonXPulsado" prefHeight="31.0" prefWidth="32.0" text="X">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="X">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonC" mnemonicParsing="false" onAction="#botonCPulsado" prefHeight="31.0" prefWidth="32.0" text="C">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="C">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonV" mnemonicParsing="false" onAction="#botonVPulsado" prefHeight="31.0" prefWidth="32.0" text="V">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="V">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonB" mnemonicParsing="false" onAction="#botonBPulsado" prefHeight="31.0" prefWidth="32.0" text="B">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="B">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonN" mnemonicParsing="false" onAction="#botonNPulsado" prefHeight="31.0" prefWidth="32.0" text="N">
+                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="N">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
-                  <Button fx:id="botonM" alignment="CENTER" mnemonicParsing="false" onAction="#botonMPulsado" prefHeight="31.0" prefWidth="32.0" text="M">
+                  <Button alignment="CENTER" mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" text="M">
                      <font>
                         <Font size="14.0" />
                      </font>
