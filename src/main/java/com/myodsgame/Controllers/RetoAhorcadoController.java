@@ -36,7 +36,6 @@ public class RetoAhorcadoController implements Initializable {
     private Label frasePista;
     @FXML
     private ImageView imagenODS;
-
     @FXML
     private ImageView imagenAhorcado;
     @FXML
@@ -119,10 +118,8 @@ public class RetoAhorcadoController implements Initializable {
            pressedButton.setTextFill(Color.RED);
            retoActual.setIntentos(retoActual.getIntentos()-1);
            checkLose();
+           imagenAhorcado.setImage(new Image(Path.of("", "src", "main", "resources", "images", "ahorcado" + retoActual.getIntentos() +".png").toAbsolutePath().toString()));
        }
-
-
-
        pressedButton.setDisable(true);
 
     };
