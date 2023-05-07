@@ -84,6 +84,8 @@ public class RetoAhorcadoController implements Initializable {
         palabra = retoActual.getPalabra().toUpperCase();
         this.numeroPregunta = partidaActual.getRetoActual();
 
+        frasePista.setText(retoActual.getPista());
+
         loadRetosState();
         loadPalabra();
 

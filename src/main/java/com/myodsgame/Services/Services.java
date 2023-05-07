@@ -48,6 +48,7 @@ public class Services implements IServices {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 map.put("palabra", rs.getString("palabra"));
+                map.put("pista", rs.getString("pista"));
                 palabras.add(RetoFactory.crearReto(false, 120, 20,
                         rs.getInt("nivel_dificultad"), rs.getInt("nivel_dificultad")*100,
                         TipoReto.AHORACADO, map));
