@@ -224,6 +224,10 @@ public class RetoPreguntaController implements Initializable {
 
     @FXML
     void siguientePreguntaClicked(ActionEvent event) {
+        if(numeroPregunta == 10){
+            UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacion());
+        }
+
         Stage stage = (Stage) nextQuestionButton.getScene().getWindow();
         stage.close();
     }

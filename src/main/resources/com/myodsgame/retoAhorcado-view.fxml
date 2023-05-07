@@ -25,11 +25,19 @@
                         <Image url="@../../images/vidas.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="ayudaButton" mnemonicParsing="false" onAction="#ayudaButtonClicked" style="-fx-background-color: null;" />
+                  <Button fx:id="ayudaButton" mnemonicParsing="false" onAction="#ayudaButtonClicked" style="-fx-background-color: null;" text="AYUDA" textFill="WHITE" />
                </children>
                <padding>
                   <Insets left="30.0" right="30.0" top="30.0" />
                </padding></HBox>
+            <HBox alignment="CENTER" prefHeight="86.0" prefWidth="600.0">
+               <children>
+                  <Label fx:id="frasePista" alignment="CENTER" prefHeight="90.0" prefWidth="359.0" style="-fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 15; -fx-border-color: black; -fx-border-radius: 15;" text="Pista ahoracado" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Label>
+                  <ImageView fx:id="imagenODS" fitHeight="97.0" fitWidth="97.0" pickOnBounds="true" preserveRatio="true" />
+               </children></HBox>
             <HBox fx:id="labelArray" alignment="CENTER" prefHeight="17.0" prefWidth="673.0" spacing="20.0">
                <children>
                   <Label fx:id="progressButton" alignment="CENTER" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color: black; -fx-border-width: 2; -fx-text-fill: white;" text="Q1" textAlignment="CENTER">
@@ -87,14 +95,9 @@
                   <Insets bottom="20.0" top="20.0" />
                </padding>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="86.0" prefWidth="600.0">
-               <children>
-                  <Label fx:id="frasePista" alignment="CENTER" prefHeight="90.0" prefWidth="359.0" style="-fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 15; -fx-border-color: black; -fx-border-radius: 15;" text="Pista ahoracado" textAlignment="CENTER" textFill="WHITE">
-                     <font>
-                        <Font size="18.0" />
-                     </font></Label>
-                  <ImageView fx:id="imagenODS" fitHeight="97.0" fitWidth="97.0" pickOnBounds="true" preserveRatio="true" />
-               </children></HBox>
+            <Label fx:id="estatusRespuesta" alignment="CENTER" prefHeight="18.0" prefWidth="700.0" />
+            <Label fx:id="partidaScore" alignment="CENTER" prefHeight="18.0" prefWidth="698.0" text="Score: 0" textFill="WHITE" />
+            <Label fx:id="consolidatedScore" alignment="CENTER" prefHeight="18.0" prefWidth="698.0" text="Consolidated Score:" textFill="WHITE" visible="false" />
             <HBox alignment="CENTER" prefHeight="110.0" prefWidth="600.0">
                <children>
                   <ImageView fitHeight="113.0" fitWidth="223.0" pickOnBounds="true" preserveRatio="true">

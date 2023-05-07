@@ -3,6 +3,7 @@ package com.myodsgame.Controllers;
 import com.myodsgame.Models.Partida;
 import com.myodsgame.Models.RetoAhorcado;
 import com.myodsgame.Utils.EstadoJuego;
+import com.myodsgame.Utils.UserUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -18,6 +19,7 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class RetoAhorcadoController implements Initializable {
@@ -40,6 +42,12 @@ public class RetoAhorcadoController implements Initializable {
     @FXML
     private Label palabraOculta;
 
+    @FXML
+    private Label consolidatedScore;
+    @FXML
+    private Label estatusRespuesta;
+    @FXML
+    private Label partidaScore;
 
     @FXML
     private HBox botones1;
@@ -62,6 +70,8 @@ public class RetoAhorcadoController implements Initializable {
     private RetoAhorcado retoActual;
     private String palabra;
     private int numeroPregunta;
+    private int obtainedPoints;
+    private boolean ayudaUsada;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -138,27 +148,51 @@ public class RetoAhorcadoController implements Initializable {
         if(palabraMostrada.getText().equals(palabra)) {
             disableKeyboard();
             nextQuestionButton.setDisable(false);
+            obtainedPoints = UserUtils.computePoints(retoActual, ayudaUsada, true);
+            int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
+            EstadoJuego.getInstance().getPartida().setPuntuacion(puntosPartida + obtainedPoints);
+            showMessage("HAS GANADO " + obtainedPoints + " PUNTOS", true);
+            ayudaButton.setDisable(true);
         }
+
+
     }
 
     private void checkLose(){
         if(retoActual.getIntentos() == 0){
             disableKeyboard();
             botonSalir.setDisable(false);
+            obtainedPoints = UserUtils.computePoints(retoActual, ayudaUsada, false);
+            int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
+            EstadoJuego.getInstance().getPartida().setPuntuacion(puntosPartida + obtainedPoints);
             EstadoJuego.getInstance().getPartida().getRetosFallados()[numeroPregunta-1] = true;
             int vidasPartida = EstadoJuego.getInstance().getPartida().getVidas()-1;
+            showMessage("HAS PERDIDO " + obtainedPoints + " PUNTOS", false);
             if(vidasPartida == 0){
+                showMessage("HAS PERDIDO LA PARTIDA Y " + obtainedPoints + " PUNTOS!", false);
                 EstadoJuego.getInstance().getPartida().setPartidaPerdida(true);
             }
             EstadoJuego.getInstance().getPartida().setVidas(vidasPartida);
+            ayudaButton.setDisable(true);
         }
     }
+
+    private void showMessage(String message, boolean win){
+        estatusRespuesta.setText(message);
+        estatusRespuesta.setTextFill(win ? Color.GREEN : Color.RED);
+        partidaScore.setText("Score: " + EstadoJuego.getInstance().getPartida().getPuntuacion());
+    }
+
 
     private void loadPalabra(){
         ((Label) labelArray.getChildren().get(numeroPregunta - 1)).setStyle("-fx-background-color: rgb(202,184,218)");
 
         for(int i = 0; i < palabra.length(); i++)
             palabraMostrada.setText(palabraMostrada.getText() + "_");
+
+        partidaScore.setText("Score: " + EstadoJuego.getInstance().getPartida().getPuntuacion());
+
+
     }
 
     private void loadChar(char selectedChar){
@@ -173,12 +207,58 @@ public class RetoAhorcadoController implements Initializable {
 
     @FXML
     void ayudaButtonClicked(ActionEvent event) {
+        boolean notFoundChar = true;
+        while (notFoundChar) {
+            char randomChar = palabra.charAt(new Random().nextInt(palabra.length()));
+            System.out.println("Random char is: " + randomChar);
+            if (!palabraMostrada.getText().contains("" + randomChar)) {
 
+                for (Node node : botones1.getChildren()) {
+                    Button button = (Button) node;
+                    if (button.getText().equals("" + randomChar)) {
+                        button.setDisable(true);
+                        loadChar(randomChar);
+                        checkWin();
+                        notFoundChar = false;
+                        break;
+
+                    }
+
+                }
+
+                for (Node node : botones2.getChildren()) {
+                    Button button = (Button) node;
+                    if (button.getText().equals("" + randomChar)) {
+                        button.setDisable(true);
+                        loadChar(randomChar);
+                        checkWin();
+                        notFoundChar = false;
+                        break;
+                    }
+                }
+
+                for (Node node : botones3.getChildren()) {
+                    Button button = (Button) node;
+                    if (button.getText().equals("" + randomChar)) {
+                        button.setDisable(true);
+                        loadChar(randomChar);
+                        checkWin();
+                        notFoundChar = false;
+                        break;
+                    }
+                }
+            }
+
+            ayudaButton.setDisable(true);
+            ayudaUsada = true;
+        }
     }
 
     @FXML
     void consolidarButtonClicked(ActionEvent event) {
 
+        consolidarButton.setDisable(true);
+        UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacion());
     }
 
     @FXML
@@ -188,6 +268,10 @@ public class RetoAhorcadoController implements Initializable {
 
     @FXML
     void siguientePreguntaClicked(ActionEvent event) {
+        if(numeroPregunta == 10){
+            UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacion());
+        }
+
         EstadoJuego.getInstance().getPartida().setRetoActual(numeroPregunta+1);
         Stage stage = (Stage) nextQuestionButton.getScene().getWindow();
         stage.close();
