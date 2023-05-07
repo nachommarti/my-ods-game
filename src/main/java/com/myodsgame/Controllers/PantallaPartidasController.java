@@ -86,7 +86,7 @@ public class PantallaPartidasController implements Initializable {
                         Scene scene = new Scene (root);
                         Stage stage = new Stage();
                         stage.setScene(scene);
-                        stage.setTitle("Estadísticas");
+                        stage.setTitle("Perfil");
                         stage.initModality(Modality.WINDOW_MODAL);
                         stage.setResizable(false);
                         stage.show();
