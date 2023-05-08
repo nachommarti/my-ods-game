@@ -2,8 +2,11 @@ package com.myodsgame.Controllers;
 
 import com.myodsgame.Models.Partida;
 import com.myodsgame.Models.RetoAhorcado;
+import com.myodsgame.Models.RetoPregunta;
 import com.myodsgame.Utils.EstadoJuego;
 import com.myodsgame.Utils.UserUtils;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -16,6 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.nio.file.Path;
@@ -71,23 +75,55 @@ public class RetoAhorcadoController implements Initializable {
     private int numeroPregunta;
     private int obtainedPoints;
     private boolean ayudaUsada;
+    private Timeline timeline;
+    private int timeCountdown = 5;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        timeline = new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        partidaActual = EstadoJuego.getInstance().getPartida();
+        retoActual = (RetoAhorcado) EstadoJuego.getInstance().getPartida().getRetos().get(partidaActual.getRetoActual()-1);
+        palabra = retoActual.getPalabra().toUpperCase();
+        this.numeroPregunta = partidaActual.getRetoActual();
+        // KeyFrame event handler
+        timeline.getKeyFrames().add(
+                new KeyFrame(Duration.seconds(1),
+                        event -> {
+                            timeCountdown--;
+                            // update timerLabel
+                            timer.setText(Integer.toString(timeCountdown));
+
+                            if (timeCountdown <= 0) {
+                                timeline.stop();
+                                palabraMostrada.setText(palabra);
+                                endTimer();
+
+                            }
+                        })
+        );
+
+
         ayudaButton.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "ayuda.png").toAbsolutePath().toString())));
         setKeyBoardListeners(botones1);
         setKeyBoardListeners(botones2);
         setKeyBoardListeners(botones3);
 
-        partidaActual = EstadoJuego.getInstance().getPartida();
-        retoActual = (RetoAhorcado) EstadoJuego.getInstance().getPartida().getRetos().get(partidaActual.getRetoActual()-1);
-        palabra = retoActual.getPalabra().toUpperCase();
-        this.numeroPregunta = partidaActual.getRetoActual();
+
 
         frasePista.setText(retoActual.getPista());
 
         loadRetosState();
         loadPalabra();
+        if (EstadoJuego.getInstance().getPartida().getVidas() == 1) {
+            vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
+        }
+        else if (EstadoJuego.getInstance().getPartida().getVidas() == 0)
+        {
+            vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
+        }
+        timeline.playFromStart();
 
     }
 
@@ -125,6 +161,14 @@ public class RetoAhorcadoController implements Initializable {
        pressedButton.setDisable(true);
 
     };
+
+    private void endTimer(){
+        disableKeyboard();
+        retoActual.setIntentos(0);
+        imagenAhorcado.setImage(new Image(Path.of("", "src", "main", "resources", "images", "ahorcado" + retoActual.getIntentos() +".png").toAbsolutePath().toString()));
+        checkLose();
+
+    }
 
     private void disableKeyboard(){
         for(Node node : botones1.getChildren()){
@@ -172,6 +216,14 @@ public class RetoAhorcadoController implements Initializable {
                 EstadoJuego.getInstance().getPartida().setPartidaPerdida(true);
             }
             EstadoJuego.getInstance().getPartida().setVidas(vidasPartida);
+
+            if (EstadoJuego.getInstance().getPartida().getVidas() == 1) {
+                vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
+            }
+            else if (EstadoJuego.getInstance().getPartida().getVidas() == 0)
+            {
+                vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
+            }
             ayudaButton.setDisable(true);
         }
     }
@@ -180,6 +232,7 @@ public class RetoAhorcadoController implements Initializable {
         estatusRespuesta.setText(message);
         estatusRespuesta.setTextFill(win ? Color.GREEN : Color.RED);
         partidaScore.setText("Score: " + EstadoJuego.getInstance().getPartida().getPuntuacion());
+
     }
 
 

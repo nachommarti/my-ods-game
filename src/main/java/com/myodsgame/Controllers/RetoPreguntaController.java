@@ -294,6 +294,8 @@ public class RetoPreguntaController implements Initializable {
             if (!perdido) nextQuestionButton.setDisable(false);
         }
         else{
+            nextQuestionButton.setText("Fin de la partida!");
+            botonSalir.setText("Guardar y salir");
             botonSalir.setDisable(false);
         }
 
