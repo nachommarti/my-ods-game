@@ -96,7 +96,6 @@ public class Services implements IServices {
                 est.setPuntosTotales(rs.getInt("puntos_totales"));
                 est.setNumeroAciertos(rs.getInt("numero_aciertos"));
                 est.setNumeroFallos(rs.getInt("numero_fallos"));
-                est.setProgresoTotalOds(rs.getInt("progreso_total_ods"));
                 est.setUsuario(rs.getString("username"));
 
                 estadisticas.add(est);
@@ -109,7 +108,7 @@ public class Services implements IServices {
     }
 
     @Override
-    public void saveUser(Usuario user) {
-        repositorioUsuario.saveUsuario(user);
+    public void updateUser(String newUser, String oldUser, String email) {
+        repositorioUsuario.updateUsuario(newUser, oldUser, email);
     }
 }

@@ -9,7 +9,6 @@ public class Estadisticas {
 
     private int numeroAciertos;
     private int numeroFallos;
-    private int progresoTotalOds;
     private String usuario;
 
     public int[] getProgresoIndividualOds() {
@@ -50,14 +49,6 @@ public class Estadisticas {
 
     public void setNumeroFallos(int numeroFallos) {
         this.numeroFallos = numeroFallos;
-    }
-
-    public int getProgresoTotalOds() {
-        return progresoTotalOds;
-    }
-
-    public void setProgresoTotalOds(int progresoTotalOds) {
-        this.progresoTotalOds = progresoTotalOds;
     }
 
     public String getUsuario() {return usuario;}

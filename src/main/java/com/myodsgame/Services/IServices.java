@@ -12,5 +12,5 @@ public interface IServices {
     public List<Reto> getPalabrasHelper(Connection connection, String query);
     public void reorderRetos(List<Reto> retos, int inicio, List<Integer> randomIndices);
     public List<Estadisticas> getEstadisticas(Connection connection, String query);
-    public void saveUser(Usuario user);
+    public void updateUser(String newUser, String oldUser, String email);
 }

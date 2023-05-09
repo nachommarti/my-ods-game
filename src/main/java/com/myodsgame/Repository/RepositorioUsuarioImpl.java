@@ -24,7 +24,7 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
         try {
             String sql = "SELECT u.username, u.email, u.password, u.birthdate, " +
                     "e.puntos_totales, e.partidas_jugadas, e.numero_aciertos, " +
-                    "e.numero_fallos, e.progreso_total_ods, e.progreso_individual_ods " +
+                    "e.numero_fallos, e.progreso_individual_ods " +
                     "FROM usuarios u " +
                     "INNER JOIN estadisticas e ON u.username = e.username " +
                     "WHERE u.username = ? AND u.password = ?";
@@ -49,7 +49,6 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
                 estadisticas.setPartidasJugadas(result.getInt("partidas_jugadas"));
                 estadisticas.setNumeroAciertos(result.getInt("numero_aciertos"));
                 estadisticas.setNumeroFallos(result.getInt("numero_fallos"));
-                estadisticas.setProgresoTotalOds(result.getInt("progreso_total_ods"));
 
                 // Parse progresoIndividualOds from the database result
                 String progresoIndividualOdsString = result.getString("progreso_individual_ods");
@@ -105,8 +104,8 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
 
             // Insert statement for the estadisticas table
             String estadisticasInsert = "INSERT INTO estadisticas (username, puntos_totales, partidas_jugadas, " +
-                    "numero_aciertos, numero_fallos, progreso_total_ods, progreso_individual_ods) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    "numero_aciertos, numero_fallos, progreso_individual_ods) " +
+                    "VALUES (?, ?, ?, ?, ?, ?)";
 
             PreparedStatement estadisticasStatement = connection.prepareStatement(estadisticasInsert);
             estadisticasStatement.setString(1, user.getUsername());
@@ -114,7 +113,6 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
             estadisticasStatement.setInt(3, user.getEstadistica().getPartidasJugadas());
             estadisticasStatement.setInt(4, user.getEstadistica().getNumeroAciertos());
             estadisticasStatement.setInt(5, user.getEstadistica().getNumeroFallos());
-            estadisticasStatement.setInt(6, user.getEstadistica().getProgresoTotalOds());
 
             // Convert progresoIndividualOds array to a comma-separated string
             int[] progresoIndividualOds = user.getEstadistica().getProgresoIndividualOds();
@@ -125,7 +123,7 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
                     progresoIndividualOdsBuilder.append(",");
                 }
             }
-            estadisticasStatement.setString(7, progresoIndividualOdsBuilder.toString());
+            estadisticasStatement.setString(6, progresoIndividualOdsBuilder.toString());
 
             estadisticasStatement.executeUpdate();
             estadisticasStatement.close();
@@ -141,7 +139,7 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
         try {
             // Update statement for the estadisticas table
             String estadisticasUpdate = "UPDATE estadisticas SET puntos_totales=?, partidas_jugadas=?, " +
-                    "numero_aciertos=?, numero_fallos=?, progreso_total_ods=?, progreso_individual_ods=? " +
+                    "numero_aciertos=?, numero_fallos=?, progreso_individual_ods=? " +
                     "WHERE username=?";
 
             PreparedStatement estadisticasStatement = connection.prepareStatement(estadisticasUpdate);
@@ -149,7 +147,6 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
             estadisticasStatement.setInt(2, user.getEstadistica().getPartidasJugadas());
             estadisticasStatement.setInt(3, user.getEstadistica().getNumeroAciertos());
             estadisticasStatement.setInt(4, user.getEstadistica().getNumeroFallos());
-            estadisticasStatement.setInt(5, user.getEstadistica().getProgresoTotalOds());
 
             // Convert progresoIndividualOds array to a comma-separated string
             int[] progresoIndividualOds = user.getEstadistica().getProgresoIndividualOds();
@@ -160,9 +157,9 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
                     progresoIndividualOdsBuilder.append(",");
                 }
             }
-            estadisticasStatement.setString(6, progresoIndividualOdsBuilder.toString());
+            estadisticasStatement.setString(5, progresoIndividualOdsBuilder.toString());
 
-            estadisticasStatement.setString(7, user.getUsername());
+            estadisticasStatement.setString(6, user.getUsername());
             estadisticasStatement.executeUpdate();
             estadisticasStatement.close();
 
@@ -173,4 +170,25 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
         }
     }
 
+    @Override
+    public void updateUsuario(String newUser, String oldUser, String email) {
+        try {
+//            String estadisticasUpdate = "UPDATE estadisticas SET username=? WHERE username=?";
+//            PreparedStatement estadisticasStatement = connection.prepareStatement(estadisticasUpdate);
+//            estadisticasStatement.setString(1, newUser);
+//            estadisticasStatement.setString(2, oldUser);
+//            estadisticasStatement.executeUpdate();
+//            estadisticasStatement.close();
+
+            String usuarioUpdate = "UPDATE usuarios SET username=?, email=? WHERE username=?";
+            PreparedStatement usuarioStatement = connection.prepareStatement(usuarioUpdate);
+            usuarioStatement.setString(1, newUser);
+            usuarioStatement.setString(2, email);
+            usuarioStatement.setString(3, oldUser);
+            usuarioStatement.executeUpdate();
+            usuarioStatement.close();
+        } catch (SQLException e) {
+            System.err.println("Error al actualizar usuario: " + e.getMessage());
+        }
+    }
 }
