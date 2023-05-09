@@ -39,9 +39,6 @@ public class PerfilController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        puntosAcumulados.setText("Puntos totales: " + user.getEstadistica().getPuntosTotales());
-        usuarioLabel.setText(user.getUsername());
-        emailLabel.setText(user.getEmail());
     }
     @FXML
     void modificarPerfilBotonPulsado (ActionEvent event)
