@@ -5,8 +5,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="429.0" prefWidth="387.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="429.0" prefWidth="387.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.PerfilController">
    <center>
       <HBox prefHeight="416.0" prefWidth="387.0" BorderPane.alignment="CENTER">
          <children>
@@ -18,18 +17,24 @@
             <VBox alignment="CENTER_LEFT" prefHeight="471.0" prefWidth="196.0">
                <children>
                   <Label text="Usuario" />
-                  <TextField fx:id="usuarioField">
-                     <VBox.margin>
-                        <Insets bottom="20.0" />
-                     </VBox.margin>
-                  </TextField>
+                  <Label fx:id="usuarioLabel" prefHeight="35.0" prefWidth="77.0" text="Label">
+                     <padding>
+                        <Insets bottom="15.0" top="2.0" />
+                     </padding>
+                  </Label>
                   <Label text="Email" />
-                  <TextField fx:id="emailField">
-                     <VBox.margin>
-                        <Insets bottom="20.0" />
-                     </VBox.margin>
-                  </TextField>
+                  <Label prefHeight="29.0" prefWidth="70.0" text="Label">
+                     <padding>
+                        <Insets bottom="10.0" top="2.0" />
+                     </padding>
+                  </Label>
                   <Label fx:id="puntosAcumulados" text="Puntos acumulados:" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="salirBoton" mnemonicParsing="false" onAction="#salirBotonPulsado" text="Salir" />
+                        <Button fx:id="modificarPerfilBoton" mnemonicParsing="false" onAction="#modificarPerfilBotonPulsado" text="Modificar Perfil" />
+                     </children>
+                  </HBox>
                </children>
                <HBox.margin>
                   <Insets left="10.0" right="10.0" />

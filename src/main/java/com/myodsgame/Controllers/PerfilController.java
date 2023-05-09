@@ -25,42 +25,30 @@ public class PerfilController implements Initializable {
     @FXML
     private Label puntosAcumulados;
     @FXML
-    private TextField usuarioField;
+    private ImageView fotoUsuario;
     @FXML
-    private TextField emailField;
+    private Button modificarPerfilBoton;
     @FXML
-    private ImageView imagenUsuario;
+    private Button salirBoton;
     @FXML
-    private Button confirmarCambios;
+    private Label usuarioLabel;
+    @FXML
+    private Label emailLabel;
     private Usuario user = EstadoJuego.getInstance().getUsuario();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
         puntosAcumulados.setText("Puntos totales: " + user.getEstadistica().getPuntosTotales());
-        usuarioField.setText(user.getUsername());
-        emailField.setText(user.getEmail());
-        usuarioField.textProperty().addListener((ov, p1, p2) ->
-        {
-            confirmarCambios.setDisable(usuarioField.getText() == user.getUsername());
-        });
+        usuarioLabel.setText(user.getUsername());
+        emailLabel.setText(user.getEmail());
     }
     @FXML
-    void confirmarCambiosPulsado (ActionEvent event) throws IOException
+    void modificarPerfilBotonPulsado (ActionEvent event)
     {
-        Stage ventanaEmergente = new Stage();
-        ventanaEmergente.initModality(Modality.APPLICATION_MODAL);
-        ventanaEmergente.setTitle("Ventana Emergente");
-        ventanaEmergente.setScene(new Scene(new StackPane(new Button("Vale")), 200, 100));
-        ventanaEmergente.show();
-        user.setUsername(usuarioField.getText());
-        user.setEmail(emailField.getText());
     }
     @FXML
-    void cancelarPulsado (ActionEvent event) throws IOException
+    void salirBotonPulsado (ActionEvent event)
     {
-        Node source = (Node) event.getSource();
-        Stage oldStage = (Stage) source.getScene().getWindow();
-        oldStage.close();
     }
 }
