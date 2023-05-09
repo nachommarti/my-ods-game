@@ -7,10 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
@@ -27,23 +24,57 @@ public class PerfilController implements Initializable {
     @FXML
     private ImageView fotoUsuario;
     @FXML
-    private Button modificarPerfilBoton;
-    @FXML
     private Button salirBoton;
     @FXML
     private Label usuarioLabel;
     @FXML
     private Label emailLabel;
-    private Usuario user = EstadoJuego.getInstance().getUsuario();
+    @FXML
+    private ProgressBar barraProgreso;
+    @FXML
+    private Label porcentajeODS;
+    @FXML
+    private Button saveButton;
+    @FXML
+    private TextField usuarioTextField;
+    @FXML
+    private TextField emailTextField;
+    @FXML
+    private Button modificarButton;
+
+    private Usuario user;
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle)
-    {
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        user = EstadoJuego.getInstance().getUsuario();
+        puntosAcumulados.setText(Integer.toString(user.getEstadistica().getPuntosTotales()));
+        usuarioLabel.setText(user.getUsername());
+        emailLabel.setText(user.getEmail());
+        porcentajeODS.setText(user.getEstadistica().getPuntosTotales() +" %");
+        barraProgreso.setProgress(user.getEstadistica().getPuntosTotales());
+        saveButton.setVisible(false);
+        usuarioTextField.setVisible(false);
+        emailTextField.setVisible(false);
+        modificarButton.setDisable(false);
     }
     @FXML
-    void modificarPerfilBotonPulsado (ActionEvent event)
-    {
+    void modificarPerfilBotonPulsado (ActionEvent event) {
+        saveButton.setVisible(true);
+        usuarioTextField.setVisible(true);
+        emailTextField.setVisible(true);
+        modificarButton.setDisable(true);
     }
+
+    @FXML
+    void saveButtonClicked (ActionEvent event) {
+        saveButton.setVisible(false);
+        usuarioTextField.setVisible(false);
+        emailTextField.setVisible(false);
+        modificarButton.setDisable(false);
+        user.setUsername(usuarioTextField.getText());
+        user.setEmail(emailTextField.getText());
+    }
+
     @FXML
     void salirBotonPulsado (ActionEvent event)
     {

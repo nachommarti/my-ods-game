@@ -4,46 +4,110 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="429.0" prefWidth="387.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.PerfilController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="429.0" prefWidth="405.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.PerfilController">
    <center>
       <HBox prefHeight="416.0" prefWidth="387.0" BorderPane.alignment="CENTER">
          <children>
             <VBox alignment="CENTER_LEFT" prefHeight="471.0" prefWidth="207.0">
                <children>
-                  <ImageView fx:id="fotoUsuario" fitHeight="202.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                  <Button fx:id="salirBoton" alignment="CENTER" mnemonicParsing="false" onAction="#salirBotonPulsado" text="Salir">
+                     <VBox.margin>
+                        <Insets bottom="40.0" left="20.0" />
+                     </VBox.margin>
+                  </Button>
+                  <ImageView fx:id="fotoUsuario" fitHeight="202.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <VBox.margin>
+                        <Insets bottom="50.0" />
+                     </VBox.margin></ImageView>
                </children>
             </VBox>
             <VBox alignment="CENTER_LEFT" prefHeight="471.0" prefWidth="196.0">
                <children>
-                  <Label text="Usuario" />
+                  <Label text="Usuario:">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
                   <Label fx:id="usuarioLabel" prefHeight="35.0" prefWidth="77.0" text="Label">
                      <padding>
                         <Insets bottom="15.0" top="2.0" />
                      </padding>
+                     <graphic>
+                        <TextField fx:id="usuarioTextField" />
+                     </graphic>
                   </Label>
-                  <Label text="Email" />
-                  <Label prefHeight="29.0" prefWidth="70.0" text="Label">
+                  <Label text="Email:">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
+                  <Label fx:id="emailLabel" prefHeight="29.0" prefWidth="70.0" text="Label">
                      <padding>
                         <Insets bottom="10.0" top="2.0" />
                      </padding>
+                     <graphic>
+                        <TextField fx:id="emailTextField" />
+                     </graphic>
                   </Label>
-                  <Label fx:id="puntosAcumulados" text="Puntos acumulados:" />
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <Label text="Puntos acumulados:">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="puntosAcumulados">
+                     <padding>
+                        <Insets left="2.0" />
+                     </padding>
+                  </Label>
+                  <VBox alignment="CENTER_LEFT" prefHeight="106.0" prefWidth="185.0">
                      <children>
-                        <Button fx:id="salirBoton" mnemonicParsing="false" onAction="#salirBotonPulsado" text="Salir" />
-                        <Button fx:id="modificarPerfilBoton" mnemonicParsing="false" onAction="#modificarPerfilBotonPulsado" text="Modificar Perfil" />
+                        <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                           <children>
+                              <Button fx:id="modificarButton" mnemonicParsing="false" onAction="#modificarPerfilBotonPulsado" text="Modificar Perfil" />
+                              <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveButtonClicked" text="Save" visible="false" />
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </HBox>
                      </children>
-                  </HBox>
+                  </VBox>
                </children>
                <HBox.margin>
-                  <Insets left="10.0" right="10.0" />
+                  <Insets left="30.0" right="10.0" />
                </HBox.margin>
             </VBox>
          </children>
       </HBox>
    </center>
    <bottom>
-      <ProgressBar prefHeight="25.0" prefWidth="200.0" progress="0.0" BorderPane.alignment="CENTER" />
+      <VBox BorderPane.alignment="CENTER_LEFT">
+         <BorderPane.margin>
+            <Insets bottom="20.0" left="40.0" />
+         </BorderPane.margin>
+         <children>
+            <Label text="Progreso ODS">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER_LEFT">
+               <children>
+                  <ProgressBar fx:id="barraProgreso" prefHeight="25.0" prefWidth="200.0" progress="0.0" />
+                  <Label fx:id="porcentajeODS">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
    </bottom>
 </BorderPane>
