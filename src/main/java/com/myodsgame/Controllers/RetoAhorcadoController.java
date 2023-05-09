@@ -10,17 +10,23 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.Random;
@@ -76,7 +82,7 @@ public class RetoAhorcadoController implements Initializable {
     private int obtainedPoints;
     private boolean ayudaUsada;
     private Timeline timeline;
-    private int timeCountdown = 5;
+    private int timeCountdown;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -85,6 +91,7 @@ public class RetoAhorcadoController implements Initializable {
         timeline.setCycleCount(Timeline.INDEFINITE);
         partidaActual = EstadoJuego.getInstance().getPartida();
         retoActual = (RetoAhorcado) EstadoJuego.getInstance().getPartida().getRetos().get(partidaActual.getRetoActual()-1);
+        timeCountdown = retoActual.getDuracion();
         palabra = retoActual.getPalabra().toUpperCase();
         this.numeroPregunta = partidaActual.getRetoActual();
         // KeyFrame event handler
@@ -146,14 +153,15 @@ public class RetoAhorcadoController implements Initializable {
         // Handle the button click
        Button pressedButton = (Button) event.getSource();
        char selectedChar = pressedButton.getText().charAt(0);
-
+       Background background = new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY));
        if(palabra.contains(selectedChar+"")) {
-           pressedButton.setTextFill(Color.GREEN);
+           background = new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY));
+           pressedButton.setBackground(background);
            loadChar(selectedChar);
            checkWin();
        }
        else {
-           pressedButton.setTextFill(Color.RED);
+           pressedButton.setBackground(background);
            retoActual.setIntentos(retoActual.getIntentos()-1);
            checkLose();
            imagenAhorcado.setImage(new Image(Path.of("", "src", "main", "resources", "images", "ahorcado" + retoActual.getIntentos() +".png").toAbsolutePath().toString()));
@@ -194,6 +202,24 @@ public class RetoAhorcadoController implements Initializable {
             obtainedPoints = UserUtils.computePoints(retoActual, ayudaUsada, true);
             int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
             EstadoJuego.getInstance().getPartida().setPuntuacion(puntosPartida + obtainedPoints);
+            try
+            {
+                FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/popUpRetoPregunta.fxml"));
+                BorderPane root = myLoader.load();
+                Scene scene = new Scene (root, 357, 184);
+                Stage  stage = new Stage();
+                stage.setScene(scene);
+                stage.setTitle("¡Enhorabuena!");
+                stage.initModality(Modality.WINDOW_MODAL);
+                stage.setResizable(false);
+                stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
+                stage.setOnCloseRequest(e -> {
+                    System.exit(0);
+                });
+                stage.show();
+            }
+            catch (IOException e){}
+
             showMessage("HAS GANADO " + obtainedPoints + " PUNTOS", true);
             ayudaButton.setDisable(true);
         }
