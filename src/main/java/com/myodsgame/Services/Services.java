@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
 public class Services implements IServices {
     @Override
     public List<Reto> getPreguntasHelper(Connection connection, String query) {

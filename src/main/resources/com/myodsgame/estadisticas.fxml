@@ -34,7 +34,7 @@
                         <Insets bottom="50.0" left="160.0" right="50.0" top="50.0" />
                      </padding>
                   </VBox>
-                  <BarChart fx:id="graficaOds" barGap="1.0" categoryGap="50.0" prefHeight="300.0" prefWidth="150.0">
+                  <BarChart fx:id="graficaOds" barGap="1.0" categoryGap="8.0" prefHeight="320.0" prefWidth="160.0">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>
