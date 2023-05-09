@@ -1,6 +1,8 @@
 package com.myodsgame.Controllers;
 
 import com.myodsgame.Models.Usuario;
+import com.myodsgame.Services.IServices;
+import com.myodsgame.Services.Services;
 import com.myodsgame.Utils.EstadoJuego;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -43,6 +45,7 @@ public class PerfilController implements Initializable {
     private Button modificarButton;
 
     private Usuario user;
+    private IServices services;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -56,6 +59,7 @@ public class PerfilController implements Initializable {
         usuarioTextField.setVisible(false);
         emailTextField.setVisible(false);
         modificarButton.setDisable(false);
+        services = new Services();
     }
     @FXML
     void modificarPerfilBotonPulsado (ActionEvent event) {
@@ -73,10 +77,16 @@ public class PerfilController implements Initializable {
         modificarButton.setDisable(false);
         user.setUsername(usuarioTextField.getText());
         user.setEmail(emailTextField.getText());
+        EstadoJuego.getInstance().setUsuario(user);
+        usuarioLabel.setText(user.getUsername());
+        emailLabel.setText(user.getEmail());
+        services.saveUser(user);
     }
 
     @FXML
-    void salirBotonPulsado (ActionEvent event)
-    {
+    void salirBotonPulsado (ActionEvent event) {
+        Node source = (Node) event.getSource();
+        Stage oldStage = (Stage) source.getScene().getWindow();
+        oldStage.close();
     }
 }

@@ -3,6 +3,9 @@ package com.myodsgame.Services;
 import com.myodsgame.Factory.RetoFactory;
 import com.myodsgame.Models.Estadisticas;
 import com.myodsgame.Models.Reto;
+import com.myodsgame.Models.Usuario;
+import com.myodsgame.Repository.RepositorioUsuario;
+import com.myodsgame.Repository.RepositorioUsuarioImpl;
 import com.myodsgame.Utils.TipoReto;
 
 import java.sql.Connection;
@@ -10,11 +13,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 
 public class Services implements IServices {
+    RepositorioUsuario repositorioUsuario = new RepositorioUsuarioImpl();
     @Override
     public List<Reto> getPreguntasHelper(Connection connection, String query) {
         List<Reto> preguntas = new ArrayList<>();
@@ -61,6 +66,14 @@ public class Services implements IServices {
         }
     }
 
+    @Override
+    public void reorderRetos(List<Reto> retos, int inicio, List<Integer> randomIndices) {
+        for (int i = 0; i < randomIndices.size(); i++) {
+            int oldIndex = randomIndices.get(i);
+            int newIndex = inicio + i;
+            Collections.swap(retos, oldIndex, newIndex);
+        }
+    }
 
     @Override
     public List<Estadisticas> getEstadisticas(Connection connection, String query){
@@ -93,5 +106,10 @@ public class Services implements IServices {
             System.err.println("Error al obtener estadísticas: " + e.getMessage());
             return null;
         }
+    }
+
+    @Override
+    public void saveUser(Usuario user) {
+        repositorioUsuario.saveUsuario(user);
     }
 }

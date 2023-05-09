@@ -15,6 +15,7 @@ import java.util.*;
 public class PartidaMixtaBuilder extends PartidaBuilder {
     @Override
     public void BuildRetos() {
+        IServices servicios = new Services();
         List<Reto> retos = new RepositorioRetoMixtoImpl().getRetosPorNivelDificultadInicial(1);
         retos.sort(Comparator.comparingInt(Reto::getDificultad));
 
@@ -26,7 +27,7 @@ public class PartidaMixtaBuilder extends PartidaBuilder {
             if (reto.getDificultad() != lastNivelDificultad) {
                 if (randomIndices.size() > 1) {
                     Collections.shuffle(randomIndices, rand);
-                    IServices.reorderRetos(retos, i - randomIndices.size(), randomIndices);
+                    servicios.reorderRetos(retos, i - randomIndices.size(), randomIndices);
                 }
                 lastNivelDificultad = reto.getDificultad();
                 randomIndices.clear();
@@ -35,7 +36,7 @@ public class PartidaMixtaBuilder extends PartidaBuilder {
         }
         if (randomIndices.size() > 1) {
             Collections.shuffle(randomIndices, rand);
-            IServices.reorderRetos(retos, retos.size() - randomIndices.size(), randomIndices);
+            servicios.reorderRetos(retos, retos.size() - randomIndices.size(), randomIndices);
         }
         partida.setRetos(retos);
     }
