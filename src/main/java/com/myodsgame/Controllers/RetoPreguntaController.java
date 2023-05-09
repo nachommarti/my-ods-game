@@ -81,7 +81,7 @@ public class RetoPreguntaController implements Initializable {
     private String currentStyleLabel;
     private String initialStyle;
     private Timeline timeline;
-    private int timeCountdown = 30;
+    private int timeCountdown;
     private boolean perdido = false;
     private int contAbandonar = 1;
     private MediaPlayer mediaPlayerSonidos = null, mediaPlayerMusic = null, mediaPlayerTicTac = new MediaPlayer(new Media(new File("src/main/resources/sounds/10S_tick.mp3").toURI().toString()));
@@ -151,8 +151,9 @@ public class RetoPreguntaController implements Initializable {
         this.respuestaCorrecta = retoPreguntaActual.getRespuestaCorrecta();
         this.respuestas = List.of(respuesta1, respuesta2, respuesta3, respuesta4);
         consolidarButton.setDisable(true);
+        timeCountdown = retoPreguntaActual.getDuracion();
+        imagenODS.setImage(new Image(Path.of("", "src", "main", "resources", "images", "ODS_"+retoPreguntaActual.getODS()+".jpg").toAbsolutePath().toString()));
         nextQuestionButton.setDisable(true);
-        this.timeCountdown = 30;
         ((Label) labelArray.getChildren().get(numeroPregunta - 1)).setStyle("-fx-background-color: rgb(202,184,218)");
         timeline.playFromStart();
 

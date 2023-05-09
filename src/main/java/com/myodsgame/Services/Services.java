@@ -30,7 +30,7 @@ public class Services implements IServices {
                 map.put("respuesta_correcta", rs.getString("respuesta_correcta"));
                 preguntas.add(RetoFactory.crearReto(false, 30, 10,
                         rs.getInt("nivel_dificultad"), rs.getInt("nivel_dificultad")*100,
-                        TipoReto.PREGUNTA, map));
+                        rs.getInt("ODS"), TipoReto.PREGUNTA, map));
             }
             return preguntas;
         } catch (SQLException e) {
@@ -51,7 +51,7 @@ public class Services implements IServices {
                 map.put("pista", rs.getString("pista"));
                 palabras.add(RetoFactory.crearReto(false, 120, 20,
                         rs.getInt("nivel_dificultad"), rs.getInt("nivel_dificultad")*100,
-                        TipoReto.AHORACADO, map));
+                        rs.getInt("ODS"), TipoReto.AHORACADO, map));
             }
             return palabras;
         } catch (SQLException e) {

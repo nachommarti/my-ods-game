@@ -128,7 +128,7 @@ public class PantallaPartidasController implements Initializable {
                 //TODO:show message saying how many points the user has won during this game
                 break;
             }
-            loadReto("retoPregunta", "Reto Pregunta", false);
+            loadReto("retoPregunta", "Reto Pregunta");
         }
         puntosJugador = EstadoJuego.getInstance().getUsuario().getEstadistica().getPuntosTotales();
         puntosAlmacenados.setText("Puntos totales: " + puntosJugador);
@@ -148,7 +148,12 @@ public class PantallaPartidasController implements Initializable {
             Partida partida = partidaDirector.BuildPartida();
             EstadoJuego.getInstance().setPartida(partida);
             for(int i = 0; i < partida.getRetos().size(); i++){
-                loadReto("retoPregunta", "Reto Pregunta", true);
+                if (EstadoJuego.getInstance().getPartida().getRetos().get(i).getTipoReto().equals(TipoReto.PREGUNTA)) {
+                    loadReto("retoPregunta", "Reto Pregunta");
+                } else {
+                    loadReto("retoAhorcado", "Reto Ahorcado");
+                }
+                // TODO - Al implementar el tercer reto, cambiar esto
             }
             Node source = (Node) event.getSource();
             Stage oldStage = (Stage) source.getScene().getWindow();
@@ -168,28 +173,14 @@ public class PantallaPartidasController implements Initializable {
                     //TODO:show message saying how many points the user has won during this game
                     break;
                 }
-                loadReto("retoAhorcado", "Reto Ahorcado", false);
+                loadReto("retoAhorcado", "Reto Ahorcado");
             }
             puntosJugador = EstadoJuego.getInstance().getUsuario().getEstadistica().getPuntosTotales();
             puntosAlmacenados.setText("Puntos totales: " + puntosJugador);
         }
     }
 
-    private void loadReto(String reto, String titulo, boolean mixto) throws IOException {
-        if (mixto)
-        {
-            double aux = Math.random();
-            if (aux < 0.5)
-            {
-                reto = "retoPregunta";
-                titulo = "Reto Pregunta";
-            }
-            else
-            {
-                reto = "retoAhorcado";
-                titulo = "Reto Ahorcado";
-            }
-        }
+    private void loadReto(String reto, String titulo) throws IOException {
         FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/" + reto + "-view.fxml"));
         BorderPane root = myLoader.load();
         Scene scene = new Scene (root, 600, 600);

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class RepositorioUsuarioImpl implements RepositorioUsuario{
 
-    private Connection connection;
+    private final Connection connection;
 
     public RepositorioUsuarioImpl() {
         connection = DBConnection.getConnection();

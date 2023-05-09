@@ -11,8 +11,8 @@ public class RetoAhorcado extends Reto{
     private int intentos;
 
     public RetoAhorcado(boolean ayudaUsada, int duracion, int tiempoTicTac, int dificultad, int puntuacion,
-                        TipoReto tipoReto, String palabra, String pista, int intentos) {
-        super(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipoReto);
+                        TipoReto tipoReto, int ODS, String palabra, String pista, int intentos) {
+        super(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipoReto, ODS);
         this.palabra = palabra;
         this.pista = pista;
         this.intentos = intentos;

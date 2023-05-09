@@ -11,9 +11,9 @@ public class RetoPregunta extends Reto{
     private String respuestaCorrecta;
 
     public RetoPregunta(boolean ayudaUsada, int duracion, int tiempoTicTac, int dificultad, int puntuacion,
-                        TipoReto tipoReto, String enunciado, String respuesta1, String respuesta2, String respuesta3,
-                        String respuesta4, String respuestaCorrecta) {
-        super(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipoReto);
+                        TipoReto tipoReto, int ODS, String enunciado, String respuesta1, String respuesta2,
+                        String respuesta3, String respuesta4, String respuestaCorrecta) {
+        super(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipoReto, ODS);
         this.enunciado = enunciado;
         this.respuesta1 = respuesta1;
         this.respuesta2 = respuesta2;

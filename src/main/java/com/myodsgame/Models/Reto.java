@@ -9,14 +9,17 @@ public abstract class Reto {
     private int dificultad;
     private int puntuacion;
     private TipoReto tipoReto;
+    private int ODS;
 
-    public Reto(boolean ayudaUsada, int duracion, int tiempoTicTac, int dificultad, int puntuacion, TipoReto tipoReto) {
+    public Reto(boolean ayudaUsada, int duracion, int tiempoTicTac, int dificultad, int puntuacion, TipoReto tipoReto,
+                int ODS) {
         this.ayudaUsada = ayudaUsada;
         this.duracion = duracion;
         this.tiempoTicTac = tiempoTicTac;
         this.dificultad = dificultad;
         this.puntuacion = puntuacion;
         this.tipoReto = tipoReto;
+        this.ODS = ODS;
     }
 
 
@@ -66,5 +69,13 @@ public abstract class Reto {
 
     public void setTipoReto(TipoReto tipoReto) {
         this.tipoReto = tipoReto;
+    }
+
+    public int getODS() {
+        return ODS;
+    }
+
+    public void setODS(int ODS) {
+        this.ODS = ODS;
     }
 }
