@@ -54,7 +54,7 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
                 // Parse progresoIndividualOds from the database result
                 String progresoIndividualOdsString = result.getString("progreso_individual_ods");
                 String[] progresoIndividualOdsArray = progresoIndividualOdsString.split(",");
-                int[] progresoIndividualOds = new int[18];
+                int[] progresoIndividualOds = new int[17];
                 for (int i = 0; i < progresoIndividualOdsArray.length; i++) {
                     int odsNumber = Integer.parseInt(progresoIndividualOdsArray[i]);
                     progresoIndividualOds[i] = odsNumber;
@@ -119,7 +119,7 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
             // Convert progresoIndividualOds array to a comma-separated string
             int[] progresoIndividualOds = user.getEstadistica().getProgresoIndividualOds();
             StringBuilder progresoIndividualOdsBuilder = new StringBuilder();
-            for (int i = 1; i < progresoIndividualOds.length; i++) {
+            for (int i = 0; i < progresoIndividualOds.length; i++) {
                 progresoIndividualOdsBuilder.append(progresoIndividualOds[i]);
                 if (i < progresoIndividualOds.length - 1) {
                     progresoIndividualOdsBuilder.append(",");
@@ -154,7 +154,7 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
             // Convert progresoIndividualOds array to a comma-separated string
             int[] progresoIndividualOds = user.getEstadistica().getProgresoIndividualOds();
             StringBuilder progresoIndividualOdsBuilder = new StringBuilder();
-            for (int i = 1; i < progresoIndividualOds.length; i++) {
+            for (int i = 0; i < progresoIndividualOds.length; i++) {
                 progresoIndividualOdsBuilder.append(progresoIndividualOds[i]);
                 if (i < progresoIndividualOds.length - 1) {
                     progresoIndividualOdsBuilder.append(",");
