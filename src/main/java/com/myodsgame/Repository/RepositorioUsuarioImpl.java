@@ -57,7 +57,7 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
                 int[] progresoIndividualOds = new int[18];
                 for (int i = 0; i < progresoIndividualOdsArray.length; i++) {
                     int odsNumber = Integer.parseInt(progresoIndividualOdsArray[i]);
-                    progresoIndividualOds[odsNumber] = odsNumber;
+                    progresoIndividualOds[i] = odsNumber;
                 }
                 estadisticas.setProgresoIndividualOds(progresoIndividualOds);
                 user.setEstadistica(estadisticas);
