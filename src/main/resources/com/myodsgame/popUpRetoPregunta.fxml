@@ -3,20 +3,31 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="167.0" prefWidth="341.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.PopUpRetoPreguntaController">
-   <children>
-      <VBox prefHeight="200.0" prefWidth="341.0">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0" prefWidth="357.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.PopUpRetoPreguntaController">
+   <center>
+      <VBox prefHeight="184.0" prefWidth="357.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="78.0" prefWidth="357.0">
                <children>
-                  <Label text="Label" />
-               </children></HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                  <Label fx:id="mensaje" text="Label" />
+               </children>
+            </HBox>
+            <VBox prefHeight="105.0" prefWidth="429.0">
                <children>
-                  <Button mnemonicParsing="false" text="Consolidar" />
-                  <Button mnemonicParsing="false" text="Siguiente pregunta" />
-               </children></HBox>
+                  <HBox alignment="CENTER" prefHeight="53.0" prefWidth="429.0" spacing="15.0">
+                     <children>
+                        <Button fx:id="consolidarBoton" mnemonicParsing="false" onAction="#consolidarBotonPulsado" text="Consolidar" />
+                        <Button mnemonicParsing="false" onAction="#siguientePreguntaPulsado" text="Siguiente pregunta" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="48.0" prefWidth="429.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#abandonarBotonPulsado" text="Abandonar" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
          </children>
       </VBox>
-   </children>
-</AnchorPane>
+   </center>
+</BorderPane>
