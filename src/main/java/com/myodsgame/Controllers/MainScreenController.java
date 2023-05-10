@@ -42,51 +42,6 @@ public class MainScreenController implements Initializable {
     }
 
     @FXML
-    void fastGameButtonClicked(ActionEvent event) throws IOException {
-
-    }
-
-    void partidaRetoPreguntaClicked(){
-        PartidaDirector partidaDirector = new PartidaDirector(new PartidaPreguntasBuilder());
-        Partida partida = partidaDirector.BuildPartida();
-        EstadoJuego.getInstance().setPartida(partida);
-
-        for(int i = 0; i < partida.getRetos().size(); i++){
-            if(EstadoJuego.getInstance().getPartida().isPartidaPerdida()) {
-                //TODO:show message saying how many points the user has won during this game
-                break;
-            }
-            loadRetoWindow("/com/myodsgame/retoPregunta-view.fxml", "Reto Pregunta");
-        }
-
-       //loadRetoWindow("/com/myodsgame/retoAhorcado-view.fxml", "Reto ahorcado");
-    }
-
-    private void loadRetoWindow(String viewRoute, String tituloReto) {
-        FXMLLoader myLoader = new FXMLLoader(getClass().getResource(viewRoute));
-        try {
-            BorderPane root = myLoader.load();
-            Scene scene = new Scene (root, 600, 600);
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.setTitle(tituloReto);
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.setResizable(false);
-            stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
-            stage.setOnCloseRequest(e -> {
-                System.exit(0);
-            });
-            stage.showAndWait();
-
-        }
-        catch (IOException e){
-            System.out.println("Error loading the view for route: " + viewRoute);
-        }
-
-
-    }
-
-    @FXML
     void loginButtonClicked(ActionEvent event) throws IOException {
         FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/loginUsuario-view.fxml"));
         BorderPane root = myLoader.load();
@@ -100,11 +55,5 @@ public class MainScreenController implements Initializable {
         stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
         stage.show();
     }
-
-    @FXML
-    void logOutClicked(ActionEvent event) {}
-
-    @FXML
-    void settingsClicked(ActionEvent event) {}
 
 }
