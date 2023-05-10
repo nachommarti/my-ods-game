@@ -5,6 +5,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +20,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.io.IOException;
 import java.net.URL;
@@ -86,6 +88,16 @@ public class LoginController implements Initializable {
             Node source = (Node) event.getSource();
             Stage oldStage = (Stage) source.getScene().getWindow();
             oldStage.close();
+
+            ObservableList<Window> windows = Stage.getWindows();
+            for (Window window : windows)
+            {
+                if (((Stage) window).getTitle().equals("ODS Game"))
+                {
+                    ((Stage) window).close();
+                }
+            }
+
         } else {
             clearFields();
             showErrorMessage();
