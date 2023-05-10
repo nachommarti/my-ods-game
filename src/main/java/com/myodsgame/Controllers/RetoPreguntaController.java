@@ -130,6 +130,11 @@ public class RetoPreguntaController implements Initializable {
 
         currentScore.setText("Score:" + EstadoJuego.getInstance().getPartida().getPuntuacion());
 
+        if(EstadoJuego.getInstance().getPartida().getPuntuacion() >= retoActual.getPuntuacion()/2)
+            ayuda.setDisable(false);
+        else
+            ayuda.setDisable(true);
+
 
         Rectangle clip = new Rectangle(imagenODS.getFitWidth(), imagenODS.getFitHeight());
         clip.setArcWidth(40);
@@ -188,6 +193,12 @@ public class RetoPreguntaController implements Initializable {
         }
         this.ayuda.setDisable(true);
         this.ayudaPulsada = true;
+
+        int puntos =  EstadoJuego.getInstance().getPartida().getPuntuacion() - retoActual.getPuntuacion()/2;
+        EstadoJuego.getInstance().getPartida().setPuntuacion(puntos);
+        currentScore.setText("Score: " + puntos);
+        ayuda.setDisable(true);
+        ayudaPulsada = true;
 
     }
    // @FXML
