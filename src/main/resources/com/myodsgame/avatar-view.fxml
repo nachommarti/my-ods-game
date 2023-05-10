@@ -20,7 +20,7 @@
          <graphic>
             <ImageView fx:id="avatar1" fitHeight="166.0" fitWidth="145.0" pickOnBounds="true">
                <image>
-                  <Image url="@../../images/avatardefault.png" />
+                  <Image url="@../../images/avatar1.png" />
                </image>
             </ImageView>
          </graphic>
@@ -29,7 +29,7 @@
          <graphic>
             <ImageView fx:id="avatar2" fitHeight="166.0" fitWidth="145.0" pickOnBounds="true">
                <image>
-                  <Image url="@../../images/avatar1.png" />
+                  <Image url="@../../images/avatar2.png" />
                </image>
             </ImageView>
          </graphic>
@@ -38,7 +38,7 @@
          <graphic>
             <ImageView fx:id="avatar3" fitHeight="166.0" fitWidth="145.0" pickOnBounds="true">
                <image>
-                  <Image url="@../../images/avatar2.png" />
+                  <Image url="@../../images/avatar3.png" />
                </image>
             </ImageView>
          </graphic>
@@ -47,7 +47,7 @@
          <graphic>
             <ImageView fx:id="avatar4" fitHeight="166.0" fitWidth="145.0" pickOnBounds="true">
                <image>
-                  <Image url="@../../images/avatar3.png" />
+                  <Image url="@../../images/avatar4.png" />
                </image>
             </ImageView>
          </graphic>
@@ -56,7 +56,7 @@
          <graphic>
             <ImageView fx:id="avatar5" fitHeight="166.0" fitWidth="145.0" pickOnBounds="true">
                <image>
-                  <Image url="@../../images/avatar4.png" />
+                  <Image url="@../../images/avatar5.png" />
                </image>
             </ImageView>
          </graphic>

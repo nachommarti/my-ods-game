@@ -57,7 +57,7 @@ public class PerfilController implements Initializable {
         puntosAcumulados.setText(Integer.toString(est.getPuntosTotales()));
         usuarioLabel.setText(user.getUsername());
         emailLabel.setText(user.getEmail());
-        fotoUsuario.setImage(new Image(user.getAvatar()));
+        fotoUsuario.setImage(new Image(Path.of(user.getAvatar()).toAbsolutePath().toString()));
         double porcentaje;
         if (est.getNumeroAciertos() == 0) porcentaje = 0;
         else if (est.getNumeroFallos() == 0) porcentaje = 100;
@@ -106,7 +106,7 @@ public class PerfilController implements Initializable {
             usuarioLabel.setText(user.getUsername());
         }
         EstadoJuego.getInstance().setUsuario(user);
-        services.updateUser(user.getUsername(), oldUser, user.getEmail(), fotoUsuario.getImage().getUrl());
+        services.updateUser(user.getUsername(), oldUser, user.getEmail(), user.getAvatar());
     }
 
     @FXML
@@ -114,7 +114,7 @@ public class PerfilController implements Initializable {
         FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/avatar-view.fxml"));
         Pane root = myLoader.load();
         AvatarController avatarController = myLoader.<AvatarController>getController();
-        avatarController.initAvatar(fotoUsuario);
+        avatarController.initAvatarModi(fotoUsuario, user);
         Scene scene = new Scene (root);
         Stage stage = new Stage();
         stage.setScene(scene);

@@ -5,6 +5,7 @@ import com.myodsgame.Models.*;
 public class EstadoJuego {
     Usuario usuario;
     Partida partida;
+    String urlAvatarRegistro;
     private EstadoJuego() {};
     private static EstadoJuego estado = null;
     public static EstadoJuego getInstance() {
@@ -28,5 +29,13 @@ public class EstadoJuego {
 
     public void setPartida(Partida partida) {
         this.partida = partida;
+    }
+
+    public String getUrlAvatarRegistro() {
+        return urlAvatarRegistro;
+    }
+
+    public void setUrlAvatarRegistro(String urlAvatarRegistro) {
+        this.urlAvatarRegistro = urlAvatarRegistro;
     }
 }

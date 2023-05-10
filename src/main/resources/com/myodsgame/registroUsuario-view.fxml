@@ -182,7 +182,7 @@
                               <Insets top="4.0" />
                            </VBox.margin>
                            <image>
-                              <Image url="@../../images/avatardefault.png" />
+                              <Image url="@../../images/avatar1.png" />
                            </image>
                         </ImageView>
                      </children>

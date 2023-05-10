@@ -4,6 +4,7 @@ import com.myodsgame.Models.Estadisticas;
 import com.myodsgame.Models.Usuario;
 import com.myodsgame.Repository.RepositorioUsuario;
 import com.myodsgame.Repository.RepositorioUsuarioImpl;
+import com.myodsgame.Utils.EstadoJuego;
 import com.myodsgame.Utils.UserUtils;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -271,7 +272,7 @@ public class RegistroController implements Initializable {
         usuario.setEmail(emailField.getText());
         usuario.setBirthdate(Date.from(birthdateSelector.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
         usuario.setEstadistica(new Estadisticas());
-        usuario.setAvatar(avatar.getImage().getUrl());
+        usuario.setAvatar(EstadoJuego.getInstance().getUrlAvatarRegistro());
 
         repositorioUsuario.saveUsuario(usuario);
 
@@ -319,7 +320,7 @@ public class RegistroController implements Initializable {
         FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/avatar-view.fxml"));
         Pane root = myLoader.load();
         AvatarController avatarController = myLoader.<AvatarController>getController();
-        avatarController.initAvatar(avatar);
+        avatarController.initAvatarRegi(avatar);
         Scene scene = new Scene (root);
         Stage stage = new Stage();
         stage.setScene(scene);
