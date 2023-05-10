@@ -134,6 +134,14 @@ public class RetoAhorcadoController implements Initializable {
         {
             vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
         }
+        consolidarButton.setDisable(true);
+        nextQuestionButton.setDisable(true);
+
+        if(EstadoJuego.getInstance().getPartida().getPuntuacion() >= retoActual.getPuntuacion()/2)
+            ayudaButton.setDisable(false);
+        else
+            ayudaButton.setDisable(true);
+
         timeline.playFromStart();
 
     }
@@ -224,7 +232,11 @@ public class RetoAhorcadoController implements Initializable {
                 stage.show();
             }
             catch (IOException e){}
-
+            nextQuestionButton.setDisable(false);
+            if(!EstadoJuego.getInstance().getPartida().isConsolidado()) {
+                EstadoJuego.getInstance().getPartida().setConsolidado(true);
+                consolidarButton.setDisable(false);
+            }
             showMessage("HAS GANADO " + obtainedPoints + " PUNTOS", true);
             ayudaButton.setDisable(true);
         }
@@ -258,6 +270,7 @@ public class RetoAhorcadoController implements Initializable {
                 vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
             }
             ayudaButton.setDisable(true);
+            nextQuestionButton.setDisable(false);
         }
     }
 
@@ -333,7 +346,9 @@ public class RetoAhorcadoController implements Initializable {
                     }
                 }
             }
-
+            int puntos =  EstadoJuego.getInstance().getPartida().getPuntuacion() - retoActual.getPuntuacion()/2;
+            EstadoJuego.getInstance().getPartida().setPuntuacion(puntos);
+            partidaScore.setText("Score: " + puntos);
             ayudaButton.setDisable(true);
             ayudaUsada = true;
         }
