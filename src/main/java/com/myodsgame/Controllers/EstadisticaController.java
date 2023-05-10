@@ -57,11 +57,19 @@ public class EstadisticaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        labelPuntos.setText(EstadoJuego.getInstance().getUsuario().getEstadistica().getPuntosTotales() + "");
+        Estadisticas est = EstadoJuego.getInstance().getUsuario().getEstadistica();
+        labelPuntos.setText(String.valueOf(est.getPuntosTotales()));
 
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
-        int[] datosODS = EstadoJuego.getInstance().getUsuario().getEstadistica().getProgresoIndividualOds();
+        int[] datosODS = new int[17];
+        for (int i = 0; i < est.getAciertos_individual_ods().length; i++) {
+            int aciertos = est.getAciertos_individual_ods()[i];
+            int fallos = est.getFallos_individual_ods()[i];
+            if (aciertos == 0) datosODS[i] = 0;
+            else if (fallos == 0) datosODS[i]= 0;
+            else datosODS[i] = aciertos / (aciertos+fallos);
+        }
         //String[] colores = {"#e30614", "#d5a200", "#309637", "#b71828", "#e8401b", "#169eda", "#fbb900", "#931533", "#ee7317", "#dd0076", "#f69c0b", "#c6972c", "#467735", "#0678b8", "#3fa535", "#004e88", "#1e3464"};
 
         xAxis.setLabel("ODS");

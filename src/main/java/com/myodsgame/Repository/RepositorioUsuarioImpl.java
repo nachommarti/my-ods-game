@@ -24,7 +24,7 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
         try {
             String sql = "SELECT u.username, u.email, u.password, u.birthdate, " +
                     "e.puntos_totales, e.partidas_jugadas, e.numero_aciertos, " +
-                    "e.numero_fallos, e.progreso_individual_ods " +
+                    "e.numero_fallos, e.aciertos_individual_ods, e.fallos_individual_ods " +
                     "FROM usuarios u " +
                     "INNER JOIN estadisticas e ON u.username = e.username " +
                     "WHERE u.username = ? AND u.password = ?";
@@ -51,14 +51,24 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
                 estadisticas.setNumeroFallos(result.getInt("numero_fallos"));
 
                 // Parse progresoIndividualOds from the database result
-                String progresoIndividualOdsString = result.getString("progreso_individual_ods");
-                String[] progresoIndividualOdsArray = progresoIndividualOdsString.split(",");
-                int[] progresoIndividualOds = new int[17];
-                for (int i = 0; i < progresoIndividualOdsArray.length; i++) {
-                    int odsNumber = Integer.parseInt(progresoIndividualOdsArray[i]);
-                    progresoIndividualOds[i] = odsNumber;
+                String aciertosIndividualOdsString = result.getString("aciertos_individual_ods");
+                String[] aciertosIndividualOdsArray = aciertosIndividualOdsString.split(",");
+                int[] aciertosIndividualOds = new int[17];
+                for (int i = 0; i < aciertosIndividualOdsArray.length; i++) {
+                    int odsNumber = Integer.parseInt(aciertosIndividualOdsArray[i]);
+                    aciertosIndividualOds[i] = odsNumber;
                 }
-                estadisticas.setProgresoIndividualOds(progresoIndividualOds);
+                estadisticas.setAciertos_individual_ods(aciertosIndividualOds);
+
+                String fallosIndividualOdsString = result.getString("fallos_individual_ods");
+                String[] fallosIndividualOdsArray = fallosIndividualOdsString.split(",");
+                int[] fallosIndividualOds = new int[17];
+                for (int i = 0; i < fallosIndividualOdsArray.length; i++) {
+                    int odsNumber = Integer.parseInt(fallosIndividualOdsArray[i]);
+                    fallosIndividualOds[i] = odsNumber;
+                }
+                estadisticas.setFallos_individual_ods(fallosIndividualOds);
+
                 user.setEstadistica(estadisticas);
             }
 
@@ -104,8 +114,8 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
 
             // Insert statement for the estadisticas table
             String estadisticasInsert = "INSERT INTO estadisticas (username, puntos_totales, partidas_jugadas, " +
-                    "numero_aciertos, numero_fallos, progreso_individual_ods) " +
-                    "VALUES (?, ?, ?, ?, ?, ?)";
+                    "numero_aciertos, numero_fallos, aciertos_individual_ods, fallos_individual_ods) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             PreparedStatement estadisticasStatement = connection.prepareStatement(estadisticasInsert);
             estadisticasStatement.setString(1, user.getUsername());
@@ -114,16 +124,27 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
             estadisticasStatement.setInt(4, user.getEstadistica().getNumeroAciertos());
             estadisticasStatement.setInt(5, user.getEstadistica().getNumeroFallos());
 
-            // Convert progresoIndividualOds array to a comma-separated string
-            int[] progresoIndividualOds = user.getEstadistica().getProgresoIndividualOds();
-            StringBuilder progresoIndividualOdsBuilder = new StringBuilder();
-            for (int i = 0; i < progresoIndividualOds.length; i++) {
-                progresoIndividualOdsBuilder.append(progresoIndividualOds[i]);
-                if (i < progresoIndividualOds.length - 1) {
-                    progresoIndividualOdsBuilder.append(",");
+            // Convert aciertosIndividualOds array to a comma-separated string
+            int[] aciertosIndividualOds = user.getEstadistica().getAciertos_individual_ods();
+            StringBuilder aciertosIndividualOdsBuilder = new StringBuilder();
+            for (int i = 0; i < aciertosIndividualOds.length; i++) {
+                aciertosIndividualOdsBuilder.append(aciertosIndividualOds[i]);
+                if (i < aciertosIndividualOds.length - 1) {
+                    aciertosIndividualOdsBuilder.append(",");
                 }
             }
-            estadisticasStatement.setString(6, progresoIndividualOdsBuilder.toString());
+            estadisticasStatement.setString(6, aciertosIndividualOdsBuilder.toString());
+
+            // Convert fallosIndividualOds array to a comma-separated string
+            int[] fallosIndividualOds = user.getEstadistica().getFallos_individual_ods();
+            StringBuilder fallosIndividualOdsBuilder = new StringBuilder();
+            for (int i = 0; i < fallosIndividualOds.length; i++) {
+                fallosIndividualOdsBuilder.append(fallosIndividualOds[i]);
+                if (i < fallosIndividualOds.length - 1) {
+                    fallosIndividualOdsBuilder.append(",");
+                }
+            }
+            estadisticasStatement.setString(7, fallosIndividualOdsBuilder.toString());
 
             estadisticasStatement.executeUpdate();
             estadisticasStatement.close();
@@ -139,7 +160,7 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
         try {
             // Update statement for the estadisticas table
             String estadisticasUpdate = "UPDATE estadisticas SET puntos_totales=?, partidas_jugadas=?, " +
-                    "numero_aciertos=?, numero_fallos=?, progreso_individual_ods=? " +
+                    "numero_aciertos=?, numero_fallos=?, aciertos_individual_ods=?, fallos_individual_ods=? " +
                     "WHERE username=?";
 
             PreparedStatement estadisticasStatement = connection.prepareStatement(estadisticasUpdate);
@@ -148,18 +169,29 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
             estadisticasStatement.setInt(3, user.getEstadistica().getNumeroAciertos());
             estadisticasStatement.setInt(4, user.getEstadistica().getNumeroFallos());
 
-            // Convert progresoIndividualOds array to a comma-separated string
-            int[] progresoIndividualOds = user.getEstadistica().getProgresoIndividualOds();
-            StringBuilder progresoIndividualOdsBuilder = new StringBuilder();
-            for (int i = 0; i < progresoIndividualOds.length; i++) {
-                progresoIndividualOdsBuilder.append(progresoIndividualOds[i]);
-                if (i < progresoIndividualOds.length - 1) {
-                    progresoIndividualOdsBuilder.append(",");
+            // Convert aciertosIndividualOds array to a comma-separated string
+            int[] aciertosIndividualOds = user.getEstadistica().getAciertos_individual_ods();
+            StringBuilder aciertosIndividualOdsBuilder = new StringBuilder();
+            for (int i = 0; i < aciertosIndividualOds.length; i++) {
+                aciertosIndividualOdsBuilder.append(aciertosIndividualOds[i]);
+                if (i < aciertosIndividualOds.length - 1) {
+                    aciertosIndividualOdsBuilder.append(",");
                 }
             }
-            estadisticasStatement.setString(5, progresoIndividualOdsBuilder.toString());
+            estadisticasStatement.setString(5, aciertosIndividualOdsBuilder.toString());
 
-            estadisticasStatement.setString(6, user.getUsername());
+            // Convert fallosIndividualOds array to a comma-separated string
+            int[] fallosIndividualOds = user.getEstadistica().getFallos_individual_ods();
+            StringBuilder fallosIndividualOdsBuilder = new StringBuilder();
+            for (int i = 0; i < fallosIndividualOds.length; i++) {
+                fallosIndividualOdsBuilder.append(fallosIndividualOds[i]);
+                if (i < fallosIndividualOds.length - 1) {
+                    fallosIndividualOdsBuilder.append(",");
+                }
+            }
+            estadisticasStatement.setString(6, fallosIndividualOdsBuilder.toString());
+
+            estadisticasStatement.setString(7, user.getUsername());
             estadisticasStatement.executeUpdate();
             estadisticasStatement.close();
 
@@ -173,13 +205,6 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
     @Override
     public void updateUsuario(String newUser, String oldUser, String email) {
         try {
-//            String estadisticasUpdate = "UPDATE estadisticas SET username=? WHERE username=?";
-//            PreparedStatement estadisticasStatement = connection.prepareStatement(estadisticasUpdate);
-//            estadisticasStatement.setString(1, newUser);
-//            estadisticasStatement.setString(2, oldUser);
-//            estadisticasStatement.executeUpdate();
-//            estadisticasStatement.close();
-
             String usuarioUpdate = "UPDATE usuarios SET username=?, email=? WHERE username=?";
             PreparedStatement usuarioStatement = connection.prepareStatement(usuarioUpdate);
             usuarioStatement.setString(1, newUser);
