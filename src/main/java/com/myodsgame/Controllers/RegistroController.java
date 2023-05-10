@@ -11,16 +11,23 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -53,6 +60,8 @@ public class RegistroController implements Initializable {
     private PasswordField repeatPasswordField;
     @FXML
     private DatePicker birthdateSelector;
+    @FXML
+    private ImageView avatar;
 
     private BooleanProperty validPassword;
     private BooleanProperty validEmail;
@@ -119,9 +128,6 @@ public class RegistroController implements Initializable {
         errorLabel.visibleProperty().set(false);
         datePicker.styleProperty().setValue("");
     }
-
-    //=========================================================
-    // you must initialize here all related with the object
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         buttonHelpPass.focusTraversableProperty().set(false);
@@ -176,8 +182,6 @@ public class RegistroController implements Initializable {
 
         this.repositorioUsuario = new RepositorioUsuarioImpl();
     }
-
-    ;
 
     private void checkUsername() {
         if (!UserUtils.checkUsername(usernameField.textProperty().getValueSafe())) {
@@ -235,7 +239,7 @@ public class RegistroController implements Initializable {
 
 
     @FXML
-    private void dateEnterPressed(KeyEvent event) throws Exception {
+    private void dateEnterPressed(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER && validFields.getValue()) {
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -267,6 +271,7 @@ public class RegistroController implements Initializable {
         usuario.setEmail(emailField.getText());
         usuario.setBirthdate(Date.from(birthdateSelector.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
         usuario.setEstadistica(new Estadisticas());
+        usuario.setAvatar(avatar.getImage().getUrl());
 
         repositorioUsuario.saveUsuario(usuario);
 
@@ -309,6 +314,20 @@ public class RegistroController implements Initializable {
         alert.showAndWait();
     }
 
-
+    @FXML
+    void avatarButtonClicked(ActionEvent event) throws IOException {
+        FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/avatar-view.fxml"));
+        Pane root = myLoader.load();
+        AvatarController avatarController = myLoader.<AvatarController>getController();
+        avatarController.initAvatar(avatar);
+        Scene scene = new Scene (root);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Avatar Selector");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
+        stage.setResizable(false);
+        stage.showAndWait();
+    }
 
 }

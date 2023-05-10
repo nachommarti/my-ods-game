@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.AvatarController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <Button fx:id="avatar1Button" layoutY="83.0" mnemonicParsing="false" onAction="#handleAvatar1">
+         <graphic>
+            <ImageView fx:id="avatar1" fitHeight="166.0" fitWidth="145.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../images/avatardefault.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="avatar2Button" layoutX="10.0" layoutY="83.0" mnemonicParsing="false" onAction="#handleAvatar2" GridPane.columnIndex="1">
+         <graphic>
+            <ImageView fx:id="avatar2" fitHeight="166.0" fitWidth="145.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../images/avatar1.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="avatar3Button" layoutX="170.0" layoutY="83.0" mnemonicParsing="false" onAction="#handleAvatar3" GridPane.columnIndex="2">
+         <graphic>
+            <ImageView fx:id="avatar3" fitHeight="166.0" fitWidth="145.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../images/avatar2.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="avatar4Button" layoutX="170.0" layoutY="83.0" mnemonicParsing="false" onAction="#handleAvatar4" GridPane.columnIndex="3">
+         <graphic>
+            <ImageView fx:id="avatar4" fitHeight="166.0" fitWidth="145.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../images/avatar3.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="avatar5Button" layoutX="490.0" layoutY="13.0" mnemonicParsing="false" onAction="#handleAvatar5" GridPane.columnIndex="4">
+         <graphic>
+            <ImageView fx:id="avatar5" fitHeight="166.0" fitWidth="145.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../images/avatar4.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+   </children>
+</GridPane>

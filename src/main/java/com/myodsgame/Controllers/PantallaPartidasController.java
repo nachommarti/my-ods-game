@@ -5,15 +5,12 @@ import com.myodsgame.Builder.PartidaDirector;
 import com.myodsgame.Builder.PartidaMixtaBuilder;
 import com.myodsgame.Builder.PartidaPreguntasBuilder;
 import com.myodsgame.Models.Partida;
-import com.myodsgame.Models.Usuario;
 import com.myodsgame.Utils.EstadoJuego;
 import com.myodsgame.Utils.TipoReto;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -21,7 +18,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -32,8 +28,6 @@ import java.util.ResourceBundle;
 
 
 public class PantallaPartidasController implements Initializable {
-    @FXML
-    private BorderPane borderPane;
     @FXML
     private Button retoPregunta;
     @FXML
@@ -88,6 +82,7 @@ public class PantallaPartidasController implements Initializable {
                         stage.setScene(scene);
                         stage.setTitle("Perfil");
                         stage.initModality(Modality.WINDOW_MODAL);
+                        stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
                         stage.setResizable(false);
                         stage.show();
                     }
@@ -107,6 +102,7 @@ public class PantallaPartidasController implements Initializable {
                         stage.setScene(scene);
                         stage.setTitle("Estadísticas");
                         stage.initModality(Modality.WINDOW_MODAL);
+                        stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
                         stage.setResizable(false);
                         stage.show();
                     }

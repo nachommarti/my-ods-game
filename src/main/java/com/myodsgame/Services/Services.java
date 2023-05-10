@@ -3,7 +3,6 @@ package com.myodsgame.Services;
 import com.myodsgame.Factory.RetoFactory;
 import com.myodsgame.Models.Estadisticas;
 import com.myodsgame.Models.Reto;
-import com.myodsgame.Models.Usuario;
 import com.myodsgame.Repository.RepositorioUsuario;
 import com.myodsgame.Repository.RepositorioUsuarioImpl;
 import com.myodsgame.Utils.EstadoJuego;
@@ -131,8 +130,8 @@ public class Services implements IServices {
     }
 
     @Override
-    public void updateUser(String newUser, String oldUser, String email) {
-        repositorioUsuario.updateUsuario(newUser, oldUser, email);
+    public void updateUser(String newUser, String oldUser, String email, String avatar) {
+        repositorioUsuario.updateUsuario(newUser, oldUser, email, avatar);
     }
 
     public int computePoints(Reto retoActual, boolean ayudaUsada, boolean retoAcertado) {

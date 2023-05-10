@@ -8,5 +8,5 @@ public interface RepositorioUsuario {
     boolean checkIfUserExists(String username);
     void saveUsuario(Usuario user);
     void updateUsuarioEstadisticas(Usuario user);
-    void updateUsuario(String newUser, String oldUser, String email);
+    void updateUsuario(String newUser, String oldUser, String email, String avatar);
 }

@@ -8,6 +8,7 @@ public class Usuario {
     private String password;
     private Date birthdate;
     private Estadisticas estadisticas;
+    private String avatar;
 
     public String getUsername() {
         return username;
@@ -48,4 +49,8 @@ public class Usuario {
     public void setEstadistica(Estadisticas estadistica) {
         this.estadisticas = estadistica;
     }
+
+    public String getAvatar() { return avatar; }
+
+    public void setAvatar(String avatar) { this.avatar = avatar; }
 }

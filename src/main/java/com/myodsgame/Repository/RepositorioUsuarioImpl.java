@@ -1,13 +1,10 @@
 package com.myodsgame.Repository;
 
 import com.myodsgame.Models.Estadisticas;
-import com.myodsgame.Models.Pregunta;
 import com.myodsgame.Models.Usuario;
 import com.myodsgame.Utils.DBConnection;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class RepositorioUsuarioImpl implements RepositorioUsuario{
 
@@ -19,10 +16,10 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
 
     public Usuario getUsuarioPorUsernameYContraseña(String username, String password)  {
         Usuario user = null;
-        Estadisticas estadisticas = null;
+        Estadisticas estadisticas;
 
         try {
-            String sql = "SELECT u.username, u.email, u.password, u.birthdate, " +
+            String sql = "SELECT u.username, u.email, u.password, u.birthdate, u.avatar, " +
                     "e.puntos_totales, e.partidas_jugadas, e.numero_aciertos, " +
                     "e.numero_fallos, e.aciertos_individual_ods, e.fallos_individual_ods " +
                     "FROM usuarios u " +
@@ -43,6 +40,7 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
                 user.setEmail(result.getString("email"));
                 user.setPassword(result.getString("password"));
                 user.setBirthdate(result.getDate("birthdate"));
+                user.setAvatar(result.getString("avatar"));
 
                 estadisticas = new Estadisticas();
                 estadisticas.setPuntosTotales(result.getInt("puntos_totales"));
@@ -101,14 +99,15 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
     public void saveUsuario(Usuario user) {
         try {
             // Insert statement for the usuario table
-            String usuarioInsert = "INSERT INTO usuarios (username, email, password, birthdate) " +
-                    "VALUES (?, ?, ?, ?)";
+            String usuarioInsert = "INSERT INTO usuarios (username, email, password, birthdate, avatar) " +
+                    "VALUES (?, ?, ?, ?, ?)";
 
             PreparedStatement usuarioStatement = connection.prepareStatement(usuarioInsert);
             usuarioStatement.setString(1, user.getUsername());
             usuarioStatement.setString(2, user.getEmail());
             usuarioStatement.setString(3, user.getPassword());
             usuarioStatement.setDate(4, new java.sql.Date(user.getBirthdate().getTime()));
+            usuarioStatement.setString(5, user.getAvatar());
             usuarioStatement.executeUpdate();
             usuarioStatement.close();
 
@@ -203,13 +202,14 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
     }
 
     @Override
-    public void updateUsuario(String newUser, String oldUser, String email) {
+    public void updateUsuario(String newUser, String oldUser, String email, String avatar) {
         try {
-            String usuarioUpdate = "UPDATE usuarios SET username=?, email=? WHERE username=?";
+            String usuarioUpdate = "UPDATE usuarios SET username=?, email=?, avatar=? WHERE username=?";
             PreparedStatement usuarioStatement = connection.prepareStatement(usuarioUpdate);
             usuarioStatement.setString(1, newUser);
             usuarioStatement.setString(2, email);
-            usuarioStatement.setString(3, oldUser);
+            usuarioStatement.setString(3, avatar);
+            usuarioStatement.setString(4, oldUser);
             usuarioStatement.executeUpdate();
             usuarioStatement.close();
         } catch (SQLException e) {
