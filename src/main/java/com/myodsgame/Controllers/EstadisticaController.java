@@ -68,7 +68,7 @@ public class EstadisticaController implements Initializable {
             int fallos = est.getFallos_individual_ods()[i];
 
             if (aciertos == 0) datosODS[i] = 0;
-            else if (fallos == 0) datosODS[i]= 0;
+            else if (fallos == 0) datosODS[i]= 100;
             else{
                 double res = (double) aciertos / (aciertos+fallos);
                 datosODS[i] = (int) Math.round(res);

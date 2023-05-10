@@ -206,6 +206,7 @@ public class RetoAhorcadoController implements Initializable {
             obtainedPoints = servicios.computePoints(retoActual, ayudaUsada, true);
             int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
             EstadoJuego.getInstance().getPartida().setPuntuacion(puntosPartida + obtainedPoints);
+            UserUtils.saveStats(true, retoActual.getODS());
             try
             {
                 FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/popUpRetoPregunta.fxml"));
@@ -235,6 +236,7 @@ public class RetoAhorcadoController implements Initializable {
         if(retoActual.getIntentos() == 0){
             disableKeyboard();
             botonSalir.setDisable(false);
+            UserUtils.saveStats(false, retoActual.getODS());
             obtainedPoints = servicios.computePoints(retoActual, ayudaUsada, false);
             int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
             EstadoJuego.getInstance().getPartida().setPuntuacion(puntosPartida + obtainedPoints);
@@ -244,6 +246,7 @@ public class RetoAhorcadoController implements Initializable {
             if(vidasPartida == 0){
                 showMessage("HAS PERDIDO LA PARTIDA Y " + obtainedPoints + " PUNTOS!", false);
                 EstadoJuego.getInstance().getPartida().setPartidaPerdida(true);
+                UserUtils.aumentarPartidasJugadas();
             }
             EstadoJuego.getInstance().getPartida().setVidas(vidasPartida);
 

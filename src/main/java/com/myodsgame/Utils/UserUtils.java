@@ -6,6 +6,8 @@ import com.myodsgame.Models.Usuario;
 import com.myodsgame.Repository.RepositorioUsuario;
 import com.myodsgame.Repository.RepositorioUsuarioImpl;
 
+import java.util.List;
+
 public class UserUtils {
 
     public static String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
@@ -52,4 +54,47 @@ public class UserUtils {
         repositorioUsuario.updateUsuarioEstadisticas(user);
     }
 
+    public static void saveStats(boolean correcto, List<Integer> ODS){
+        Usuario user = EstadoJuego.getInstance().getUsuario();
+        Estadisticas estadisticas = user.getEstadistica();
+
+        if(correcto) {
+            estadisticas.setNumeroAciertos(estadisticas.getNumeroAciertos() + 1);
+            if(ODS.size() > 1 || ODS.get(0) > 0){
+                int[] aciertosODS = estadisticas.getAciertos_individual_ods();
+
+                for(int i = 0; i < ODS.size(); i++) {
+                    aciertosODS[ODS.get(i) - 1]++;
+                }
+
+                estadisticas.setAciertos_individual_ods(aciertosODS);
+            }
+
+        }
+        else{
+            estadisticas.setNumeroFallos(estadisticas.getNumeroFallos() + 1);
+            if(ODS.size() > 1 || ODS.get(0) > 0) {
+                int[] fallosODS = estadisticas.getFallos_individual_ods();
+
+                for(int i = 0; i < ODS.size(); i++) {
+                    fallosODS[ODS.get(i) - 1]++;
+                }
+
+                estadisticas.setFallos_individual_ods(fallosODS);
+            }
+        }
+
+        user.setEstadistica(estadisticas);
+        RepositorioUsuario repositorioUsuario = new RepositorioUsuarioImpl();
+        repositorioUsuario.updateUsuarioEstadisticas(user);
+    }
+
+    public static void aumentarPartidasJugadas(){
+        Usuario user = EstadoJuego.getInstance().getUsuario();
+        Estadisticas estadisticas = user.getEstadistica();
+        estadisticas.setPartidasJugadas(estadisticas.getPartidasJugadas() + 1);
+        user.setEstadistica(estadisticas);
+        RepositorioUsuario repositorioUsuario = new RepositorioUsuarioImpl();
+        repositorioUsuario.updateUsuarioEstadisticas(user);
+    }
 }
