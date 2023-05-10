@@ -30,27 +30,34 @@ public class PopUpRetoPreguntaController implements Initializable {
     private Button abandonarBoton;
     @FXML
     private Button siguientePreguntaBoton;
-    private int numeroPregunta = partidaActual.getRetoActual();
+    private int numeroPregunta;
     private ObservableList<Window> windows = Stage.getWindows();
     private IServices servicios;
 
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
         servicios = new Services();
-        Partida partida = EstadoJuego.getInstance().getPartida();
-        mensaje.setText("¡Enhorabuena! Acabas de ganar " + partida.getRetos().get(partida.getRetoActual()).getPuntuacion());
         partidaActual = EstadoJuego.getInstance().getPartida();
-        obtainedPoints = servicios.computePoints(partida.getRetos().get(partida.getRetoActual()), partida.getRetos().get(partida.getRetoActual()).isAyudaUsada(), true);
-
+        numeroPregunta = partidaActual.getRetoActual();
+        obtainedPoints = servicios.computePoints(partidaActual.getRetos().get(partidaActual.getRetoActual()), partidaActual.getRetos().get(partidaActual.getRetoActual()).isAyudaUsada(), true);
         consolidarBoton.setDisable(partidaActual.isConsolidado());
         abandonarBoton.setDisable(!partidaActual.isConsolidado());
-        if (numeroPregunta == 10)
+
+        if (!partidaActual.getRetosFallados()[numeroPregunta - 1])
         {
-            abandonarBoton.setDisable(false);
-            abandonarBoton.setText("Volver al menú");
-            consolidarBoton.setDisable(true);
-            siguientePreguntaBoton.setDisable(true);
+            mensaje.setText("¡Enhorabuena! Acabas de ganar " + partidaActual.getRetos().get(partidaActual.getRetoActual()).getPuntuacion() + " puntos");
         }
+        else
+        {
+            mensaje.setText("¡Vaya! Has perdido " + partidaActual.getRetos().get(partidaActual.getRetoActual()).getPuntuacion() * 2 + " puntos");
+        }
+       if (numeroPregunta == 10)
+       {
+           abandonarBoton.setDisable(false);
+           abandonarBoton.setText("Volver al menú");
+           consolidarBoton.setDisable(true);
+           siguientePreguntaBoton.setDisable(true);
+       }
     }
 
     @FXML
@@ -85,12 +92,11 @@ public class PopUpRetoPreguntaController implements Initializable {
 
         for (Window window : windows)
         {
-            if (((Stage) window).getTitle().equals("Reto Ahorcado"))
+            if (((Stage) window).getTitle().equals("Reto Ahorcado") || ((Stage) window).getTitle().equals("Reto Pregunta"))
             {
                 ((Stage) window).close();
             }
         }
-        //TODO: VER EL NOMBRE DEL RETO
         EstadoJuego.getInstance().getPartida().setRetoActual(numeroPregunta+1);
         Stage stage = (Stage) consolidarBoton.getScene().getWindow();
         stage.close();
