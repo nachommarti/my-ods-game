@@ -207,7 +207,6 @@ public class RetoAhorcadoController implements Initializable {
 
     private void checkWin(){
         if(palabraMostrada.getText().equals(palabra)) {
-            showPopUp();
             disableKeyboard();
             obtainedPoints = servicios.computePoints(retoActual, ayudaUsada, true);
             int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
@@ -220,6 +219,7 @@ public class RetoAhorcadoController implements Initializable {
             }
             showMessage("HAS GANADO " + obtainedPoints + " PUNTOS", true);
             ayudaButton.setDisable(true);
+            showPopUp();
         }
     }
 
@@ -234,7 +234,6 @@ public class RetoAhorcadoController implements Initializable {
             int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
             EstadoJuego.getInstance().getPartida().setPuntuacion(puntosPartida + obtainedPoints);
             EstadoJuego.getInstance().getPartida().getRetosFallados()[numeroPregunta-1] = true;
-            showPopUp();
             int vidasPartida = EstadoJuego.getInstance().getPartida().getVidas()-1;
             showMessage("HAS PERDIDO " + obtainedPoints + " PUNTOS", false);
             if(vidasPartida == 0){
@@ -243,7 +242,7 @@ public class RetoAhorcadoController implements Initializable {
                 UserUtils.aumentarPartidasJugadas();
             }
             EstadoJuego.getInstance().getPartida().setVidas(vidasPartida);
-
+            showPopUp();
             if (EstadoJuego.getInstance().getPartida().getVidas() == 1) {
                 vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
             }

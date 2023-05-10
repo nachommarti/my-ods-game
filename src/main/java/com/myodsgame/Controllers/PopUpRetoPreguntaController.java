@@ -29,7 +29,7 @@ public class PopUpRetoPreguntaController implements Initializable {
     @FXML
     private Button abandonarBoton;
     @FXML
-    private Button siguientePreguntaBoton;
+    private Button siguientePregunta;
     private int numeroPregunta;
     private ObservableList<Window> windows = Stage.getWindows();
     private IServices servicios;
@@ -50,14 +50,16 @@ public class PopUpRetoPreguntaController implements Initializable {
         else
         {
             mensaje.setText("¡Vaya! Has perdido " + partidaActual.getRetos().get(partidaActual.getRetoActual()).getPuntuacion() * 2 + " puntos");
+            consolidarBoton.setDisable(true);
         }
-       if (numeroPregunta == 10)
-       {
-           abandonarBoton.setDisable(false);
-           abandonarBoton.setText("Volver al menú");
-           consolidarBoton.setDisable(true);
-           siguientePreguntaBoton.setDisable(true);
-       }
+        if (partidaActual.isPartidaPerdida())
+        {
+            mensaje.setText("Has perdido la partida ¡Suerte para la próxima!");
+            abandonarBoton.setText("Menú principal");
+            abandonarBoton.setDisable(false);
+            siguientePregunta.setVisible(false);
+            consolidarBoton.setVisible(false);
+        }
     }
 
     @FXML
