@@ -70,7 +70,7 @@ public class EstadisticaController implements Initializable {
             if (aciertos == 0) datosODS[i] = 0;
             else if (fallos == 0) datosODS[i]= 100;
             else{
-                double res = (double) aciertos / (aciertos+fallos);
+                double res = ((double) aciertos / (aciertos+fallos) ) * 100.0;
                 datosODS[i] = (int) Math.round(res);
             }
         }
