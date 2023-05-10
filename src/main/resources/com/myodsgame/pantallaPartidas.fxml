@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
 <BorderPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #21315A;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.PantallaPartidasController">
@@ -13,7 +14,12 @@
                      <children>
                         <Label fx:id="puntosAlmacenados" text="Puntos almacenados" textFill="WHITE" />
                      </children></VBox>
-                  <ComboBox fx:id="desplegablePerfil" accessibleRole="BUTTON" prefHeight="93.0" prefWidth="110.0" />
+                  <StackPane fx:id="stackPane" prefHeight="123.0" prefWidth="70.0">
+                     <children>
+                        <ImageView fx:id="imagenUsuario" fitHeight="96.0" fitWidth="103.0" pickOnBounds="true" preserveRatio="true" />
+                        <ComboBox fx:id="desplegablePerfil" accessibleRole="BUTTON" prefHeight="93.0" prefWidth="98.0" style="-fx-background-color: null;" visibleRowCount="3" />
+                     </children>
+                  </StackPane>
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="125.0" prefWidth="600.0" spacing="30.0">

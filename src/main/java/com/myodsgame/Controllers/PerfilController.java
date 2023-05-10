@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -127,6 +128,23 @@ public class PerfilController implements Initializable {
 
     @FXML
     void salirBotonPulsado (ActionEvent event) {
+        FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/pantallaPartidas.fxml"));
+        BorderPane root = null;
+        try {
+            root = myLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Menú Principal");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
+        stage.setResizable(false);
+        stage.show();
+
         Node source = (Node) event.getSource();
         Stage oldStage = (Stage) source.getScene().getWindow();
         oldStage.close();
