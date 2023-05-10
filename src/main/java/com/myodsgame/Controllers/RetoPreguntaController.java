@@ -379,7 +379,11 @@ public class RetoPreguntaController implements Initializable {
             Scene scene = new Scene (root, 357, 184);
             Stage  stage = new Stage();
             stage.setScene(scene);
-            stage.setTitle("¡Enhorabuena!");
+            if (!partidaActual.getRetosFallados()[numeroPregunta]) {
+                stage.setTitle("¡Enhorabuena!");
+            } else {
+                stage.setTitle("Oops!");
+            }
             stage.initModality(Modality.WINDOW_MODAL);
             stage.setResizable(false);
             stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
