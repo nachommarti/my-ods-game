@@ -2,7 +2,6 @@ package com.myodsgame.Controllers;
 
 import com.myodsgame.Models.Partida;
 import com.myodsgame.Models.RetoAhorcado;
-import com.myodsgame.Models.RetoPregunta;
 import com.myodsgame.Services.IServices;
 import com.myodsgame.Services.Services;
 import com.myodsgame.Utils.EstadoJuego;
@@ -23,7 +22,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -38,7 +36,6 @@ public class RetoAhorcadoController implements Initializable {
 
     @FXML
     private ImageView vidas;
-
     @FXML
     private Button ayudaButton;
 
@@ -70,12 +67,12 @@ public class RetoAhorcadoController implements Initializable {
     private Label palabraMostrada;
     @FXML
     private HBox labelArray;
-    @FXML
-    private Button nextQuestionButton;
-    @FXML
-    private Button consolidarButton;
-    @FXML
-    private Button botonSalir;
+    //@FXML
+    //private Button nextQuestionButton;
+    //@FXML
+    //private Button consolidarButton;
+    //@FXML
+    //private Button botonSalir;
 
     private Partida partidaActual;
     private RetoAhorcado retoActual;
@@ -124,6 +121,7 @@ public class RetoAhorcadoController implements Initializable {
         else imagenODS.setImage(new Image(Path.of("", "src", "main", "resources", "images", "ODS_0.jpg").toAbsolutePath().toString()));
 
         frasePista.setText(retoActual.getPista());
+        imagenAhorcado.setImage(new Image(Path.of("", "src", "main", "resources", "images", "ahorcado" + retoActual.getIntentos() + ".png").toAbsolutePath().toString()));
 
         loadRetosState();
         loadPalabra();
@@ -134,8 +132,8 @@ public class RetoAhorcadoController implements Initializable {
         {
             vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
         }
-        consolidarButton.setDisable(true);
-        nextQuestionButton.setDisable(true);
+        //consolidarButton.setDisable(true);
+        //nextQuestionButton.setDisable(true);
 
         if(EstadoJuego.getInstance().getPartida().getPuntuacion() >= retoActual.getPuntuacion()/2)
             ayudaButton.setDisable(false);
@@ -191,7 +189,7 @@ public class RetoAhorcadoController implements Initializable {
     }
 
     private void disableKeyboard(){
-        for(Node node : botones1.getChildren()){
+        for(Node node : botones1.getChildren()) {
             Button button = (Button) node;
             button.setDisable(true);
         }
@@ -210,44 +208,27 @@ public class RetoAhorcadoController implements Initializable {
     private void checkWin(){
         if(palabraMostrada.getText().equals(palabra)) {
             disableKeyboard();
-            nextQuestionButton.setDisable(false);
             obtainedPoints = servicios.computePoints(retoActual, ayudaUsada, true);
             int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
             EstadoJuego.getInstance().getPartida().setPuntuacion(puntosPartida + obtainedPoints);
             UserUtils.saveStats(true, retoActual.getODS());
-            try
-            {
-                FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/popUpRetoPregunta.fxml"));
-                BorderPane root = myLoader.load();
-                Scene scene = new Scene (root, 357, 184);
-                Stage  stage = new Stage();
-                stage.setScene(scene);
-                stage.setTitle("¡Enhorabuena!");
-                stage.initModality(Modality.WINDOW_MODAL);
-                stage.setResizable(false);
-                stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
-                stage.setOnCloseRequest(e -> {
-                    System.exit(0);
-                });
-                stage.show();
-            }
-            catch (IOException e){}
-            nextQuestionButton.setDisable(false);
+            //nextQuestionButton.setDisable(false);
             if(!EstadoJuego.getInstance().getPartida().isConsolidado()) {
                 EstadoJuego.getInstance().getPartida().setConsolidado(true);
-                consolidarButton.setDisable(false);
+                //consolidarButton.setDisable(false);
             }
             showMessage("HAS GANADO " + obtainedPoints + " PUNTOS", true);
             ayudaButton.setDisable(true);
+            showPopUp();
         }
-
-
     }
+
+
 
     private void checkLose(){
         if(retoActual.getIntentos() == 0){
             disableKeyboard();
-            botonSalir.setDisable(false);
+            //botonSalir.setDisable(false);
             UserUtils.saveStats(false, retoActual.getODS());
             obtainedPoints = servicios.computePoints(retoActual, ayudaUsada, false);
             int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
@@ -261,7 +242,7 @@ public class RetoAhorcadoController implements Initializable {
                 UserUtils.aumentarPartidasJugadas();
             }
             EstadoJuego.getInstance().getPartida().setVidas(vidasPartida);
-
+            showPopUp();
             if (EstadoJuego.getInstance().getPartida().getVidas() == 1) {
                 vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
             }
@@ -270,7 +251,7 @@ public class RetoAhorcadoController implements Initializable {
                 vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
             }
             ayudaButton.setDisable(true);
-            nextQuestionButton.setDisable(false);
+            //nextQuestionButton.setDisable(false);
         }
     }
 
@@ -278,7 +259,6 @@ public class RetoAhorcadoController implements Initializable {
         estatusRespuesta.setText(message);
         estatusRespuesta.setTextFill(win ? Color.GREEN : Color.RED);
         partidaScore.setText("Score: " + EstadoJuego.getInstance().getPartida().getPuntuacion());
-
     }
 
 
@@ -354,27 +334,47 @@ public class RetoAhorcadoController implements Initializable {
         }
     }
 
-    @FXML
-    void consolidarButtonClicked(ActionEvent event) {
+    //@FXML
+    //void consolidarButtonClicked(ActionEvent event) {
+//
+    //    consolidarButton.setDisable(true);
+    //    UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacion());
+    //}
+//
+    //@FXML
+    //void botonSalirPulsado(ActionEvent event) {
+//
+    //}
+//
+    //@FXML
+    //void siguientePreguntaClicked(ActionEvent event) {
+    //    if(numeroPregunta == 10){
+    //        UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacion());
+    //    }
+//
+    //    EstadoJuego.getInstance().getPartida().setRetoActual(numeroPregunta+1);
+    //    Stage stage = (Stage) nextQuestionButton.getScene().getWindow();
+    //    stage.close();
+    //}
 
-        consolidarButton.setDisable(true);
-        UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacion());
-    }
-
-    @FXML
-    void botonSalirPulsado(ActionEvent event) {
-
-    }
-
-    @FXML
-    void siguientePreguntaClicked(ActionEvent event) {
-        if(numeroPregunta == 10){
-            UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacion());
+    private void showPopUp() {
+        try
+        {
+            FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/popUpReto.fxml"));
+            BorderPane root = myLoader.load();
+            Scene scene = new Scene (root, 357, 184);
+            Stage  stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("¡Enhorabuena!");
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.setResizable(false);
+            stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
+            stage.setOnCloseRequest(e -> {
+                System.exit(0);
+            });
+            stage.show();
         }
-
-        EstadoJuego.getInstance().getPartida().setRetoActual(numeroPregunta+1);
-        Stage stage = (Stage) nextQuestionButton.getScene().getWindow();
-        stage.close();
+        catch (IOException e) {System.out.println(e.getMessage());}
     }
 
 }

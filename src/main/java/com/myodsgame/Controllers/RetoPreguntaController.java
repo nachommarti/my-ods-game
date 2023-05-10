@@ -10,7 +10,9 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,10 +22,12 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.*;
@@ -59,8 +63,6 @@ public class RetoPreguntaController implements Initializable {
     private Label consolidatedScore;
     @FXML
     private ImageView vidas;
-    @FXML
-    private Button consolidarButton;
 
     @FXML
     private Label estatusRespuesta;
@@ -68,10 +70,6 @@ public class RetoPreguntaController implements Initializable {
     private ImageView imagenODS;
     @FXML
     private HBox labelArray;
-    @FXML
-    private Button botonSalir;
-    @FXML
-    private Button nextQuestionButton;
     private List<Button> respuestas;
     private String respuestaCorrecta;
     private boolean ayudaPulsada;
@@ -155,11 +153,9 @@ public class RetoPreguntaController implements Initializable {
         respuesta4.setText(retoPreguntaActual.getRespuesta4());
         this.respuestaCorrecta = retoPreguntaActual.getRespuestaCorrecta();
         this.respuestas = List.of(respuesta1, respuesta2, respuesta3, respuesta4);
-        consolidarButton.setDisable(true);
         timeCountdown = retoPreguntaActual.getDuracion();
         if (retoPreguntaActual.getODS().size() == 1) imagenODS.setImage(new Image(Path.of("", "src", "main", "resources", "images", "ODS_"+retoPreguntaActual.getODS().get(0)+".jpg").toAbsolutePath().toString()));
         else imagenODS.setImage(new Image(Path.of("", "src", "main", "resources", "images", "ODS_0.jpg").toAbsolutePath().toString()));
-        nextQuestionButton.setDisable(true);
         ((Label) labelArray.getChildren().get(numeroPregunta - 1)).setStyle("-fx-background-color: rgb(202,184,218)");
         timeline.playFromStart();
 
@@ -194,13 +190,13 @@ public class RetoPreguntaController implements Initializable {
         this.ayudaPulsada = true;
 
     }
-    @FXML
-    void botonSalirPulsado(ActionEvent event) {
-        if(mediaPlayerTicTac.getStatus() == MediaPlayer.Status.PLAYING) mediaPlayerTicTac.stop();
-        if(mediaPlayerMusic.getStatus() == MediaPlayer.Status.PLAYING) mediaPlayerMusic.stop();
-        Stage stage = (Stage) botonSalir.getScene().getWindow();
-        stage.close();
-    }
+   // @FXML
+   // void botonSalirPulsado(ActionEvent event) {
+   //     if(mediaPlayerTicTac.getStatus() == MediaPlayer.Status.PLAYING) mediaPlayerTicTac.stop();
+   //     if(mediaPlayerMusic.getStatus() == MediaPlayer.Status.PLAYING) mediaPlayerMusic.stop();
+   //     Stage stage = (Stage) botonSalir.getScene().getWindow();
+   //     stage.close();
+   // }
 
     @FXML
     void respuesta1Clicked(ActionEvent event) {
@@ -230,42 +226,40 @@ public class RetoPreguntaController implements Initializable {
         showMessage(respuestaCorrectaSeleccionada);
     }
 
-    @FXML
-    void siguientePreguntaClicked(ActionEvent event) {
-        if(numeroPregunta == 10){
-            UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacion());
-        }
-
-        Stage stage = (Stage) nextQuestionButton.getScene().getWindow();
-        stage.close();
-    }
-
-    @FXML
-    void consolidarButtonClicked(ActionEvent event) {
-        int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
-        consolidarButton.setDisable(true);
-        consolidated = true;
-        consolidatedScore.setVisible(true);
-        consolidatedScore.setText("Consolidated Score: " + puntosPartida);
-        botonSalir.setDisable(false);
-        UserUtils.saveUserScore(puntosPartida);
-    }
+    //@FXML
+    //void siguientePreguntaClicked(ActionEvent event) {
+    //    if(numeroPregunta == 10){
+    //        UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacion());
+    //    }
+//
+    //    Stage stage = (Stage) nextQuestionButton.getScene().getWindow();
+    //    stage.close();
+    //}
+//
+    //@FXML
+    //void consolidarButtonClicked(ActionEvent event) {
+    //    int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
+    //    consolidarButton.setDisable(true);
+    //    consolidated = true;
+    //    consolidatedScore.setVisible(true);
+    //    consolidatedScore.setText("Consolidated Score: " + puntosPartida);
+    //    botonSalir.setDisable(false);
+    //    UserUtils.saveUserScore(puntosPartida);
+    //}
 
     private void checkAnswers(Button respuestaSeleccionada) {
         timeline.stop();
         mediaPlayerMusic.stop();
         if(mediaPlayerTicTac.getStatus() == MediaPlayer.Status.PLAYING) mediaPlayerTicTac.stop();
         currentStyleLabel = labelArray.getStyle();
-        EstadoJuego.getInstance().getPartida().setRetoActual(numeroPregunta+1);
+
         if (respuestaSeleccionada.getText().equals(respuestaCorrecta)) {
             ((Label) labelArray.getChildren().get(numeroPregunta-1)).setStyle("-fx-background-color: rgba(184, 218, 186, 1); " + currentStyleLabel);
             ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.WHITE);
             respuestaCorrectaSeleccionada = true;
-            consolidarButton.setDisable(consolidated);
             reproducirSonido("src/main/resources/sounds/Acierto.mp3", 0.15);
             UserUtils.saveStats(true, retoActual.getODS());
             EstadoJuego.getInstance().getPartida().getRetosFallados()[numeroPregunta-1] = false;
-
         }
         else {
             ((Label) labelArray.getChildren().get(numeroPregunta-1)).setStyle("-fx-background-color: rgb(255,25,25); " + currentStyleLabel);
@@ -275,7 +269,7 @@ public class RetoPreguntaController implements Initializable {
             UserUtils.saveStats(false, retoActual.getODS());
             vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
             EstadoJuego.getInstance().getPartida().getRetosFallados()[numeroPregunta-1] = true;
-            if ( EstadoJuego.getInstance().getPartida().getVidas() == 0) {
+            if (EstadoJuego.getInstance().getPartida().getVidas() == 0) {
                 mediaPlayerSonidos.stop();
                 lostGame();
                 EstadoJuego.getInstance().getPartida().setPartidaPerdida(true);
@@ -283,9 +277,7 @@ public class RetoPreguntaController implements Initializable {
                 vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
             }
             numeroPregunta--;
-
         }
-
         for (Button respuesta : respuestas) {
             currentStyleButton = respuesta.getStyle();
             int index = currentStyleButton.indexOf(";");
@@ -300,20 +292,13 @@ public class RetoPreguntaController implements Initializable {
 
         }
 
-        if(numeroPregunta < 10){
-            if (!perdido) nextQuestionButton.setDisable(false);
-        }
-        else{
-            nextQuestionButton.setText("Fin de la partida!");
-            botonSalir.setText("Guardar y salir");
-            botonSalir.setDisable(false);
-        }
-
-
+        showPopUp();
+        EstadoJuego.getInstance().getPartida().setRetoActual(numeroPregunta+1);
         ayuda.setDisable(true);
         computePoints();
         EstadoJuego.getInstance().getPartida().setPuntuacion(EstadoJuego.getInstance().getPartida().getPuntuacion() + obtainedPoints);
         currentScore.setText("Score: " + EstadoJuego.getInstance().getPartida().getPuntuacion());
+
     }
 
     private void computePoints() {
@@ -323,8 +308,6 @@ public class RetoPreguntaController implements Initializable {
     private void endTimer() {
         respuestas.forEach(respuesta -> respuesta.setDisable(true));
 
-        if(numeroPregunta < 10)
-            nextQuestionButton.setDisable(false);
 
         EstadoJuego.getInstance().getPartida().setVidas(partidaActual.getVidas()-1);
         if (EstadoJuego.getInstance().getPartida().getVidas() == 1) {
@@ -339,7 +322,6 @@ public class RetoPreguntaController implements Initializable {
         }
 
         ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.RED);
-        consolidarButton.setDisable(consolidated);
         ayuda.setDisable(true);
         this.timeCountdown = 30;
         numeroPregunta--;
@@ -350,7 +332,8 @@ public class RetoPreguntaController implements Initializable {
         if (answered) {
             estatusRespuesta.setText("¡CORRECTO! " + "¡Acabas de conseguir " + obtainedPoints + " puntos!");
             estatusRespuesta.setTextFill(Color.GREEN);
-        } else {
+        }
+        else {
             estatusRespuesta.setText("¡INCORRECTO! " + "¡Acabas de perder " + obtainedPoints + " puntos!");
             estatusRespuesta.setTextFill(Color.RED);
         }
@@ -365,8 +348,6 @@ public class RetoPreguntaController implements Initializable {
         respuesta3.setDisable(true);
         respuesta4.setDisable(true);
         ayuda.setDisable(true);
-        nextQuestionButton.setDisable(true);
-        botonSalir.setDisable(false);
         UserUtils.aumentarPartidasJugadas();
     }
 
@@ -388,6 +369,26 @@ public class RetoPreguntaController implements Initializable {
         mediaPlayerMusic.setVolume(0.15);
         mediaPlayerMusic.play();
 
+    }
+
+    private void showPopUp() {
+        try
+        {
+            FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/popUpReto.fxml"));
+            BorderPane root = myLoader.load();
+            Scene scene = new Scene (root, 357, 184);
+            Stage  stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("¡Enhorabuena!");
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.setResizable(false);
+            stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
+            stage.setOnCloseRequest(e -> {
+                System.exit(0);
+            });
+            stage.show();
+        }
+        catch (IOException e) {System.out.println(e.getMessage());}
     }
 
 }
