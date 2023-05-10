@@ -22,6 +22,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -142,6 +143,10 @@ public class RetoAhorcadoController implements Initializable {
 
         timeline.playFromStart();
 
+        Rectangle clip = new Rectangle(imagenODS.getFitWidth(), imagenODS.getFitHeight());
+        clip.setArcWidth(40);
+        clip.setArcHeight(40);
+        imagenODS.setClip(clip);
     }
 
     private void loadRetosState(){
