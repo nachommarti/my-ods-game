@@ -263,6 +263,7 @@ public class RetoPreguntaController implements Initializable {
             respuestaCorrectaSeleccionada = true;
             consolidarButton.setDisable(consolidated);
             reproducirSonido("src/main/resources/sounds/Acierto.mp3", 0.15);
+            UserUtils.saveStats(true, retoActual.getODS());
             EstadoJuego.getInstance().getPartida().getRetosFallados()[numeroPregunta-1] = false;
 
         }
@@ -271,6 +272,7 @@ public class RetoPreguntaController implements Initializable {
             ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.WHITE);
             EstadoJuego.getInstance().getPartida().setVidas(partidaActual.getVidas()-1);
             reproducirSonido("src/main/resources/sounds/Fallo.mp3", 0.5);
+            UserUtils.saveStats(false, retoActual.getODS());
             vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
             EstadoJuego.getInstance().getPartida().getRetosFallados()[numeroPregunta-1] = true;
             if ( EstadoJuego.getInstance().getPartida().getVidas() == 0) {
@@ -365,6 +367,7 @@ public class RetoPreguntaController implements Initializable {
         ayuda.setDisable(true);
         nextQuestionButton.setDisable(true);
         botonSalir.setDisable(false);
+        UserUtils.aumentarPartidasJugadas();
     }
 
     private void reproducirSonido(String sonidoPath, double volumen){
