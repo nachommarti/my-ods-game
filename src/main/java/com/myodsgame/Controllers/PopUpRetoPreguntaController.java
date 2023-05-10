@@ -39,8 +39,9 @@ public class PopUpRetoPreguntaController implements Initializable {
         servicios = new Services();
         partidaActual = EstadoJuego.getInstance().getPartida();
         numeroPregunta = partidaActual.getRetoActual();
-        obtainedPoints = servicios.computePoints(partidaActual.getRetos().get(partidaActual.getRetoActual()), partidaActual.getRetos().get(partidaActual.getRetoActual()).isAyudaUsada(), true);
-        consolidarBoton.setDisable(partidaActual.isConsolidado());
+        int retoActual = partidaActual.getRetoActual();
+        obtainedPoints = servicios.computePoints(partidaActual.getRetos().get(retoActual), partidaActual.getRetos().get(retoActual).isAyudaUsada(), true);
+        consolidarBoton.setDisable(!partidaActual.isConsolidado());
         abandonarBoton.setDisable(!partidaActual.isConsolidado());
 
         if (!partidaActual.getRetosFallados()[numeroPregunta - 1])
@@ -49,8 +50,10 @@ public class PopUpRetoPreguntaController implements Initializable {
         }
         else
         {
-            mensaje.setText("¡Vaya! Has perdido " + partidaActual.getRetos().get(partidaActual.getRetoActual()).getPuntuacion() * 2 + " puntos");
+            int puntosPerdidos = Math.min((partidaActual.getRetos().get(partidaActual.getRetoActual()).getPuntuacion() * 2), partidaActual.getPuntuacion());
+            mensaje.setText("¡Vaya! Has perdido " + puntosPerdidos + " puntos");
             consolidarBoton.setDisable(true);
+            EstadoJuego.getInstance().getPartida().setRetoActual(numeroPregunta-1);
         }
         if (partidaActual.isPartidaPerdida())
         {
@@ -60,6 +63,7 @@ public class PopUpRetoPreguntaController implements Initializable {
             siguientePregunta.setVisible(false);
             consolidarBoton.setVisible(false);
         }
+        EstadoJuego.getInstance().getPartida().getRetos().remove(numeroPregunta-1);
     }
 
     @FXML
@@ -76,7 +80,7 @@ public class PopUpRetoPreguntaController implements Initializable {
         partidaActual.setPartidaAbandonada(true);
         for (Window window : windows)
         {
-            if (((Stage) window).getTitle().equals("Reto Ahorcado"))
+            if (((Stage) window).getTitle().equals("Reto Ahorcado") || ((Stage) window).getTitle().equals("Reto Pregunta"))
             {
                 ((Stage) window).close();
             }
@@ -99,7 +103,8 @@ public class PopUpRetoPreguntaController implements Initializable {
                 ((Stage) window).close();
             }
         }
-        EstadoJuego.getInstance().getPartida().setRetoActual(numeroPregunta+1);
+        EstadoJuego.getInstance().getPartida().setRetoActual(partidaActual.getRetoActual()+1);
+        EstadoJuego.getInstance().getPartida().getRetosFallados()[numeroPregunta-1] = false;
         Stage stage = (Stage) consolidarBoton.getScene().getWindow();
         stage.close();
     }

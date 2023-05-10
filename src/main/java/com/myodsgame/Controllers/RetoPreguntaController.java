@@ -276,8 +276,8 @@ public class RetoPreguntaController implements Initializable {
                 reproducirSonido("src/main/resources/sounds/Partida_Perdida.mp3", 0.5);
                 vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
             }
-            numeroPregunta--;
         }
+
         for (Button respuesta : respuestas) {
             currentStyleButton = respuesta.getStyle();
             int index = currentStyleButton.indexOf(";");
@@ -292,12 +292,13 @@ public class RetoPreguntaController implements Initializable {
 
         }
 
-        showPopUp();
-        EstadoJuego.getInstance().getPartida().setRetoActual(numeroPregunta+1);
         ayuda.setDisable(true);
         computePoints();
         EstadoJuego.getInstance().getPartida().setPuntuacion(EstadoJuego.getInstance().getPartida().getPuntuacion() + obtainedPoints);
         currentScore.setText("Score: " + EstadoJuego.getInstance().getPartida().getPuntuacion());
+        showPopUp();
+
+
 
     }
 

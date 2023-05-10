@@ -178,6 +178,7 @@ public class RetoAhorcadoController implements Initializable {
        else {
            pressedButton.setBackground(background);
            retoActual.setIntentos(retoActual.getIntentos()-1);
+
            checkLose();
            imagenAhorcado.setImage(new Image(Path.of("", "src", "main", "resources", "images", "ahorcado" + retoActual.getIntentos() +".png").toAbsolutePath().toString()));
        }
@@ -237,17 +238,16 @@ public class RetoAhorcadoController implements Initializable {
             UserUtils.saveStats(false, retoActual.getODS());
             obtainedPoints = servicios.computePoints(retoActual, ayudaUsada, false);
             int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
-            EstadoJuego.getInstance().getPartida().setPuntuacion(puntosPartida + obtainedPoints);
+
             EstadoJuego.getInstance().getPartida().getRetosFallados()[numeroPregunta-1] = true;
             int vidasPartida = EstadoJuego.getInstance().getPartida().getVidas()-1;
-            showMessage("HAS PERDIDO " + obtainedPoints + " PUNTOS", false);
             if(vidasPartida == 0){
                 showMessage("HAS PERDIDO LA PARTIDA Y " + obtainedPoints + " PUNTOS!", false);
                 EstadoJuego.getInstance().getPartida().setPartidaPerdida(true);
                 UserUtils.aumentarPartidasJugadas();
             }
             EstadoJuego.getInstance().getPartida().setVidas(vidasPartida);
-            showPopUp();
+
             if (EstadoJuego.getInstance().getPartida().getVidas() == 1) {
                 vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
             }
@@ -256,6 +256,9 @@ public class RetoAhorcadoController implements Initializable {
                 vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
             }
             ayudaButton.setDisable(true);
+
+            showPopUp();
+            EstadoJuego.getInstance().getPartida().setPuntuacion(puntosPartida + obtainedPoints);
             //nextQuestionButton.setDisable(false);
         }
     }
