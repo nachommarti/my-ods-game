@@ -157,7 +157,8 @@ public class RetoPreguntaController implements Initializable {
         this.respuestas = List.of(respuesta1, respuesta2, respuesta3, respuesta4);
         consolidarButton.setDisable(true);
         timeCountdown = retoPreguntaActual.getDuracion();
-        imagenODS.setImage(new Image(Path.of("", "src", "main", "resources", "images", "ODS_"+retoPreguntaActual.getODS()+".jpg").toAbsolutePath().toString()));
+        if (retoPreguntaActual.getODS().size() == 1) imagenODS.setImage(new Image(Path.of("", "src", "main", "resources", "images", "ODS_"+retoPreguntaActual.getODS().get(0)+".jpg").toAbsolutePath().toString()));
+        else imagenODS.setImage(new Image(Path.of("", "src", "main", "resources", "images", "ODS_0.jpg").toAbsolutePath().toString()));
         nextQuestionButton.setDisable(true);
         ((Label) labelArray.getChildren().get(numeroPregunta - 1)).setStyle("-fx-background-color: rgb(202,184,218)");
         timeline.playFromStart();

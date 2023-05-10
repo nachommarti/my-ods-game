@@ -7,12 +7,13 @@ import com.myodsgame.Utils.TipoReto;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class RetoFactory {
     // De momento se pone el map de objetos, pero si al implementar todos los retos, todos son strings, se pasa a string
     public static Reto crearReto(boolean ayudaUsada, int duracion, int tiempoTicTac, int dificultad, int puntuacion,
-                                 int ODS, TipoReto tipo, HashMap<String, Object> params) {
+                                 List<Integer> ODS, TipoReto tipo, HashMap<String, Object> params) {
         if (tipo.equals(TipoReto.PREGUNTA))
             return new RetoPregunta(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo, ODS,
                     (String) params.get("enunciado"), (String) params.get("respuesta1"),

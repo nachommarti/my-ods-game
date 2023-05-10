@@ -35,9 +35,11 @@ public class Services implements IServices {
                 map.put("respuesta3", rs.getString("respuesta3"));
                 map.put("respuesta4", rs.getString("respuesta4"));
                 map.put("respuesta_correcta", rs.getString("respuesta_correcta"));
+                List<Integer> Ods = buildOds(rs.getString("ODS"));
+
                 preguntas.add(RetoFactory.crearReto(false, 30, 10,
                         rs.getInt("nivel_dificultad"), rs.getInt("nivel_dificultad")*100,
-                        rs.getInt("ODS"), TipoReto.PREGUNTA, map));
+                        Ods, TipoReto.PREGUNTA, map));
             }
             return preguntas;
         } catch (SQLException e) {
@@ -56,15 +58,27 @@ public class Services implements IServices {
             while (rs.next()) {
                 map.put("palabra", rs.getString("palabra"));
                 map.put("pista", rs.getString("pista"));
+                List<Integer> Ods = buildOds(rs.getString("ODS"));
+
                 palabras.add(RetoFactory.crearReto(false, 120, 20,
                         rs.getInt("nivel_dificultad"), rs.getInt("nivel_dificultad")*100,
-                        rs.getInt("ODS"), TipoReto.AHORACADO, map));
+                        Ods, TipoReto.AHORACADO, map));
             }
             return palabras;
         } catch (SQLException e) {
             System.err.println("Error al obtener palabras: " + e.getMessage());
             return null;
         }
+    }
+
+    public List<Integer> buildOds(String OdsString) {
+        String[] OdsArray = OdsString.split(",");
+        List<Integer> Ods = new ArrayList<>();
+        for (int i = 0; i < OdsArray.length; i++) {
+            int odsNumber = Integer.parseInt(OdsArray[i]);
+            Ods.add(i, odsNumber);
+        }
+        return Ods;
     }
 
     @Override

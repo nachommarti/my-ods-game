@@ -2,6 +2,8 @@ package com.myodsgame.Models;
 
 import com.myodsgame.Utils.TipoReto;
 
+import java.util.List;
+
 public abstract class Reto {
     private boolean ayudaUsada;
     private int duracion;
@@ -9,10 +11,10 @@ public abstract class Reto {
     private int dificultad;
     private int puntuacion;
     private TipoReto tipoReto;
-    private int ODS;
+    private List<Integer> ODS;
 
     public Reto(boolean ayudaUsada, int duracion, int tiempoTicTac, int dificultad, int puntuacion, TipoReto tipoReto,
-                int ODS) {
+                List<Integer> ODS) {
         this.ayudaUsada = ayudaUsada;
         this.duracion = duracion;
         this.tiempoTicTac = tiempoTicTac;
@@ -71,11 +73,11 @@ public abstract class Reto {
         this.tipoReto = tipoReto;
     }
 
-    public int getODS() {
+    public List<Integer> getODS() {
         return ODS;
     }
 
-    public void setODS(int ODS) {
+    public void setODS(List<Integer> ODS) {
         this.ODS = ODS;
     }
 }

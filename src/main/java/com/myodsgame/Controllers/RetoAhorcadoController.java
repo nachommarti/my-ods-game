@@ -120,7 +120,8 @@ public class RetoAhorcadoController implements Initializable {
         setKeyBoardListeners(botones2);
         setKeyBoardListeners(botones3);
 
-
+        if (retoActual.getODS().size() == 1) imagenODS.setImage(new Image(Path.of("", "src", "main", "resources", "images", "ODS_"+retoActual.getODS().get(0)+".jpg").toAbsolutePath().toString()));
+        else imagenODS.setImage(new Image(Path.of("", "src", "main", "resources", "images", "ODS_0.jpg").toAbsolutePath().toString()));
 
         frasePista.setText(retoActual.getPista());
 
