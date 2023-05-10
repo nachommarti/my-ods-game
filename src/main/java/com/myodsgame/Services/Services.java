@@ -6,6 +6,7 @@ import com.myodsgame.Models.Reto;
 import com.myodsgame.Models.Usuario;
 import com.myodsgame.Repository.RepositorioUsuario;
 import com.myodsgame.Repository.RepositorioUsuarioImpl;
+import com.myodsgame.Utils.EstadoJuego;
 import com.myodsgame.Utils.TipoReto;
 
 import java.sql.Connection;
@@ -85,14 +86,22 @@ public class Services implements IServices {
             while(rs.next()){
                 Estadisticas est = new Estadisticas();
 
-                String pIndOds = rs.getString("progreso_individual_ods");
-                String[] progresoIndOds = pIndOds.split(",");
-                int[] progresoIndividualOds = new int[progresoIndOds.length];
-                for(int i = 0; i < progresoIndOds.length; i++){
-                    progresoIndividualOds[i] = Integer.parseInt(progresoIndOds[i].trim());
+                String aIndOds = rs.getString("aciertos_individual_ods");
+                String[] aciertosIndOds = aIndOds.split(",");
+                int[] aciertosIndividualOds = new int[aciertosIndOds.length];
+                for(int i = 0; i < aciertosIndOds.length; i++) {
+                    aciertosIndividualOds[i] = Integer.parseInt(aciertosIndOds[i].trim());
                 }
+                est.setAciertos_individual_ods(aciertosIndividualOds);
 
-                est.setProgresoIndividualOds(progresoIndividualOds);
+                String fIndOds = rs.getString("fallos_individual_ods");
+                String[] fallosIndOds = fIndOds.split(",");
+                int[] fallosIndividualOds = new int[fallosIndOds.length];
+                for(int i = 0; i < fallosIndOds.length; i++) {
+                    fallosIndividualOds[i] = Integer.parseInt(fallosIndOds[i].trim());
+                }
+                est.setFallos_individual_ods(fallosIndividualOds);
+
                 est.setPuntosTotales(rs.getInt("puntos_totales"));
                 est.setNumeroAciertos(rs.getInt("numero_aciertos"));
                 est.setNumeroFallos(rs.getInt("numero_fallos"));
@@ -110,5 +119,22 @@ public class Services implements IServices {
     @Override
     public void updateUser(String newUser, String oldUser, String email) {
         repositorioUsuario.updateUsuario(newUser, oldUser, email);
+    }
+
+    public int computePoints(Reto retoActual, boolean ayudaUsada, boolean retoAcertado) {
+        int obtainedPoints;
+
+        if (retoAcertado) {
+            if (ayudaUsada)
+                obtainedPoints = retoActual.getPuntuacion() / 2;
+            else
+                obtainedPoints = retoActual.getPuntuacion();
+        } else {
+            obtainedPoints = -retoActual.getDificultad()*2*50;
+            if (EstadoJuego.getInstance().getPartida().getPuntuacion() + obtainedPoints < 0)
+                obtainedPoints = 0;
+
+        }
+        return obtainedPoints;
     }
 }

@@ -2,6 +2,8 @@ package com.myodsgame.Controllers;
 
 import com.myodsgame.Models.Partida;
 import com.myodsgame.Models.RetoPregunta;
+import com.myodsgame.Services.IServices;
+import com.myodsgame.Services.Services;
 import com.myodsgame.Utils.EstadoJuego;
 import com.myodsgame.Utils.UserUtils;
 import javafx.animation.KeyFrame;
@@ -91,8 +93,11 @@ public class RetoPreguntaController implements Initializable {
     private RetoPregunta retoActual;
     private boolean fallado;
 
+    private IServices servicios;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        servicios = new Services();
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
         this.partidaActual = EstadoJuego.getInstance().getPartida();
@@ -186,6 +191,7 @@ public class RetoPreguntaController implements Initializable {
         }
         this.ayuda.setDisable(true);
         this.ayudaPulsada = true;
+
     }
     @FXML
     void botonSalirPulsado(ActionEvent event) {
@@ -308,7 +314,7 @@ public class RetoPreguntaController implements Initializable {
     }
 
     private void computePoints() {
-        obtainedPoints = UserUtils.computePoints(retoActual, ayudaPulsada, respuestaCorrectaSeleccionada);
+        obtainedPoints = servicios.computePoints(retoActual, ayudaPulsada, respuestaCorrectaSeleccionada);
     }
 
     private void endTimer() {

@@ -3,6 +3,8 @@ package com.myodsgame.Controllers;
 import com.myodsgame.Models.Partida;
 import com.myodsgame.Models.RetoAhorcado;
 import com.myodsgame.Models.RetoPregunta;
+import com.myodsgame.Services.IServices;
+import com.myodsgame.Services.Services;
 import com.myodsgame.Utils.EstadoJuego;
 import com.myodsgame.Utils.UserUtils;
 import javafx.animation.KeyFrame;
@@ -83,10 +85,11 @@ public class RetoAhorcadoController implements Initializable {
     private boolean ayudaUsada;
     private Timeline timeline;
     private int timeCountdown;
+    private IServices servicios;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        servicios = new Services();
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
         partidaActual = EstadoJuego.getInstance().getPartida();
@@ -199,7 +202,7 @@ public class RetoAhorcadoController implements Initializable {
         if(palabraMostrada.getText().equals(palabra)) {
             disableKeyboard();
             nextQuestionButton.setDisable(false);
-            obtainedPoints = UserUtils.computePoints(retoActual, ayudaUsada, true);
+            obtainedPoints = servicios.computePoints(retoActual, ayudaUsada, true);
             int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
             EstadoJuego.getInstance().getPartida().setPuntuacion(puntosPartida + obtainedPoints);
             try
@@ -231,7 +234,7 @@ public class RetoAhorcadoController implements Initializable {
         if(retoActual.getIntentos() == 0){
             disableKeyboard();
             botonSalir.setDisable(false);
-            obtainedPoints = UserUtils.computePoints(retoActual, ayudaUsada, false);
+            obtainedPoints = servicios.computePoints(retoActual, ayudaUsada, false);
             int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
             EstadoJuego.getInstance().getPartida().setPuntuacion(puntosPartida + obtainedPoints);
             EstadoJuego.getInstance().getPartida().getRetosFallados()[numeroPregunta-1] = true;

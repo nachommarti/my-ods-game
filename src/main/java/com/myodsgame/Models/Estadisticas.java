@@ -2,7 +2,8 @@ package com.myodsgame.Models;
 
 public class Estadisticas {
 
-    private int [] progresoIndividualOds = new int[17];
+    private int [] aciertos_individual_ods = new int[17];
+    private int [] fallos_individual_ods = new int[17];
     private int puntosTotales;
 
     private int partidasJugadas;
@@ -11,12 +12,20 @@ public class Estadisticas {
     private int numeroFallos;
     private String usuario;
 
-    public int[] getProgresoIndividualOds() {
-        return progresoIndividualOds;
+    public int[] getAciertos_individual_ods() {
+        return aciertos_individual_ods;
     }
 
-    public void setProgresoIndividualOds(int[] progresoIndividualOds) {
-        this.progresoIndividualOds = progresoIndividualOds;
+    public void setAciertos_individual_ods(int[] aciertos_individual_ods) {
+        this.aciertos_individual_ods = aciertos_individual_ods;
+    }
+
+    public int[] getFallos_individual_ods() {
+        return fallos_individual_ods;
+    }
+
+    public void setFallos_individual_ods(int[] fallos_individual_ods) {
+        this.fallos_individual_ods = fallos_individual_ods;
     }
 
     public int getPuntosTotales() {

@@ -52,21 +52,4 @@ public class UserUtils {
         repositorioUsuario.updateUsuarioEstadisticas(user);
     }
 
-    public static int computePoints(Reto retoActual, boolean ayudaUsada, boolean retoAcertado) {
-        int obtainedPoints;
-
-        if (retoAcertado) {
-            if (ayudaUsada)
-                obtainedPoints = retoActual.getPuntuacion() / 2;
-            else
-                obtainedPoints = retoActual.getPuntuacion();
-        } else {
-            obtainedPoints = -retoActual.getDificultad()*2*50;
-            if (EstadoJuego.getInstance().getPartida().getPuntuacion() + obtainedPoints < 0)
-                obtainedPoints = 0;
-
-        }
-        return obtainedPoints;
-    }
-
 }

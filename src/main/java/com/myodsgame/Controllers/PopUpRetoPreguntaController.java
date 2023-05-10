@@ -1,6 +1,8 @@
 package com.myodsgame.Controllers;
 
 import com.myodsgame.Models.Partida;
+import com.myodsgame.Services.IServices;
+import com.myodsgame.Services.Services;
 import com.myodsgame.Models.Reto;
 import com.myodsgame.Utils.EstadoJuego;
 import com.myodsgame.Utils.UserUtils;
@@ -22,17 +24,24 @@ public class PopUpRetoPreguntaController implements Initializable {
     private Label mensaje;
     @FXML
     private Button consolidarBoton;
+    private Partida partidaActual;
+    private int obtainedPoints;
     @FXML
     private Button abandonarBoton;
     @FXML
     private Button siguientePreguntaBoton;
-    private Partida partidaActual = EstadoJuego.getInstance().getPartida();
-    private int obtainedPoints = UserUtils.computePoints(EstadoJuego.getInstance().getPartida().getRetos().get(EstadoJuego.getInstance().getPartida().getRetoActual()), EstadoJuego.getInstance().getPartida().getRetos().get(EstadoJuego.getInstance().getPartida().getRetoActual()).isAyudaUsada(), true);
     private int numeroPregunta = partidaActual.getRetoActual();
     private ObservableList<Window> windows = Stage.getWindows();
+    private IServices servicios;
+
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        mensaje.setText("¡Enhorabuena! Acabas de ganar " + EstadoJuego.getInstance().getPartida().getRetos().get(EstadoJuego.getInstance().getPartida().getRetoActual()).getPuntuacion() + " puntos");
+        servicios = new Services();
+        Partida partida = EstadoJuego.getInstance().getPartida();
+        mensaje.setText("¡Enhorabuena! Acabas de ganar " + partida.getRetos().get(partida.getRetoActual()).getPuntuacion());
+        partidaActual = EstadoJuego.getInstance().getPartida();
+        obtainedPoints = servicios.computePoints(partida.getRetos().get(partida.getRetoActual()), partida.getRetos().get(partida.getRetoActual()).isAyudaUsada(), true);
+
         consolidarBoton.setDisable(partidaActual.isConsolidado());
         abandonarBoton.setDisable(!partidaActual.isConsolidado());
         if (numeroPregunta == 10)
@@ -70,8 +79,7 @@ public class PopUpRetoPreguntaController implements Initializable {
     @FXML
     private void siguientePreguntaPulsado(ActionEvent event)
     {
-        if (numeroPregunta == 10)
-        {
+        if(numeroPregunta == 10) {
             UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacion());
         }
 

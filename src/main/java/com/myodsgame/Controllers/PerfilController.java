@@ -59,17 +59,15 @@ public class PerfilController implements Initializable {
         if (est.getNumeroAciertos() == 0) porcentaje = 0;
         else if (est.getNumeroFallos() == 0) porcentaje = 100;
         else {
-            porcentaje = (double) est.getNumeroAciertos() / est.getNumeroFallos();
+            porcentaje = (double) est.getNumeroAciertos() / (est.getNumeroAciertos()+est.getNumeroFallos());
         }
         porcentajeODS.setText(porcentaje +" %");
         barraProgreso.setProgress(porcentaje);
         saveButton.setVisible(false);
         usuarioTextField.setVisible(false);
         usuarioLabel.setVisible(true);
-        // usuarioTextField.setStyle("-fx-background-color: transparent;");
         emailTextField.setVisible(false);
         emailLabel.setVisible(true);
-        // emailTextField.setStyle("-fx-background-color: transparent;");
         modificarButton.setDisable(false);
         services = new Services();
     }
@@ -78,10 +76,8 @@ public class PerfilController implements Initializable {
         saveButton.setVisible(true);
         usuarioTextField.setVisible(true);
         usuarioLabel.setVisible(false);
-        // usuarioTextField.setStyle("-fx-background-color: white;");
         emailTextField.setVisible(true);
         emailLabel.setVisible(false);
-        // emailTextField.setStyle("-fx-background-color: white;");
         modificarButton.setDisable(true);
     }
 
@@ -90,10 +86,8 @@ public class PerfilController implements Initializable {
         saveButton.setVisible(false);
         usuarioTextField.setVisible(false);
         usuarioLabel.setVisible(true);
-        // usuarioTextField.setStyle("-fx-background-color: transparent;");
         emailTextField.setVisible(false);
         emailLabel.setVisible(true);
-        // emailTextField.setStyle("-fx-background-color: transparent;");
         modificarButton.setDisable(false);
         String oldUser = usuarioLabel.getText();
         String email = emailTextField.getText();
