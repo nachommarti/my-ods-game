@@ -17,12 +17,12 @@
                   <HBox alignment="CENTER" prefHeight="53.0" prefWidth="429.0" spacing="15.0">
                      <children>
                         <Button fx:id="consolidarBoton" mnemonicParsing="false" onAction="#consolidarBotonPulsado" text="Consolidar" />
-                        <Button mnemonicParsing="false" onAction="#siguientePreguntaPulsado" text="Siguiente pregunta" />
+                        <Button fx:id="siguientePregunta" mnemonicParsing="false" onAction="#siguientePreguntaPulsado" text="Siguiente pregunta" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="48.0" prefWidth="429.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#abandonarBotonPulsado" text="Abandonar" />
+                        <Button fx:id="abandonarBoton" mnemonicParsing="false" onAction="#abandonarBotonPulsado" text="Abandonar" />
                      </children>
                   </HBox>
                </children>

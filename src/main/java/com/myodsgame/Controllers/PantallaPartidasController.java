@@ -169,7 +169,7 @@ public class PantallaPartidasController implements Initializable {
             Partida partida = partidaDirector.BuildPartida();
             EstadoJuego.getInstance().setPartida(partida);
             for(int i = 0; i < partida.getRetos().size(); i++){
-                if(EstadoJuego.getInstance().getPartida().isPartidaPerdida()) {
+                if(EstadoJuego.getInstance().getPartida().isPartidaPerdida() || EstadoJuego.getInstance().getPartida().isPartidaAbandonada()) {
                     //TODO:show message saying how many points the user has won during this game
                     break;
                 }

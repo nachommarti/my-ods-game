@@ -11,30 +11,14 @@ public class Partida {
     private int vidas;
     private int retoActual;
     private boolean consolidado;
+
     private int ayudasRestantes;
     private List<? extends Reto> retos;
     private boolean [] retosFallados;
     private Media musica, sonidoAyuda, sonidoAcierto, sondioFallo, sonidoVictoria, sonidoDerrota, diezsecs;
     private Image imagenVidas, imagenFondo;
-
-    public boolean[] getRetosFallados() {
-        return retosFallados;
-    }
-
-    public void setRetosFallados(boolean[] retosFallados) {
-        this.retosFallados = retosFallados;
-    }
-
-    public boolean isPartidaPerdida() {
-        return partidaPerdida;
-    }
-
-    public void setPartidaPerdida(boolean partidaPerdida) {
-        this.partidaPerdida = partidaPerdida;
-    }
-
     private boolean partidaPerdida;
-
+    private boolean partidaAbandonada;
     public Partida() {
         puntuacion = 0;
         vidas = 2;
@@ -43,13 +27,15 @@ public class Partida {
         ayudasRestantes = 3;
         retosFallados = new boolean[10];
         partidaPerdida = false;
+        partidaAbandonada = false;
     }
 
-    public Partida(int puntuacion, int vidas, int retoActual, boolean consolidado, int ayudasRestantes,  List<? extends Reto> retos, Media musica, Media sonidoAyuda, Media sonidoAcierto, Media sondioFallo, Media sonidoVictoria, Media sonidoDerrota, Media diezsecs, Image imagenVidas, Image imagenFondo) {
+    public Partida(int puntuacion, int vidas, int retoActual, boolean consolidado, boolean partidaAbandonada, int ayudasRestantes,  List<? extends Reto> retos, Media musica, Media sonidoAyuda, Media sonidoAcierto, Media sondioFallo, Media sonidoVictoria, Media sonidoDerrota, Media diezsecs, Image imagenVidas, Image imagenFondo) {
         this.puntuacion = puntuacion;
         this.vidas = vidas;
         this.retoActual = retoActual;
         this.consolidado = consolidado;
+        this.partidaAbandonada = partidaAbandonada;
         this.ayudasRestantes = ayudasRestantes;
         this.retos = retos;
         this.musica = musica;
@@ -180,5 +166,23 @@ public class Partida {
 
     public void setImagenFondo(Image imagenFondo) {
         this.imagenFondo = imagenFondo;
+    }
+    public boolean[] getRetosFallados() {
+        return retosFallados;
+    }
+    public void setRetosFallados(boolean[] retosFallados) {
+        this.retosFallados = retosFallados;
+    }
+    public boolean isPartidaPerdida() {
+        return partidaPerdida;
+    }
+    public void setPartidaPerdida(boolean partidaPerdida) {
+        this.partidaPerdida = partidaPerdida;
+    }
+    public void setPartidaAbandonada(boolean partidaAbandonada) {
+        this.partidaAbandonada = partidaAbandonada;
+    }
+    public boolean isPartidaAbandonada() {
+        return partidaAbandonada;
     }
 }
