@@ -21,12 +21,15 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -85,10 +88,13 @@ public class RetoAhorcadoController implements Initializable {
     private int timeCountdown;
     private IServices servicios;
 
+    private MediaPlayer mediaPlayerMusic = null, mediaPlayerTicTac = null, mediaPlayerSonidos = null;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         servicios = new Services();
         timeline = new Timeline();
+        reproducirMusica();
         timeline.setCycleCount(Timeline.INDEFINITE);
         partidaActual = EstadoJuego.getInstance().getPartida();
         retoActual = (RetoAhorcado) EstadoJuego.getInstance().getPartida().getRetos().get(partidaActual.getRetoActual()-1);
@@ -104,10 +110,17 @@ public class RetoAhorcadoController implements Initializable {
                             timer.setText(Integer.toString(timeCountdown));
 
                             if (timeCountdown <= 0) {
+                                reproducirSonido(false);
                                 timeline.stop();
                                 palabraMostrada.setText(palabra);
                                 endTimer();
 
+                            }
+
+                            if (timeCountdown == 10){
+                                Media TicTac = new Media(new File("src/main/resources/sounds/10S_tick.mp3").toURI().toString());
+                                mediaPlayerTicTac = new MediaPlayer(TicTac);
+                                mediaPlayerTicTac.play();
                             }
                         })
         );
@@ -215,6 +228,9 @@ public class RetoAhorcadoController implements Initializable {
 
     private void checkWin() {
         if (palabraMostrada.getText().equals(palabra)) {
+            if(mediaPlayerMusic != null && mediaPlayerMusic.getStatus() == MediaPlayer.Status.PLAYING){mediaPlayerMusic.stop();}
+            if(mediaPlayerTicTac != null && mediaPlayerTicTac.getStatus() == MediaPlayer.Status.PLAYING){mediaPlayerTicTac.stop();}
+            reproducirSonido(true);
             disableKeyboard();
             EstadoJuego.getInstance().getPartida().getRetosFallados()[numeroPregunta-1] = false;
             obtainedPoints = servicios.computePoints(retoActual, ayudaUsada, true);
@@ -229,6 +245,9 @@ public class RetoAhorcadoController implements Initializable {
 
     private void checkLose(){
         if(retoActual.getIntentos() == 0){
+            if(mediaPlayerMusic != null && mediaPlayerMusic.getStatus() == MediaPlayer.Status.PLAYING){mediaPlayerMusic.stop();}
+            if(mediaPlayerTicTac != null && mediaPlayerTicTac.getStatus() == MediaPlayer.Status.PLAYING){mediaPlayerTicTac.stop();}
+            reproducirSonido(false);
             disableKeyboard();
             //botonSalir.setDisable(false);
             UserUtils.saveStats(false, retoActual.getODS());
@@ -378,6 +397,7 @@ public class RetoAhorcadoController implements Initializable {
     private void showPopUp() {
         try
         {
+
             FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/popUpReto.fxml"));
             BorderPane root = myLoader.load();
             Scene scene = new Scene (root, 357, 184);
@@ -403,4 +423,21 @@ public class RetoAhorcadoController implements Initializable {
         catch (IOException e) {System.out.println(e.getMessage());}
     }
 
+
+
+    private void reproducirMusica(){
+        mediaPlayerMusic = new MediaPlayer(new Media(new File("src/main/resources/sounds/cancion_3.mp3").toURI().toString()));
+        mediaPlayerMusic.setVolume(0.15);
+        mediaPlayerMusic.play();
+    }
+
+    private void reproducirSonido(boolean acertado){
+        String path;
+        if(acertado) path = "src/main/resources/sounds/Acierto.mp3";
+        else path = "src/main/resources/sounds/Fallo.mp3";
+
+        mediaPlayerSonidos = new MediaPlayer(new Media(new File(path).toURI().toString()));
+        mediaPlayerSonidos.setVolume(0.2);
+        mediaPlayerSonidos.play();
+    }
 }
