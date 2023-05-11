@@ -154,7 +154,7 @@ public class RetoPreguntaController implements Initializable {
             System.out.println("Desde PREGUNTA - Reto numero " + i + " es de tipo " + partidaActual.getRetos().get(i-1).getTipoReto());
         }
         System.out.println("Desde reto PREGUNTA - reto actual: " + partidaActual.getRetoActual());
-        System.out.println("Desde reto PREGUNTA - tipo reto actual: " + partidaActual.getRetos().get(partidaActual.getRetoActual()-1).getTipoReto());
+        System.out.println("Desde reto PREGUNTA - tipo reto actual: " + retoActual.getTipoReto());
 
 
 
@@ -165,7 +165,7 @@ public class RetoPreguntaController implements Initializable {
     }
 
     private void loadRetosState(){
-        for(int i = 0; i < numeroPregunta; i++){
+        for(int i = 0; i < partidaActual.getRetoActual(); i++){
             ((Label) labelArray.getChildren().get(i))
                     .setStyle(partidaActual.getRetosFallados()[i] ? "-fx-background-color: rgb(255,25,25); " : "-fx-background-color: rgba(184, 218, 186, 1)");
         }
@@ -300,8 +300,8 @@ public class RetoPreguntaController implements Initializable {
 
     private void checkAnswers(Button respuestaSeleccionada) {
         timeline.stop();
-        mediaPlayerMusic.stop();
-        if(mediaPlayerTicTac.getStatus() == MediaPlayer.Status.PLAYING) mediaPlayerTicTac.stop();
+        if(mediaPlayerMusic != null){mediaPlayerMusic.stop();}
+        if(mediaPlayerTicTac != null){mediaPlayerTicTac.stop();}
         currentStyleLabel = labelArray.getStyle();
 
         if (respuestaSeleccionada.getText().equals(respuestaCorrecta)) {
@@ -313,6 +313,7 @@ public class RetoPreguntaController implements Initializable {
             EstadoJuego.getInstance().getPartida().getRetosFallados()[numeroPregunta-1] = false;
         }
         else {
+            EstadoJuego.getInstance().getPartida().setRetoFallado(true);
             ((Label) labelArray.getChildren().get(numeroPregunta-1)).setStyle("-fx-background-color: rgb(255,25,25); " + currentStyleLabel);
             ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.WHITE);
             EstadoJuego.getInstance().getPartida().setVidas(partidaActual.getVidas()-1);
@@ -360,7 +361,6 @@ public class RetoPreguntaController implements Initializable {
 
     private void endTimer() {
         respuestas.forEach(respuesta -> respuesta.setDisable(true));
-
 
         EstadoJuego.getInstance().getPartida().setVidas(partidaActual.getVidas()-1);
         if (EstadoJuego.getInstance().getPartida().getVidas() == 1) {

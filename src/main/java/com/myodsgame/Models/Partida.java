@@ -19,6 +19,7 @@ public class Partida {
     private Image imagenVidas, imagenFondo;
     private boolean partidaPerdida;
     private boolean partidaAbandonada;
+    private boolean retoFallado;
     public Partida() {
         puntuacion = 0;
         vidas = 2;
@@ -28,6 +29,7 @@ public class Partida {
         retosFallados = new boolean[10];
         partidaPerdida = false;
         partidaAbandonada = false;
+        retoFallado = false;
     }
 
     public Partida(int puntuacion, int vidas, int retoActual, boolean consolidado, boolean partidaAbandonada, int ayudasRestantes,  List<? extends Reto> retos, Media musica, Media sonidoAyuda, Media sonidoAcierto, Media sondioFallo, Media sonidoVictoria, Media sonidoDerrota, Media diezsecs, Image imagenVidas, Image imagenFondo) {
@@ -184,5 +186,13 @@ public class Partida {
     }
     public boolean isPartidaAbandonada() {
         return partidaAbandonada;
+    }
+
+    public boolean isRetoFallado() {
+        return retoFallado;
+    }
+
+    public void setRetoFallado(boolean retoFallado) {
+        this.retoFallado = retoFallado;
     }
 }
