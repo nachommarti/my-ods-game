@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface RepositorioRetos {
 
-    List<Reto> getRetosPorNivelDificultadInicial(int nivelDificultad);
+    List<Reto> getRetosPorNivelDificultadInicial(int nivelDificultad, int numFacil, int numResto);
 }

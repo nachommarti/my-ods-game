@@ -2,7 +2,9 @@ package com.myodsgame.Builder;
 
 import com.myodsgame.Models.Partida;
 import com.myodsgame.Models.Reto;
-import com.myodsgame.Repository.RepositorioRetoMixtoImpl;
+import com.myodsgame.Repository.RepositorioPalabraImpl;
+import com.myodsgame.Repository.RepositorioPreguntaImpl;
+import com.myodsgame.Repository.RepositorioRetos;
 import com.myodsgame.Services.IServices;
 import com.myodsgame.Services.Services;
 import javafx.scene.image.Image;
@@ -16,7 +18,20 @@ public class PartidaMixtaBuilder extends PartidaBuilder {
     @Override
     public void BuildRetos() {
         IServices servicios = new Services();
-        List<Reto> retos = new RepositorioRetoMixtoImpl().getRetosPorNivelDificultadInicial(1);
+        RepositorioRetos repositorioPreguntas = new RepositorioPreguntaImpl();
+        RepositorioRetos repositorioPalabras = new RepositorioPalabraImpl();
+
+        Random random = new Random();
+        int preguntasFacil = random.nextInt(6);
+        // Para cuando hayan más retos, se hace así:
+        // int palabrasFacil = random.nextInt(6 - preguntasFacil);
+        // y el último, la resta.
+        int palabrasFacil = 5 - preguntasFacil;
+
+        int preguntasResto = random.nextInt(5);
+        int palabrasResto = 4 - preguntasResto;
+        List<Reto> retos = repositorioPreguntas.getRetosPorNivelDificultadInicial(1, preguntasFacil, preguntasResto);
+        retos.addAll(repositorioPalabras.getRetosPorNivelDificultadInicial(1, palabrasFacil, palabrasResto));
         retos.sort(Comparator.comparingInt(Reto::getDificultad));
 
         int lastNivelDificultad = -1;

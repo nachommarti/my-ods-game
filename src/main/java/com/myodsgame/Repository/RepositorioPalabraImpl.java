@@ -24,18 +24,43 @@ public class RepositorioPalabraImpl implements RepositorioRetos {
         services = new Services();
     }
 
-    public List<Reto> getRetosPorNivelDificultadInicial(int nivelDificultad) {
+    public List<Reto> getRetosPorNivelDificultadInicial(int nivelDificultad, int numFacil, int numResto) {
         String query =
                 "SELECT * FROM " +
                         "(SELECT * FROM palabras WHERE nivel_dificultad = " + nivelDificultad +
-                        " ORDER BY RAND() LIMIT 5) AS dificultad_incial " +
+                        " ORDER BY RAND() LIMIT ?) AS dificultad_incial " +
                         "UNION ALL" +
                         "(SELECT * FROM palabras WHERE nivel_dificultad = " + ++nivelDificultad +
-                        " ORDER BY RAND() LIMIT 4) " +
+                        " ORDER BY RAND() LIMIT ?) " +
                         "UNION ALL" +
                         "(SELECT * FROM palabras WHERE nivel_dificultad = " + ++nivelDificultad +
-                        " ORDER BY RAND() LIMIT 4) "
+                        " ORDER BY RAND() LIMIT ?) "
                 ;
-        return services.getPalabrasHelper(connection, query);
+        return getPalabrasHelper(query, numFacil, numResto);
+    }
+
+    public List<Reto> getPalabrasHelper(String query, int numFacil, int numResto) {
+        List<Reto> palabras = new ArrayList<>();
+        HashMap<String, Object> map = new HashMap<>();
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setInt(1, numFacil);
+            pstmt.setInt(2, numResto);
+            pstmt.setInt(3, numResto);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                map.put("palabra", rs.getString("palabra"));
+                map.put("pista", rs.getString("pista"));
+                List<Integer> Ods = services.buildOds(rs.getString("ODS"));
+
+                palabras.add(RetoFactory.crearReto(false, 120, 20,
+                        rs.getInt("nivel_dificultad"), rs.getInt("nivel_dificultad")*100,
+                        Ods, TipoReto.AHORACADO, map));
+            }
+            return palabras;
+        } catch (SQLException e) {
+            System.err.println("Error al obtener palabras: " + e.getMessage());
+            return null;
+        }
     }
 }
