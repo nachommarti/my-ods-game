@@ -5,6 +5,7 @@ import com.myodsgame.Builder.PartidaDirector;
 import com.myodsgame.Builder.PartidaMixtaBuilder;
 import com.myodsgame.Builder.PartidaPreguntasBuilder;
 import com.myodsgame.Models.Partida;
+import com.myodsgame.Models.Reto;
 import com.myodsgame.ODSGame;
 import com.myodsgame.Utils.EstadoJuego;
 import com.myodsgame.Utils.TipoReto;
@@ -169,10 +170,18 @@ public class PantallaPartidasController implements Initializable {
             Partida partida = partidaDirector.BuildPartida();
             EstadoJuego.getInstance().setPartida(partida);
             for(int i = 0; i < partida.getRetos().size(); i++){
-                if (EstadoJuego.getInstance().getPartida().getRetos().get(i).getTipoReto().equals(TipoReto.PREGUNTA)) {
+                if(EstadoJuego.getInstance().getPartida().isPartidaPerdida() || EstadoJuego.getInstance().getPartida().isPartidaAbandonada()) {
+                    //TODO:show message saying how many points the user has won during this game
+                    break;
+                }
+                Reto retoActual = EstadoJuego.getInstance().getPartida().getRetos().get(i);
+                if (retoActual.getTipoReto().equals(TipoReto.PREGUNTA)) {
                     loadReto("retoPregunta", "Reto Pregunta");
                 } else {
                     loadReto("retoAhorcado", "Reto Ahorcado");
+                }
+                if(EstadoJuego.getInstance().getPartida().getRetosFallados()[i]){
+                    i--;
                 }
                 // TODO - Al implementar el tercer reto, cambiar esto
             }

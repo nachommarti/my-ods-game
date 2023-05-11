@@ -1,6 +1,7 @@
 package com.myodsgame.Controllers;
 
 import com.myodsgame.Models.Partida;
+import com.myodsgame.Models.Reto;
 import com.myodsgame.Models.RetoAhorcado;
 import com.myodsgame.Services.IServices;
 import com.myodsgame.Services.Services;
@@ -91,7 +92,15 @@ public class RetoAhorcadoController implements Initializable {
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
         partidaActual = EstadoJuego.getInstance().getPartida();
+
+        for(int i = 1; i <= partidaActual.getRetos().size(); i++){
+            System.out.println("Desde AHORCADO - Reto numero " + i + " es de tipo " + partidaActual.getRetos().get(i-1).getTipoReto());
+        }
+
+        System.out.println("Desde reto AHORCADO - reto actual: " + partidaActual.getRetoActual());
+        System.out.println("Desde reto AHORCADO - tipo reto actual: " + partidaActual.getRetos().get(partidaActual.getRetoActual()-1).getTipoReto());
         retoActual = (RetoAhorcado) EstadoJuego.getInstance().getPartida().getRetos().get(partidaActual.getRetoActual()-1);
+
         timeCountdown = retoActual.getDuracion();
         palabra = retoActual.getPalabra().toUpperCase();
         this.numeroPregunta = partidaActual.getRetoActual();

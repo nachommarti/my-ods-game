@@ -137,6 +137,12 @@ public class RetoPreguntaController implements Initializable {
 
         abandonarBoton.setVisible(partidaActual.isConsolidado());
 
+        for(int i = 1; i <= partidaActual.getRetos().size(); i++){
+            System.out.println("Desde PREGUNTA - Reto numero " + i + " es de tipo " + partidaActual.getRetos().get(i-1).getTipoReto());
+        }
+        System.out.println("Desde reto PREGUNTA - reto actual: " + partidaActual.getRetoActual());
+        System.out.println("Desde reto PREGUNTA - tipo reto actual: " + partidaActual.getRetos().get(partidaActual.getRetoActual()-1).getTipoReto());
+
         Rectangle clip = new Rectangle(imagenODS.getFitWidth(), imagenODS.getFitHeight());
         clip.setArcWidth(40);
         clip.setArcHeight(40);
