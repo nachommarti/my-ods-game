@@ -99,8 +99,21 @@ public class RetoPreguntaController implements Initializable {
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
         this.partidaActual = EstadoJuego.getInstance().getPartida();
-        this.retoActual = (RetoPregunta) partidaActual.getRetos().get(partidaActual.getRetoActual()-1);
         this.numeroPregunta = partidaActual.getRetoActual();
+
+        if(numeroPregunta > 4 && numeroPregunta <= 7){
+            while(partidaActual.getRetos().get(numeroPregunta-1).getDificultad() != 2)
+                numeroPregunta++;
+        }
+
+        if(numeroPregunta > 7 && numeroPregunta <= 10){
+            while(partidaActual.getRetos().get(numeroPregunta-1).getDificultad() != 3)
+                numeroPregunta++;
+        }
+
+
+        this.retoActual = (RetoPregunta) partidaActual.getRetos().get(numeroPregunta-1);
+
         // KeyFrame event handler
         timeline.getKeyFrames().add(
                 new KeyFrame(Duration.seconds(1),
@@ -142,6 +155,8 @@ public class RetoPreguntaController implements Initializable {
         }
         System.out.println("Desde reto PREGUNTA - reto actual: " + partidaActual.getRetoActual());
         System.out.println("Desde reto PREGUNTA - tipo reto actual: " + partidaActual.getRetos().get(partidaActual.getRetoActual()-1).getTipoReto());
+
+
 
         Rectangle clip = new Rectangle(imagenODS.getFitWidth(), imagenODS.getFitHeight());
         clip.setArcWidth(40);

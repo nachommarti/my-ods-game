@@ -105,11 +105,21 @@ public class RetoAhorcadoController implements Initializable {
 
         System.out.println("Desde reto AHORCADO - reto actual: " + partidaActual.getRetoActual());
         System.out.println("Desde reto AHORCADO - tipo reto actual: " + partidaActual.getRetos().get(partidaActual.getRetoActual()-1).getTipoReto());
-        retoActual = (RetoAhorcado) EstadoJuego.getInstance().getPartida().getRetos().get(partidaActual.getRetoActual()-1);
+        this.numeroPregunta = partidaActual.getRetoActual();
+        if(numeroPregunta > 4 && numeroPregunta <= 7){
+            while(partidaActual.getRetos().get(numeroPregunta-1).getDificultad() != 2)
+                numeroPregunta++;
+        }
+
+        if(numeroPregunta > 7 && numeroPregunta <= 10){
+            while(partidaActual.getRetos().get(numeroPregunta-1).getDificultad() != 3)
+                numeroPregunta++;
+        }
+        retoActual = (RetoAhorcado) EstadoJuego.getInstance().getPartida().getRetos().get(numeroPregunta-1);
 
         timeCountdown = retoActual.getDuracion();
         palabra = retoActual.getPalabra().toUpperCase();
-        this.numeroPregunta = partidaActual.getRetoActual();
+
         // KeyFrame event handler
         timeline.getKeyFrames().add(
                 new KeyFrame(Duration.seconds(1),
