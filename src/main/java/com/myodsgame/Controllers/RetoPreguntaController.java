@@ -398,9 +398,9 @@ public class RetoPreguntaController implements Initializable {
     }
 
     private void reproducirMusica(){
-        String[] musics = {"src/main/resources/sounds/cancion_1.mp3", "src/main/resources/sounds/cancion_2.mp3","src/main/resources/sounds/cancion_3.mp3"};
+        String[] musics = {"src/main/resources/sounds/cancion_1.mp3", "src/main/resources/sounds/cancion_2.mp3"};
         Random random = new Random();
-        int index = random.nextInt(3);
+        int index = random.nextInt(2);
         String selected = musics[index];
 
         mediaPlayerMusic = new MediaPlayer(new Media(new File(selected).toURI().toString()));

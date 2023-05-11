@@ -11,7 +11,7 @@ import java.nio.file.Path;
 public class PartidaPreguntasBuilder extends PartidaBuilder{
     @Override
     public void BuildRetos() {
-        partida.setRetos(new RepositorioPreguntaImpl().getRetosPorNivelDificultadInicial(1));
+        partida.setRetos(new RepositorioPreguntaImpl().getRetosPorNivelDificultadInicial(1, 5, 4));
     }
 
     @Override
