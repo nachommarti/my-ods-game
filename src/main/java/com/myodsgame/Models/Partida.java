@@ -59,7 +59,7 @@ public class Partida {
     }
 
     public int getPuntuacion() {
-        return puntuacion;
+        return puntuacion;//mondongo
     }
 
     public void setPuntuacion(int puntuacion) {
