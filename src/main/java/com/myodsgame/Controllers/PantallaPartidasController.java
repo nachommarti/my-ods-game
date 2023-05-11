@@ -5,6 +5,7 @@ import com.myodsgame.Builder.PartidaDirector;
 import com.myodsgame.Builder.PartidaMixtaBuilder;
 import com.myodsgame.Builder.PartidaPreguntasBuilder;
 import com.myodsgame.Models.Partida;
+import com.myodsgame.ODSGame;
 import com.myodsgame.Utils.EstadoJuego;
 import com.myodsgame.Utils.TipoReto;
 import javafx.event.ActionEvent;
@@ -17,10 +18,14 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -37,9 +42,14 @@ public class PantallaPartidasController implements Initializable {
     @FXML
     private ComboBox<String> desplegablePerfil;
     @FXML
+    private ImageView imagenUsuario;
+    @FXML
     private Label puntosAlmacenados;
     int puntosJugador = EstadoJuego.getInstance().getUsuario().getEstadistica().getPuntosTotales();
     final int puntosNecesarios = 1000;
+    @FXML
+    private StackPane stackPane;
+    String avatar;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -50,7 +60,10 @@ public class PantallaPartidasController implements Initializable {
         desplegablePerfil.getItems().add("Perfil");
         desplegablePerfil.getItems().add("Estadísticas");
         desplegablePerfil.getItems().add("Cerrar sesión");
+        desplegablePerfil.setStyle("-fx-background-color: null");
         puntosAlmacenados.setText("Puntos totales: " + puntosJugador);
+        avatar = EstadoJuego.getInstance().getUsuario().getAvatar();
+        imagenUsuario.setImage(new Image(Path.of("", "src", "main", "resources", "images", avatar.substring(avatar.lastIndexOf("/") + 1)).toAbsolutePath().toString()));
 
         if (puntosJugador < puntosNecesarios)
         {
@@ -66,50 +79,62 @@ public class PantallaPartidasController implements Initializable {
 
         desplegablePerfil.valueProperty().addListener((ov, p1, p2) ->
                 {
-                    if (desplegablePerfil.getValue() == "Perfil")
-                    {
-                        FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/perfil-view.fxml"));
-                        BorderPane root = null;
-                        try {
-                            root = myLoader.load();
-                        }
-                        catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+                    if (desplegablePerfil != null) {
+                        if (desplegablePerfil.getSelectionModel().isSelected(0)) {
+                            FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/perfil-view.fxml"));
+                            BorderPane root = null;
+                            try {
+                                root = myLoader.load();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
 
-                        Scene scene = new Scene (root);
-                        Stage stage = new Stage();
-                        stage.setScene(scene);
-                        stage.setTitle("Perfil");
-                        stage.initModality(Modality.WINDOW_MODAL);
-                        stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
-                        stage.setResizable(false);
-                        stage.show();
-                    }
-                    else if (desplegablePerfil.getValue() == "Estadísticas")
-                    {
-                        FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/estadisticas.fxml"));
-                        BorderPane root = null;
-                        try {
-                            root = myLoader.load();
-                        }
-                        catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+                            Scene scene = new Scene(root);
+                            Stage stage = new Stage();
+                            stage.setScene(scene);
+                            stage.setTitle("Perfil");
+                            stage.initModality(Modality.WINDOW_MODAL);
+                            stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
+                            stage.setResizable(false);
+                            stage.show();
 
-                        Scene scene = new Scene (root);
-                        Stage stage = new Stage();
-                        stage.setScene(scene);
-                        stage.setTitle("Estadísticas");
-                        stage.initModality(Modality.WINDOW_MODAL);
-                        stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
-                        stage.setResizable(false);
-                        stage.show();
-                    }
-                    else if (desplegablePerfil.getValue() == "Cerrar sesión")
-                    {
-                        Stage stage = (Stage) desplegablePerfil.getScene().getWindow();
-                        stage.close();
+                            Stage stageOld = (Stage) desplegablePerfil.getScene().getWindow();
+                            stageOld.close();
+                        } else if (desplegablePerfil.getSelectionModel().isSelected(1)) {
+                            FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/estadisticas.fxml"));
+                            BorderPane root = null;
+                            try {
+                                root = myLoader.load();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                            Scene scene = new Scene(root);
+                            Stage stage = new Stage();
+                            stage.setScene(scene);
+                            stage.setTitle("Estadísticas");
+                            stage.initModality(Modality.WINDOW_MODAL);
+                            stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
+                            stage.setResizable(false);
+                            stage.show();
+
+                            Stage stageOld = (Stage) desplegablePerfil.getScene().getWindow();
+                            stageOld.close();
+                        } else if (desplegablePerfil.getSelectionModel().isSelected(2)) {
+                            Stage stage = (Stage) desplegablePerfil.getScene().getWindow();
+                            stage.close();
+
+                            try{FXMLLoader fxmlLoader = new FXMLLoader(ODSGame.class.getResource("mainScreen-view.fxml"));
+                                Scene scene = new Scene(fxmlLoader.load(), 600, 415);
+                                stage.setTitle("ODS Game");
+                                stage.setScene(scene);
+                                stage.setResizable(false);
+                                stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
+
+                                stage.show();}
+                            catch(IOException e){}
+
+                        }
                     }
                 }
                 );
@@ -120,7 +145,7 @@ public class PantallaPartidasController implements Initializable {
         Partida partida = partidaDirector.BuildPartida();
         EstadoJuego.getInstance().setPartida(partida);
         for(int i = 0; i < partida.getRetos().size(); i++){
-            if(EstadoJuego.getInstance().getPartida().isPartidaPerdida()) {
+            if(EstadoJuego.getInstance().getPartida().isPartidaPerdida() || EstadoJuego.getInstance().getPartida().isPartidaAbandonada()) {
                 //TODO:show message saying how many points the user has won during this game
                 break;
             }
@@ -164,7 +189,8 @@ public class PantallaPartidasController implements Initializable {
             PartidaDirector partidaDirector = new PartidaDirector(new PartidaAhorcadoBuilder());
             Partida partida = partidaDirector.BuildPartida();
             EstadoJuego.getInstance().setPartida(partida);
-            for(int i = 0; i < partida.getRetos().size(); i++){
+            int aux = partida.getRetos().size();
+            for(int i = 0; i < aux; i++){
                 if(EstadoJuego.getInstance().getPartida().isPartidaPerdida() || EstadoJuego.getInstance().getPartida().isPartidaAbandonada()) {
                     //TODO:show message saying how many points the user has won during this game
                     break;
@@ -177,6 +203,9 @@ public class PantallaPartidasController implements Initializable {
     }
 
     private void loadReto(String reto, String titulo) throws IOException {
+
+
+
         FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/" + reto + "-view.fxml"));
         BorderPane root = myLoader.load();
         Scene scene = new Scene (root, 600, 600);

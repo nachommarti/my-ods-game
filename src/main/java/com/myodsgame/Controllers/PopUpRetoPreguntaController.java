@@ -9,12 +9,17 @@ import com.myodsgame.Utils.UserUtils;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -41,10 +46,18 @@ public class PopUpRetoPreguntaController implements Initializable {
         numeroPregunta = partidaActual.getRetoActual();
         int retoActual = partidaActual.getRetoActual();
         obtainedPoints = servicios.computePoints(partidaActual.getRetos().get(retoActual), partidaActual.getRetos().get(retoActual).isAyudaUsada(), true);
-        consolidarBoton.setDisable(!partidaActual.isConsolidado());
-        abandonarBoton.setDisable(!partidaActual.isConsolidado());
+        consolidarBoton.setDisable(partidaActual.isConsolidado());
 
-        if (!partidaActual.getRetosFallados()[numeroPregunta - 1])
+        abandonarBoton.setVisible(false);
+        if (retoActual == 10 && !partidaActual.isPartidaPerdida())
+        {
+            mensaje.setText("Ya has terminado la partida. Felicidades, has ganado");
+            abandonarBoton.setText("Menú principal");
+            abandonarBoton.setVisible(true);
+            siguientePregunta.setVisible(false);
+            consolidarBoton.setVisible(false);
+        }
+        else if (!partidaActual.getRetosFallados()[numeroPregunta - 1])
         {
             mensaje.setText("¡Enhorabuena! Acabas de ganar " + partidaActual.getRetos().get(partidaActual.getRetoActual()).getPuntuacion() + " puntos");
         }
@@ -53,24 +66,24 @@ public class PopUpRetoPreguntaController implements Initializable {
             int puntosPerdidos = Math.min((partidaActual.getRetos().get(partidaActual.getRetoActual()).getPuntuacion() * 2), partidaActual.getPuntuacion());
             mensaje.setText("¡Vaya! Has perdido " + puntosPerdidos + " puntos");
             consolidarBoton.setDisable(true);
-            EstadoJuego.getInstance().getPartida().setRetoActual(numeroPregunta-1);
+            EstadoJuego.getInstance().getPartida().setRetoActual(numeroPregunta - 1);
         }
         if (partidaActual.isPartidaPerdida())
         {
             mensaje.setText("Has perdido la partida ¡Suerte para la próxima!");
             abandonarBoton.setText("Menú principal");
-            abandonarBoton.setDisable(false);
+            abandonarBoton.setVisible(true);
             siguientePregunta.setVisible(false);
             consolidarBoton.setVisible(false);
         }
-        EstadoJuego.getInstance().getPartida().getRetos().remove(numeroPregunta-1);
+        //EstadoJuego.getInstance().getPartida().getRetos().remove(numeroPregunta - 1);
     }
 
     @FXML
     private void consolidarBotonPulsado(ActionEvent event)
     {
         partidaActual.setConsolidado(true);
-        consolidarBoton.setDisable(partidaActual.isConsolidado());
+        consolidarBoton.setDisable(true);
         UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacion());
     }
 
@@ -87,6 +100,17 @@ public class PopUpRetoPreguntaController implements Initializable {
         }
         Stage stage = (Stage) consolidarBoton.getScene().getWindow();
         stage.close();
+try{FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/pantallaPartidas.fxml"));
+    BorderPane root = myLoader.load();
+
+    Scene scene = new Scene (root);
+    Stage stage2 = new Stage();
+    stage2.setScene(scene);
+    stage2.setTitle("Menú");
+    stage2.initModality(Modality.WINDOW_MODAL);
+    stage2.setResizable(false);
+    stage2.show();}
+        catch(IOException e){}
     }
 
     @FXML
@@ -104,7 +128,6 @@ public class PopUpRetoPreguntaController implements Initializable {
             }
         }
         EstadoJuego.getInstance().getPartida().setRetoActual(partidaActual.getRetoActual()+1);
-        EstadoJuego.getInstance().getPartida().getRetosFallados()[numeroPregunta-1] = false;
         Stage stage = (Stage) consolidarBoton.getScene().getWindow();
         stage.close();
     }

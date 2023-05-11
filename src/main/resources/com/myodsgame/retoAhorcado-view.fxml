@@ -245,6 +245,9 @@
                <padding>
                   <Insets top="20.0" />
                </padding>
+               <children>
+                  <Button fx:id="botonAbandonar" mnemonicParsing="false" onAction="#botonAbandonarPulsado" style="-fx-background-color: red;" text="Abandonar" visible="false" />
+               </children>
             </HBox>
          </children>
          <BorderPane.margin>

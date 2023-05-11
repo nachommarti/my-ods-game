@@ -72,8 +72,8 @@ public class RetoAhorcadoController implements Initializable {
     //private Button nextQuestionButton;
     //@FXML
     //private Button consolidarButton;
-    //@FXML
-    //private Button botonSalir;
+    @FXML
+    private Button botonAbandonar;
 
     private Partida partidaActual;
     private RetoAhorcado retoActual;
@@ -143,6 +143,8 @@ public class RetoAhorcadoController implements Initializable {
 
         timeline.playFromStart();
 
+        botonAbandonar.setVisible(partidaActual.isConsolidado());
+
         Rectangle clip = new Rectangle(imagenODS.getFitWidth(), imagenODS.getFitHeight());
         clip.setArcWidth(40);
         clip.setArcHeight(40);
@@ -211,25 +213,19 @@ public class RetoAhorcadoController implements Initializable {
         }
     }
 
-    private void checkWin(){
-        if(palabraMostrada.getText().equals(palabra)) {
+    private void checkWin() {
+        if (palabraMostrada.getText().equals(palabra)) {
             disableKeyboard();
+            EstadoJuego.getInstance().getPartida().getRetosFallados()[numeroPregunta-1] = false;
             obtainedPoints = servicios.computePoints(retoActual, ayudaUsada, true);
             int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
             EstadoJuego.getInstance().getPartida().setPuntuacion(puntosPartida + obtainedPoints);
             UserUtils.saveStats(true, retoActual.getODS());
-            //nextQuestionButton.setDisable(false);
-            if(!EstadoJuego.getInstance().getPartida().isConsolidado()) {
-                EstadoJuego.getInstance().getPartida().setConsolidado(true);
-                //consolidarButton.setDisable(false);
-            }
             showMessage("HAS GANADO " + obtainedPoints + " PUNTOS", true);
             ayudaButton.setDisable(true);
             showPopUp();
         }
     }
-
-
 
     private void checkLose(){
         if(retoActual.getIntentos() == 0){
@@ -240,6 +236,7 @@ public class RetoAhorcadoController implements Initializable {
             int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
 
             EstadoJuego.getInstance().getPartida().getRetosFallados()[numeroPregunta-1] = true;
+            EstadoJuego.getInstance().getPartida().getRetos().remove(numeroPregunta - 1);
             int vidasPartida = EstadoJuego.getInstance().getPartida().getVidas()-1;
             if(vidasPartida == 0){
                 showMessage("HAS PERDIDO LA PARTIDA Y " + obtainedPoints + " PUNTOS!", false);
@@ -354,16 +351,29 @@ public class RetoAhorcadoController implements Initializable {
 //
     //}
 //
-    //@FXML
-    //void siguientePreguntaClicked(ActionEvent event) {
-    //    if(numeroPregunta == 10){
-    //        UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacion());
-    //    }
-//
-    //    EstadoJuego.getInstance().getPartida().setRetoActual(numeroPregunta+1);
-    //    Stage stage = (Stage) nextQuestionButton.getScene().getWindow();
-    //    stage.close();
-    //}
+    @FXML
+    void botonAbandonarPulsado(ActionEvent event) {
+       Stage stageOld = (Stage) botonAbandonar.getScene().getWindow();
+       stageOld.close();
+       EstadoJuego.getInstance().getPartida().setPartidaAbandonada(true);
+
+        FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/pantallaPartidas.fxml"));
+        BorderPane root = null;
+        try {
+            root = myLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Menú Principal");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
+        stage.setResizable(false);
+        stage.show();
+    }
 
     private void showPopUp() {
         try
@@ -373,7 +383,15 @@ public class RetoAhorcadoController implements Initializable {
             Scene scene = new Scene (root, 357, 184);
             Stage  stage = new Stage();
             stage.setScene(scene);
-            stage.setTitle("¡Enhorabuena!");
+            if (numeroPregunta == 10)
+            {
+                stage.setTitle("¡Ganaste!");
+            }
+            else if (!partidaActual.getRetosFallados()[numeroPregunta]) {
+                stage.setTitle("¡Enhorabuena!");
+            } else {
+                stage.setTitle("Oops!");
+            }
             stage.initModality(Modality.WINDOW_MODAL);
             stage.setResizable(false);
             stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));

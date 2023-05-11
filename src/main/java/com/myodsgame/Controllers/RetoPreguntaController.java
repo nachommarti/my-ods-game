@@ -60,7 +60,7 @@ public class RetoPreguntaController implements Initializable {
     @FXML
     private Label timer;
     @FXML
-    private Label consolidatedScore;
+    private Button abandonarBoton;
     @FXML
     private ImageView vidas;
 
@@ -135,6 +135,7 @@ public class RetoPreguntaController implements Initializable {
         else
             ayuda.setDisable(true);
 
+        abandonarBoton.setVisible(partidaActual.isConsolidado());
 
         Rectangle clip = new Rectangle(imagenODS.getFitWidth(), imagenODS.getFitHeight());
         clip.setArcWidth(40);
@@ -201,13 +202,31 @@ public class RetoPreguntaController implements Initializable {
         ayudaPulsada = true;
 
     }
-   // @FXML
-   // void botonSalirPulsado(ActionEvent event) {
-   //     if(mediaPlayerTicTac.getStatus() == MediaPlayer.Status.PLAYING) mediaPlayerTicTac.stop();
-   //     if(mediaPlayerMusic.getStatus() == MediaPlayer.Status.PLAYING) mediaPlayerMusic.stop();
-   //     Stage stage = (Stage) botonSalir.getScene().getWindow();
-   //     stage.close();
-   // }
+    @FXML
+    void abandonarBotonPulsado(ActionEvent event) {
+       if(mediaPlayerTicTac.getStatus() == MediaPlayer.Status.PLAYING) mediaPlayerTicTac.stop();
+        if(mediaPlayerMusic.getStatus() == MediaPlayer.Status.PLAYING) mediaPlayerMusic.stop();
+        Stage stageOld = (Stage) abandonarBoton.getScene().getWindow();
+        stageOld.close();
+        EstadoJuego.getInstance().getPartida().setPartidaAbandonada(true);
+
+        FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/pantallaPartidas.fxml"));
+        BorderPane root = null;
+        try {
+            root = myLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Menú Principal");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
+        stage.setResizable(false);
+        stage.show();
+    }
 
     @FXML
     void respuesta1Clicked(ActionEvent event) {
@@ -280,6 +299,7 @@ public class RetoPreguntaController implements Initializable {
             UserUtils.saveStats(false, retoActual.getODS());
             vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
             EstadoJuego.getInstance().getPartida().getRetosFallados()[numeroPregunta-1] = true;
+            EstadoJuego.getInstance().getPartida().getRetos().remove(numeroPregunta - 1);
             if (EstadoJuego.getInstance().getPartida().getVidas() == 0) {
                 mediaPlayerSonidos.stop();
                 lostGame();
@@ -391,7 +411,11 @@ public class RetoPreguntaController implements Initializable {
             Scene scene = new Scene (root, 357, 184);
             Stage  stage = new Stage();
             stage.setScene(scene);
-            if (!partidaActual.getRetosFallados()[numeroPregunta]) {
+            if (numeroPregunta == 10)
+            {
+                stage.setTitle("¡Ganaste!");
+            }
+            else if (!partidaActual.getRetosFallados()[numeroPregunta]) {
                 stage.setTitle("¡Enhorabuena!");
             } else {
                 stage.setTitle("Oops!");
