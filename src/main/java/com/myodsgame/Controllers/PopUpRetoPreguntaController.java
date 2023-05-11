@@ -47,17 +47,18 @@ public class PopUpRetoPreguntaController implements Initializable {
         consolidarBoton.setDisable(partidaActual.isConsolidado());
 
         abandonarBoton.setVisible(false);
-        if (partidaActual.getRetoActual() == 10 && !partidaActual.isPartidaPerdida())
-        {
-            mensaje.setText("Ya has terminado la partida. Felicidades, has ganado");
-            abandonarBoton.setText("Menú principal");
-            abandonarBoton.setVisible(true);
-            siguientePregunta.setVisible(false);
-            consolidarBoton.setVisible(false);
-        }
-        else if (!partidaActual.getRetosFallados()[partidaActual.getRetoActual()-1])
+
+        if (!partidaActual.getRetosFallados()[partidaActual.getRetoActual()-1])
         {
             mensaje.setText("¡Enhorabuena! Acabas de ganar " + partidaActual.getRetos().get(partidaActual.getRetoActual()).getPuntuacion() + " puntos");
+            if (partidaActual.getRetoActual() >= 10)
+            {
+                mensaje.setText("Ya has terminado la partida. Felicidades, has ganado");
+                abandonarBoton.setText("Menú principal");
+                abandonarBoton.setVisible(true);
+                siguientePregunta.setVisible(false);
+                consolidarBoton.setVisible(false);
+            }
         }
         else
         {
