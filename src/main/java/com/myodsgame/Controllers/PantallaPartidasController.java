@@ -169,20 +169,37 @@ public class PantallaPartidasController implements Initializable {
             PartidaDirector partidaDirector = new PartidaDirector(new PartidaMixtaBuilder());
             Partida partida = partidaDirector.BuildPartida();
             EstadoJuego.getInstance().setPartida(partida);
-            for(int i = 0; i < partida.getRetos().size(); i++){
+            while(EstadoJuego.getInstance().getPartida().getRetoActual() <= 10){
                 if(EstadoJuego.getInstance().getPartida().isPartidaPerdida() || EstadoJuego.getInstance().getPartida().isPartidaAbandonada()) {
                     //TODO:show message saying how many points the user has won during this game
                     break;
                 }
-                Reto retoActual = EstadoJuego.getInstance().getPartida().getRetos().get(i);
+
+                partida = EstadoJuego.getInstance().getPartida();
+                Reto retoActual = partida.getRetos().get(partida.getRetoQueHayQueMirarEnElArray());
+
+                if(partida.getRetoActual() > 4 && partida.getRetoActual() <= 7){
+                    while(partida.getRetos().get(partida.getRetoQueHayQueMirarEnElArray()).getDificultad() != 2) {
+                        System.out.println("wenos dias joselu");
+                        System.out.println("reto del array actual: " + partida.getRetoQueHayQueMirarEnElArray());
+                        EstadoJuego.getInstance().getPartida().setRetoQueHayQueMirarEnElArray(partida.getRetoQueHayQueMirarEnElArray() + 1);
+                        System.out.println("reto actualizado: " + EstadoJuego.getInstance().getPartida().getRetoQueHayQueMirarEnElArray());
+                    }
+                }
+
+                if(partida.getRetoActual() > 7 && partida.getRetoActual() <= 10){
+                    while(partida.getRetos().get(partida.getRetoQueHayQueMirarEnElArray()).getDificultad() != 3)
+                        EstadoJuego.getInstance().getPartida().setRetoQueHayQueMirarEnElArray(partida.getRetoQueHayQueMirarEnElArray()+1);
+                }
+
+
+
                 if (retoActual.getTipoReto().equals(TipoReto.PREGUNTA)) {
                     loadReto("retoPregunta", "Reto Pregunta");
                 } else {
                     loadReto("retoAhorcado", "Reto Ahorcado");
                 }
-                if(EstadoJuego.getInstance().getPartida().getRetosFallados()[i]){
-                    i--;
-                }
+
                 // TODO - Al implementar el tercer reto, cambiar esto
             }
             Node source = (Node) event.getSource();

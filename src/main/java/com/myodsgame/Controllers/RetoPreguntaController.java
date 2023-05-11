@@ -74,7 +74,6 @@ public class RetoPreguntaController implements Initializable {
     private String respuestaCorrecta;
     private boolean ayudaPulsada;
     private boolean respuestaCorrectaSeleccionada;
-    private int numeroPregunta;
     public int obtainedPoints = 0;
     private boolean consolidated;
     private String currentStyleButton;
@@ -99,20 +98,23 @@ public class RetoPreguntaController implements Initializable {
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
         this.partidaActual = EstadoJuego.getInstance().getPartida();
-        this.numeroPregunta = partidaActual.getRetoActual();
 
-        if(numeroPregunta > 4 && numeroPregunta <= 7){
-            while(partidaActual.getRetos().get(numeroPregunta-1).getDificultad() != 2)
-                numeroPregunta++;
+        if(partidaActual.getRetoActual() > 4 && partidaActual.getRetoActual() <= 7){
+            while(partidaActual.getRetos().get(partidaActual.getRetoQueHayQueMirarEnElArray()).getDificultad() != 2) {
+                System.out.println("wenos dias joselu");
+                System.out.println("reto del array actual: " + partidaActual.getRetoQueHayQueMirarEnElArray());
+                EstadoJuego.getInstance().getPartida().setRetoQueHayQueMirarEnElArray(partidaActual.getRetoQueHayQueMirarEnElArray() + 1);
+                System.out.println("reto actualizado: " + EstadoJuego.getInstance().getPartida().getRetoQueHayQueMirarEnElArray());
+            }
         }
 
-        if(numeroPregunta > 7 && numeroPregunta <= 10){
-            while(partidaActual.getRetos().get(numeroPregunta-1).getDificultad() != 3)
-                numeroPregunta++;
+        if(partidaActual.getRetoActual() > 7 && partidaActual.getRetoActual() <= 10){
+            while(partidaActual.getRetos().get(partidaActual.getRetoQueHayQueMirarEnElArray()).getDificultad() != 3)
+                EstadoJuego.getInstance().getPartida().setRetoQueHayQueMirarEnElArray(partidaActual.getRetoQueHayQueMirarEnElArray()+1);
         }
 
-
-        this.retoActual = (RetoPregunta) partidaActual.getRetos().get(numeroPregunta-1);
+        System.out.println("reto que hay que coger que se va a usar: " + EstadoJuego.getInstance().getPartida().getRetoQueHayQueMirarEnElArray());
+        this.retoActual = (RetoPregunta) partidaActual.getRetos().get(EstadoJuego.getInstance().getPartida().getRetoQueHayQueMirarEnElArray());
 
         // KeyFrame event handler
         timeline.getKeyFrames().add(
@@ -165,9 +167,8 @@ public class RetoPreguntaController implements Initializable {
     }
 
     private void loadRetosState(){
-        for(int i = 0; i < numeroPregunta; i++){
-            ((Label) labelArray.getChildren().get(i))
-                    .setStyle(partidaActual.getRetosFallados()[i] ? "-fx-background-color: rgb(255,25,25); " : "-fx-background-color: rgba(184, 218, 186, 1)");
+        for(int i = 0; i < partidaActual.getRetoActual(); i++){
+            ((Label) labelArray.getChildren().get(i)).setStyle("-fx-background-color: rgba(184, 218, 186, 1)");
         }
     }
 
@@ -183,7 +184,7 @@ public class RetoPreguntaController implements Initializable {
         timeCountdown = retoPreguntaActual.getDuracion();
         if (retoPreguntaActual.getODS().size() == 1) imagenODS.setImage(new Image(Path.of("", "src", "main", "resources", "images", "ODS_"+retoPreguntaActual.getODS().get(0)+".jpg").toAbsolutePath().toString()));
         else imagenODS.setImage(new Image(Path.of("", "src", "main", "resources", "images", "ODS_0.jpg").toAbsolutePath().toString()));
-        ((Label) labelArray.getChildren().get(numeroPregunta - 1)).setStyle("-fx-background-color: rgb(202,184,218)");
+        ((Label) labelArray.getChildren().get(partidaActual.getRetoActual() - 1)).setStyle("-fx-background-color: rgb(202,184,218)");
         timeline.playFromStart();
 
         if (EstadoJuego.getInstance().getPartida().getVidas() == 1) {
@@ -305,22 +306,21 @@ public class RetoPreguntaController implements Initializable {
         currentStyleLabel = labelArray.getStyle();
 
         if (respuestaSeleccionada.getText().equals(respuestaCorrecta)) {
-            ((Label) labelArray.getChildren().get(numeroPregunta-1)).setStyle("-fx-background-color: rgba(184, 218, 186, 1); " + currentStyleLabel);
-            ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.WHITE);
+            ((Label) labelArray.getChildren().get(partidaActual.getRetoActual()-1)).setStyle("-fx-background-color: rgba(184, 218, 186, 1); " + currentStyleLabel);
+            ((Label) labelArray.getChildren().get(partidaActual.getRetoActual()-1)).setTextFill(Color.WHITE);
             respuestaCorrectaSeleccionada = true;
             reproducirSonido("src/main/resources/sounds/Acierto.mp3", 0.15);
             UserUtils.saveStats(true, retoActual.getODS());
-            EstadoJuego.getInstance().getPartida().getRetosFallados()[numeroPregunta-1] = false;
+            EstadoJuego.getInstance().getPartida().getRetosFallados()[partidaActual.getRetoActual()-1] = false;
         }
         else {
-            ((Label) labelArray.getChildren().get(numeroPregunta-1)).setStyle("-fx-background-color: rgb(255,25,25); " + currentStyleLabel);
-            ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.WHITE);
+            ((Label) labelArray.getChildren().get(partidaActual.getRetoActual()-1)).setStyle("-fx-background-color: rgb(255,25,25); " + currentStyleLabel);
+            ((Label) labelArray.getChildren().get(partidaActual.getRetoActual()-1)).setTextFill(Color.WHITE);
             EstadoJuego.getInstance().getPartida().setVidas(partidaActual.getVidas()-1);
             reproducirSonido("src/main/resources/sounds/Fallo.mp3", 0.5);
             UserUtils.saveStats(false, retoActual.getODS());
             vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
-            EstadoJuego.getInstance().getPartida().getRetosFallados()[numeroPregunta-1] = true;
-            EstadoJuego.getInstance().getPartida().getRetos().remove(numeroPregunta - 1);
+            EstadoJuego.getInstance().getPartida().getRetosFallados()[partidaActual.getRetoActual()-1] = true;
             if (EstadoJuego.getInstance().getPartida().getVidas() == 0) {
                 mediaPlayerSonidos.stop();
                 lostGame();
@@ -374,10 +374,9 @@ public class RetoPreguntaController implements Initializable {
 
         }
 
-        ((Label) labelArray.getChildren().get(numeroPregunta-1)).setTextFill(Color.RED);
+        ((Label) labelArray.getChildren().get(partidaActual.getRetoActual()-1)).setTextFill(Color.RED);
         ayuda.setDisable(true);
         this.timeCountdown = 30;
-        numeroPregunta--;
     }
 
     private void showMessage(boolean answered) {
@@ -432,11 +431,11 @@ public class RetoPreguntaController implements Initializable {
             Scene scene = new Scene (root, 357, 184);
             Stage  stage = new Stage();
             stage.setScene(scene);
-            if (numeroPregunta == 10)
+            if (partidaActual.getRetoActual() == 10)
             {
                 stage.setTitle("¡Ganaste!");
             }
-            else if (!partidaActual.getRetosFallados()[numeroPregunta]) {
+            else if (!partidaActual.getRetosFallados()[partidaActual.getRetoActual()]) {
                 stage.setTitle("¡Enhorabuena!");
             } else {
                 stage.setTitle("Oops!");

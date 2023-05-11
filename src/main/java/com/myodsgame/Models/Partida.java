@@ -19,6 +19,7 @@ public class Partida {
     private Image imagenVidas, imagenFondo;
     private boolean partidaPerdida;
     private boolean partidaAbandonada;
+    private int retoQueHayQueMirarEnElArray = 0;
     public Partida() {
         puntuacion = 0;
         vidas = 2;
@@ -48,6 +49,15 @@ public class Partida {
         this.imagenVidas = imagenVidas;
         this.imagenFondo = imagenFondo;
     }
+
+    public int getRetoQueHayQueMirarEnElArray() {
+        return retoQueHayQueMirarEnElArray;
+    }
+
+    public void setRetoQueHayQueMirarEnElArray(int retoQueHayQueMirarEnElArray) {
+        this.retoQueHayQueMirarEnElArray = retoQueHayQueMirarEnElArray;
+    }
+
     public int getPuntuacion() {
         return puntuacion;
     }

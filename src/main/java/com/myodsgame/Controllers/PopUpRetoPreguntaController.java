@@ -35,7 +35,6 @@ public class PopUpRetoPreguntaController implements Initializable {
     private Button abandonarBoton;
     @FXML
     private Button siguientePregunta;
-    private int numeroPregunta;
     private ObservableList<Window> windows = Stage.getWindows();
     private IServices servicios;
 
@@ -43,13 +42,12 @@ public class PopUpRetoPreguntaController implements Initializable {
     {
         servicios = new Services();
         partidaActual = EstadoJuego.getInstance().getPartida();
-        numeroPregunta = partidaActual.getRetoActual();
-        int retoActual = partidaActual.getRetoActual();
-        obtainedPoints = servicios.computePoints(partidaActual.getRetos().get(retoActual), partidaActual.getRetos().get(retoActual).isAyudaUsada(), true);
+        obtainedPoints = servicios.computePoints(partidaActual.getRetos().get(partidaActual.getRetoQueHayQueMirarEnElArray()),
+                partidaActual.getRetos().get(partidaActual.getRetoQueHayQueMirarEnElArray()).isAyudaUsada(), true);
         consolidarBoton.setDisable(partidaActual.isConsolidado());
 
         abandonarBoton.setVisible(false);
-        if (retoActual == 10 && !partidaActual.isPartidaPerdida())
+        if (partidaActual.getRetoActual() == 10 && !partidaActual.isPartidaPerdida())
         {
             mensaje.setText("Ya has terminado la partida. Felicidades, has ganado");
             abandonarBoton.setText("Menú principal");
@@ -57,7 +55,7 @@ public class PopUpRetoPreguntaController implements Initializable {
             siguientePregunta.setVisible(false);
             consolidarBoton.setVisible(false);
         }
-        else if (!partidaActual.getRetosFallados()[numeroPregunta - 1])
+        else if (!partidaActual.getRetosFallados()[partidaActual.getRetoActual()-1])
         {
             mensaje.setText("¡Enhorabuena! Acabas de ganar " + partidaActual.getRetos().get(partidaActual.getRetoActual()).getPuntuacion() + " puntos");
         }
@@ -66,7 +64,7 @@ public class PopUpRetoPreguntaController implements Initializable {
             int puntosPerdidos = Math.min((partidaActual.getRetos().get(partidaActual.getRetoActual()).getPuntuacion() * 2), partidaActual.getPuntuacion());
             mensaje.setText("¡Vaya! Has perdido " + puntosPerdidos + " puntos");
             consolidarBoton.setDisable(true);
-            EstadoJuego.getInstance().getPartida().setRetoActual(numeroPregunta - 1);
+            EstadoJuego.getInstance().getPartida().setRetoActual(partidaActual.getRetoActual()-1);
         }
         if (partidaActual.isPartidaPerdida())
         {
@@ -116,7 +114,7 @@ try{FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/
     @FXML
     private void siguientePreguntaPulsado(ActionEvent event)
     {
-        if(numeroPregunta == 10) {
+        if(partidaActual.getRetoActual() == 10) {
             UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacion());
         }
 
@@ -128,6 +126,9 @@ try{FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/
             }
         }
         EstadoJuego.getInstance().getPartida().setRetoActual(partidaActual.getRetoActual()+1);
+        EstadoJuego.getInstance().getPartida().setRetoQueHayQueMirarEnElArray(partidaActual.getRetoQueHayQueMirarEnElArray()+1);
+        System.out.println("reto actual: " + partidaActual.getRetoActual());
+        System.out.println("reto a elegir del array: " + partidaActual.getRetoQueHayQueMirarEnElArray());
         Stage stage = (Stage) consolidarBoton.getScene().getWindow();
         stage.close();
     }

@@ -82,7 +82,6 @@ public class RetoAhorcadoController implements Initializable {
     private Partida partidaActual;
     private RetoAhorcado retoActual;
     private String palabra;
-    private int numeroPregunta;
     private int obtainedPoints;
     private boolean ayudaUsada;
     private Timeline timeline;
@@ -99,23 +98,29 @@ public class RetoAhorcadoController implements Initializable {
         timeline.setCycleCount(Timeline.INDEFINITE);
         partidaActual = EstadoJuego.getInstance().getPartida();
 
+        if(partidaActual.getRetoActual() > 4 && partidaActual.getRetoActual() <= 7){
+            while(partidaActual.getRetos().get(partidaActual.getRetoQueHayQueMirarEnElArray()).getDificultad() != 2) {
+                System.out.println("wenos dias joselu");
+                System.out.println("reto del array actual: " + partidaActual.getRetoQueHayQueMirarEnElArray());
+                EstadoJuego.getInstance().getPartida().setRetoQueHayQueMirarEnElArray(partidaActual.getRetoQueHayQueMirarEnElArray() + 1);
+                System.out.println("reto actualizado: " + EstadoJuego.getInstance().getPartida().getRetoQueHayQueMirarEnElArray());
+            }
+        }
+
+        if(partidaActual.getRetoActual() > 7 && partidaActual.getRetoActual() <= 10){
+            while(partidaActual.getRetos().get(partidaActual.getRetoQueHayQueMirarEnElArray()).getDificultad() != 3)
+                EstadoJuego.getInstance().getPartida().setRetoQueHayQueMirarEnElArray(partidaActual.getRetoQueHayQueMirarEnElArray()+1);
+        }
+
         for(int i = 1; i <= partidaActual.getRetos().size(); i++){
             System.out.println("Desde AHORCADO - Reto numero " + i + " es de tipo " + partidaActual.getRetos().get(i-1).getTipoReto());
         }
 
         System.out.println("Desde reto AHORCADO - reto actual: " + partidaActual.getRetoActual());
         System.out.println("Desde reto AHORCADO - tipo reto actual: " + partidaActual.getRetos().get(partidaActual.getRetoActual()-1).getTipoReto());
-        this.numeroPregunta = partidaActual.getRetoActual();
-        if(numeroPregunta > 4 && numeroPregunta <= 7){
-            while(partidaActual.getRetos().get(numeroPregunta-1).getDificultad() != 2)
-                numeroPregunta++;
-        }
 
-        if(numeroPregunta > 7 && numeroPregunta <= 10){
-            while(partidaActual.getRetos().get(numeroPregunta-1).getDificultad() != 3)
-                numeroPregunta++;
-        }
-        retoActual = (RetoAhorcado) EstadoJuego.getInstance().getPartida().getRetos().get(numeroPregunta-1);
+
+        retoActual = (RetoAhorcado) EstadoJuego.getInstance().getPartida().getRetos().get(EstadoJuego.getInstance().getPartida().getRetoQueHayQueMirarEnElArray());
 
         timeCountdown = retoActual.getDuracion();
         palabra = retoActual.getPalabra().toUpperCase();
@@ -184,7 +189,7 @@ public class RetoAhorcadoController implements Initializable {
     }
 
     private void loadRetosState(){
-        for(int i = 0; i < numeroPregunta; i++){
+        for(int i = 0; i < partidaActual.getRetoActual(); i++){
             ((Label) labelArray.getChildren().get(i))
                     .setStyle(partidaActual.getRetosFallados()[i] ? "-fx-background-color: rgb(255,25,25); " : "-fx-background-color: rgba(184, 218, 186, 1)");
         }
@@ -251,7 +256,7 @@ public class RetoAhorcadoController implements Initializable {
             if(mediaPlayerTicTac != null && mediaPlayerTicTac.getStatus() == MediaPlayer.Status.PLAYING){mediaPlayerTicTac.stop();}
             reproducirSonido(true);
             disableKeyboard();
-            EstadoJuego.getInstance().getPartida().getRetosFallados()[numeroPregunta-1] = false;
+            EstadoJuego.getInstance().getPartida().getRetosFallados()[partidaActual.getRetoActual()-1] = false;
             obtainedPoints = servicios.computePoints(retoActual, ayudaUsada, true);
             int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
             EstadoJuego.getInstance().getPartida().setPuntuacion(puntosPartida + obtainedPoints);
@@ -273,8 +278,7 @@ public class RetoAhorcadoController implements Initializable {
             obtainedPoints = servicios.computePoints(retoActual, ayudaUsada, false);
             int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
 
-            EstadoJuego.getInstance().getPartida().getRetosFallados()[numeroPregunta-1] = true;
-            EstadoJuego.getInstance().getPartida().getRetos().remove(numeroPregunta - 1);
+            EstadoJuego.getInstance().getPartida().getRetosFallados()[partidaActual.getRetoActual()-1] = true;
             int vidasPartida = EstadoJuego.getInstance().getPartida().getVidas()-1;
             if(vidasPartida == 0){
                 showMessage("HAS PERDIDO LA PARTIDA Y " + obtainedPoints + " PUNTOS!", false);
@@ -306,7 +310,7 @@ public class RetoAhorcadoController implements Initializable {
 
 
     private void loadPalabra(){
-        ((Label) labelArray.getChildren().get(numeroPregunta - 1)).setStyle("-fx-background-color: rgb(202,184,218)");
+        ((Label) labelArray.getChildren().get(partidaActual.getRetoActual() - 1)).setStyle("-fx-background-color: rgb(202,184,218)");
 
         for(int i = 0; i < palabra.length(); i++)
             palabraMostrada.setText(palabraMostrada.getText() + "_");
@@ -422,11 +426,11 @@ public class RetoAhorcadoController implements Initializable {
             Scene scene = new Scene (root, 357, 184);
             Stage  stage = new Stage();
             stage.setScene(scene);
-            if (numeroPregunta == 10)
+            if (partidaActual.getRetoActual() == 10)
             {
                 stage.setTitle("¡Ganaste!");
             }
-            else if (!partidaActual.getRetosFallados()[numeroPregunta]) {
+            else if (!partidaActual.getRetosFallados()[partidaActual.getRetoActual()]) {
                 stage.setTitle("¡Enhorabuena!");
             } else {
                 stage.setTitle("Oops!");
