@@ -49,9 +49,6 @@ public class Services implements IServices {
         int obtainedPoints;
 
         if (retoAcertado) {
-            if (ayudaUsada)
-                obtainedPoints = retoActual.getPuntuacion() / 2;
-            else
                 obtainedPoints = retoActual.getPuntuacion();
         } else {
             obtainedPoints = -retoActual.getDificultad()*2*50;

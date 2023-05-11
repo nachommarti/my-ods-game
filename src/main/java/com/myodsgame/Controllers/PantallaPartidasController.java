@@ -176,7 +176,7 @@ public class PantallaPartidasController implements Initializable {
                 }
 
                 partida = EstadoJuego.getInstance().getPartida();
-                Reto retoActual = partida.getRetos().get(partida.getRetoQueHayQueMirarEnElArray());
+
 
                 if(partida.getRetoActual() > 4 && partida.getRetoActual() <= 7){
                     while(partida.getRetos().get(partida.getRetoQueHayQueMirarEnElArray()).getDificultad() != 2) {
@@ -191,6 +191,8 @@ public class PantallaPartidasController implements Initializable {
                     while(partida.getRetos().get(partida.getRetoQueHayQueMirarEnElArray()).getDificultad() != 3)
                         EstadoJuego.getInstance().getPartida().setRetoQueHayQueMirarEnElArray(partida.getRetoQueHayQueMirarEnElArray()+1);
                 }
+
+                Reto retoActual = partida.getRetos().get(partida.getRetoQueHayQueMirarEnElArray());
 
 
 

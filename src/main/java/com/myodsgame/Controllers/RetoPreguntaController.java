@@ -226,8 +226,8 @@ public class RetoPreguntaController implements Initializable {
     }
     @FXML
     void abandonarBotonPulsado(ActionEvent event) {
-       if(mediaPlayerTicTac.getStatus() == MediaPlayer.Status.PLAYING) mediaPlayerTicTac.stop();
-        if(mediaPlayerMusic.getStatus() == MediaPlayer.Status.PLAYING) mediaPlayerMusic.stop();
+       if(mediaPlayerTicTac != null) mediaPlayerTicTac.stop();
+        if(mediaPlayerMusic != null) mediaPlayerMusic.stop();
         Stage stageOld = (Stage) abandonarBoton.getScene().getWindow();
         stageOld.close();
         EstadoJuego.getInstance().getPartida().setPartidaAbandonada(true);
@@ -301,8 +301,8 @@ public class RetoPreguntaController implements Initializable {
 
     private void checkAnswers(Button respuestaSeleccionada) {
         timeline.stop();
-        mediaPlayerMusic.stop();
-        if(mediaPlayerTicTac.getStatus() == MediaPlayer.Status.PLAYING) mediaPlayerTicTac.stop();
+        if(mediaPlayerMusic !=null)mediaPlayerMusic.stop();
+        if(mediaPlayerTicTac !=null) mediaPlayerTicTac.stop();
         currentStyleLabel = labelArray.getStyle();
 
         if (respuestaSeleccionada.getText().equals(respuestaCorrecta)) {
@@ -322,7 +322,7 @@ public class RetoPreguntaController implements Initializable {
             vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
             EstadoJuego.getInstance().getPartida().getRetosFallados()[partidaActual.getRetoActual()-1] = true;
             if (EstadoJuego.getInstance().getPartida().getVidas() == 0) {
-                mediaPlayerSonidos.stop();
+                if(mediaPlayerSonidos!=null) mediaPlayerSonidos.stop();
                 lostGame();
                 EstadoJuego.getInstance().getPartida().setPartidaPerdida(true);
                 reproducirSonido("src/main/resources/sounds/Partida_Perdida.mp3", 0.5);
@@ -367,7 +367,7 @@ public class RetoPreguntaController implements Initializable {
             vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
         }
         if (EstadoJuego.getInstance().getPartida().getVidas() == 2) {
-            mediaPlayerSonidos.stop();
+            if(mediaPlayerSonidos!=null) mediaPlayerSonidos.stop();
             vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
             lostGame();
             reproducirSonido("src/main/resources/sounds/Partida_Perdida.mp3", 0.5);

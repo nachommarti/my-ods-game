@@ -252,8 +252,8 @@ public class RetoAhorcadoController implements Initializable {
 
     private void checkWin() {
         if (palabraMostrada.getText().equals(palabra)) {
-            if(mediaPlayerMusic != null && mediaPlayerMusic.getStatus() == MediaPlayer.Status.PLAYING){mediaPlayerMusic.stop();}
-            if(mediaPlayerTicTac != null && mediaPlayerTicTac.getStatus() == MediaPlayer.Status.PLAYING){mediaPlayerTicTac.stop();}
+            if(mediaPlayerMusic != null ){mediaPlayerMusic.stop();}
+            if(mediaPlayerTicTac != null){mediaPlayerTicTac.stop();}
             reproducirSonido(true);
             disableKeyboard();
             EstadoJuego.getInstance().getPartida().getRetosFallados()[partidaActual.getRetoActual()-1] = false;
@@ -263,14 +263,16 @@ public class RetoAhorcadoController implements Initializable {
             UserUtils.saveStats(true, retoActual.getODS());
             showMessage("HAS GANADO " + obtainedPoints + " PUNTOS", true);
             ayudaButton.setDisable(true);
+            timeline.stop();
             showPopUp();
         }
     }
 
     private void checkLose(){
         if(retoActual.getIntentos() == 0){
-            if(mediaPlayerMusic != null && mediaPlayerMusic.getStatus() == MediaPlayer.Status.PLAYING){mediaPlayerMusic.stop();}
-            if(mediaPlayerTicTac != null && mediaPlayerTicTac.getStatus() == MediaPlayer.Status.PLAYING){mediaPlayerTicTac.stop();}
+            if(mediaPlayerMusic != null ){mediaPlayerMusic.stop();}
+            if(mediaPlayerTicTac != null){mediaPlayerTicTac.stop();}
+            timeline.stop();
             reproducirSonido(false);
             disableKeyboard();
             //botonSalir.setDisable(false);
