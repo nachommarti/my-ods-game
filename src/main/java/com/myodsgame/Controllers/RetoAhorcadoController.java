@@ -103,6 +103,8 @@ public class RetoAhorcadoController implements Initializable {
             System.out.println("Desde AHORCADO - Reto numero " + i + " es de tipo " + partidaActual.getRetos().get(i-1).getTipoReto());
         }
 
+        System.out.println("Desde reto AHORCADO - reto actual: " + partidaActual.getRetoActual());
+        System.out.println("Desde reto AHORCADO - tipo reto actual: " + partidaActual.getRetos().get(partidaActual.getRetoActual()-1).getTipoReto());
         this.numeroPregunta = partidaActual.getRetoActual();
         if(numeroPregunta > 4 && numeroPregunta <= 7){
             while(partidaActual.getRetos().get(numeroPregunta-1).getDificultad() != 2)
@@ -114,9 +116,6 @@ public class RetoAhorcadoController implements Initializable {
                 numeroPregunta++;
         }
         retoActual = (RetoAhorcado) EstadoJuego.getInstance().getPartida().getRetos().get(numeroPregunta-1);
-
-        System.out.println("Desde reto AHORCADO - reto actual: " + partidaActual.getRetoActual());
-        System.out.println("Desde reto AHORCADO - tipo reto actual: " + retoActual.getTipoReto());
 
         timeCountdown = retoActual.getDuracion();
         palabra = retoActual.getPalabra().toUpperCase();
@@ -185,7 +184,7 @@ public class RetoAhorcadoController implements Initializable {
     }
 
     private void loadRetosState(){
-        for(int i = 0; i < partidaActual.getRetoActual(); i++){
+        for(int i = 0; i < numeroPregunta; i++){
             ((Label) labelArray.getChildren().get(i))
                     .setStyle(partidaActual.getRetosFallados()[i] ? "-fx-background-color: rgb(255,25,25); " : "-fx-background-color: rgba(184, 218, 186, 1)");
         }
@@ -248,10 +247,9 @@ public class RetoAhorcadoController implements Initializable {
 
     private void checkWin() {
         if (palabraMostrada.getText().equals(palabra)) {
-            if(mediaPlayerMusic != null){mediaPlayerMusic.stop();}
-            if(mediaPlayerTicTac != null){mediaPlayerTicTac.stop();}
+            if(mediaPlayerMusic != null && mediaPlayerMusic.getStatus() == MediaPlayer.Status.PLAYING){mediaPlayerMusic.stop();}
+            if(mediaPlayerTicTac != null && mediaPlayerTicTac.getStatus() == MediaPlayer.Status.PLAYING){mediaPlayerTicTac.stop();}
             reproducirSonido(true);
-            timeline.stop();
             disableKeyboard();
             EstadoJuego.getInstance().getPartida().getRetosFallados()[numeroPregunta-1] = false;
             obtainedPoints = servicios.computePoints(retoActual, ayudaUsada, true);
@@ -266,11 +264,9 @@ public class RetoAhorcadoController implements Initializable {
 
     private void checkLose(){
         if(retoActual.getIntentos() == 0){
-            EstadoJuego.getInstance().getPartida().setRetoFallado(true);
             if(mediaPlayerMusic != null && mediaPlayerMusic.getStatus() == MediaPlayer.Status.PLAYING){mediaPlayerMusic.stop();}
             if(mediaPlayerTicTac != null && mediaPlayerTicTac.getStatus() == MediaPlayer.Status.PLAYING){mediaPlayerTicTac.stop();}
             reproducirSonido(false);
-            timeline.stop();
             disableKeyboard();
             //botonSalir.setDisable(false);
             UserUtils.saveStats(false, retoActual.getODS());

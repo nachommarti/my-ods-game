@@ -174,28 +174,14 @@ public class PantallaPartidasController implements Initializable {
                     //TODO:show message saying how many points the user has won during this game
                     break;
                 }
-
-                Partida partidaActual = EstadoJuego.getInstance().getPartida();
-                int numeroPregunta = partidaActual.getRetoActual();
-                if(numeroPregunta > 4 && numeroPregunta <= 7){
-                    while(partidaActual.getRetos().get(numeroPregunta-1).getDificultad() != 2)
-                        numeroPregunta++;
-                }
-
-                if(numeroPregunta > 7 && numeroPregunta <= 10){
-                    while(partidaActual.getRetos().get(numeroPregunta-1).getDificultad() != 3)
-                        numeroPregunta++;
-                }
-
-                Reto retoActual = EstadoJuego.getInstance().getPartida().getRetos().get(numeroPregunta-1);
+                Reto retoActual = EstadoJuego.getInstance().getPartida().getRetos().get(i);
                 if (retoActual.getTipoReto().equals(TipoReto.PREGUNTA)) {
                     loadReto("retoPregunta", "Reto Pregunta");
                 } else {
                     loadReto("retoAhorcado", "Reto Ahorcado");
                 }
-                if(EstadoJuego.getInstance().getPartida().isRetoFallado()){
+                if(EstadoJuego.getInstance().getPartida().getRetosFallados()[i]){
                     i--;
-                    EstadoJuego.getInstance().getPartida().setRetoFallado(false);
                 }
                 // TODO - Al implementar el tercer reto, cambiar esto
             }
