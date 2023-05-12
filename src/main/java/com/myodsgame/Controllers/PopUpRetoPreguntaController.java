@@ -83,12 +83,14 @@ public class PopUpRetoPreguntaController implements Initializable {
     {
         partidaActual.setConsolidado(true);
         consolidarBoton.setDisable(true);
+        EstadoJuego.getInstance().getPartida().setPuntuacionConsolidada(EstadoJuego.getInstance().getPartida().getPuntuacion());
         UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacion());
     }
 
     @FXML
     private void abandonarBotonPulsado(ActionEvent event)
     {
+        UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacion() - EstadoJuego.getInstance().getPartida().getPuntuacionConsolidada());
         partidaActual.setPartidaAbandonada(true);
         for (Window window : windows)
         {

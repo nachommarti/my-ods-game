@@ -20,6 +20,7 @@ public class Partida {
     private boolean partidaPerdida;
     private boolean partidaAbandonada;
     private int retoQueHayQueMirarEnElArray = 0;
+    private int puntuacionConsolidada;
     public Partida() {
         puntuacion = 0;
         vidas = 2;
@@ -29,15 +30,17 @@ public class Partida {
         retosFallados = new boolean[10];
         partidaPerdida = false;
         partidaAbandonada = false;
+        puntuacionConsolidada = 0;
     }
 
-    public Partida(int puntuacion, int vidas, int retoActual, boolean consolidado, boolean partidaAbandonada, int ayudasRestantes,  List<? extends Reto> retos, Media musica, Media sonidoAyuda, Media sonidoAcierto, Media sondioFallo, Media sonidoVictoria, Media sonidoDerrota, Media diezsecs, Image imagenVidas, Image imagenFondo) {
+    public Partida(int puntuacion, int vidas, int retoActual, boolean consolidado, boolean partidaAbandonada, int ayudasRestantes,  int puntuacionConsolidada, List<? extends Reto> retos, Media musica, Media sonidoAyuda, Media sonidoAcierto, Media sondioFallo, Media sonidoVictoria, Media sonidoDerrota, Media diezsecs, Image imagenVidas, Image imagenFondo) {
         this.puntuacion = puntuacion;
         this.vidas = vidas;
         this.retoActual = retoActual;
         this.consolidado = consolidado;
         this.partidaAbandonada = partidaAbandonada;
         this.ayudasRestantes = ayudasRestantes;
+        this.puntuacionConsolidada = puntuacionConsolidada;
         this.retos = retos;
         this.musica = musica;
         this.sonidoAyuda = sonidoAyuda;
@@ -56,6 +59,14 @@ public class Partida {
 
     public void setRetoQueHayQueMirarEnElArray(int retoQueHayQueMirarEnElArray) {
         this.retoQueHayQueMirarEnElArray = retoQueHayQueMirarEnElArray;
+    }
+
+    public int getPuntuacionConsolidada() {
+        return puntuacionConsolidada;
+    }
+
+    public void setPuntuacionConsolidada(int puntuacionConsolidada) {
+        this.puntuacionConsolidada = puntuacionConsolidada;
     }
 
     public int getPuntuacion() {
