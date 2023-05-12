@@ -346,11 +346,9 @@ public class RetoPreguntaController implements Initializable {
 
         ayuda.setDisable(true);
         computePoints();
+        showPopUp();
         EstadoJuego.getInstance().getPartida().setPuntuacion(EstadoJuego.getInstance().getPartida().getPuntuacion() + obtainedPoints);
         currentScore.setText("Score: " + EstadoJuego.getInstance().getPartida().getPuntuacion());
-        showPopUp();
-
-
 
     }
 

@@ -288,7 +288,6 @@ public class RetoAhorcadoController implements Initializable {
                 UserUtils.aumentarPartidasJugadas();
             }
             EstadoJuego.getInstance().getPartida().setVidas(vidasPartida);
-
             if (EstadoJuego.getInstance().getPartida().getVidas() == 1) {
                 vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
             }
@@ -300,6 +299,7 @@ public class RetoAhorcadoController implements Initializable {
 
             showPopUp();
             EstadoJuego.getInstance().getPartida().setPuntuacion(puntosPartida + obtainedPoints);
+
             //nextQuestionButton.setDisable(false);
         }
     }
