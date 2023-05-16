@@ -19,6 +19,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -99,8 +100,19 @@ public class EstadisticaController implements Initializable {
             return new SimpleStringProperty(stats.getUsuario());
         });
 
-        ranking.getColumns().addAll(colPosicion, colPuntos, colUsuarios);
+        ranking.setRowFactory(tv -> {
+            TableRow<Estadisticas> row = new TableRow<>();
+            row.itemProperty().addListener((obs, prevStats, currStats) -> {
+                if (currStats != null && currStats.getUsuario().equals(EstadoJuego.getInstance().getUsuario().getUsername())) {
+                    row.setStyle("-fx-background-color: yellow;");
+                } else {
+                    row.setStyle("");
+                }
+            });
+            return row;
+        });
 
+        ranking.getColumns().addAll(colPosicion, colPuntos, colUsuarios);
         estadisticas = new RepositorioEstadisticasImpl().getEstadisticas();
         ObservableList<Estadisticas> stats = FXCollections.observableList(estadisticas);
         ranking.setItems(stats);
