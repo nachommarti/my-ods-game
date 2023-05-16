@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.EstadisticaController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.EstadisticaController">
    <top>
       <Button fx:id="botonAtras" mnemonicParsing="false" onAction="#botonAtrasPulsado" text="Atrás" BorderPane.alignment="CENTER_LEFT">
          <BorderPane.margin>
@@ -51,14 +44,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </HBox.margin>
                <children>
-                  <TableView fx:id="ranking" prefHeight="538.0" prefWidth="360.0">
-                    <columns>
-                      <TableColumn fx:id="colPosicion" prefWidth="59.999940514564514" text="Posición" />
-                      <TableColumn fx:id="colPuntos" prefWidth="133.59996795654297" text="Puntos" />
-                        <TableColumn fx:id="colUsuarios" prefWidth="109.5999755859375" text="Usuario" />
-                        <TableColumn fx:id="colAciertos" prefWidth="68.0" text="nº aciertos" />
-                    </columns>
-                  </TableView>
+                  <TableView fx:id="ranking" prefHeight="538.0" prefWidth="360.0" />
                </children>
             </VBox>
          </children>

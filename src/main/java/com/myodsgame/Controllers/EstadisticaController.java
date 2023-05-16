@@ -3,6 +3,9 @@ package com.myodsgame.Controllers;
 import com.myodsgame.Models.Estadisticas;
 import com.myodsgame.Repository.RepositorioEstadisticasImpl;
 import com.myodsgame.Utils.EstadoJuego;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,6 +20,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
@@ -35,23 +39,13 @@ public class EstadisticaController implements Initializable {
     @FXML
     private Label labelPuntos;
 
-    private List<Estadisticas> estadisticas;
-
     @FXML
-    private TableView<Estadisticas> ranking;
-
-    @FXML
-    private TableColumn<Estadisticas, Integer> colPuntos = new TableColumn<Estadisticas, Integer>("Puntos");
-
-
-    @FXML
-    private TableColumn<Estadisticas, String> colUsuarios;
-
-    @FXML
-    private TableColumn<Estadisticas, Integer> colAciertos;
+    private TableView<Estadisticas> ranking = new TableView<>();
 
     @FXML
     private BarChart<String, Number> graficaOds;
+
+    private List<Estadisticas> estadisticas;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -72,7 +66,6 @@ public class EstadisticaController implements Initializable {
                 datosODS[i] = (int) Math.round(res);
             }
         }
-        //String[] colores = {"#e30614", "#d5a200", "#309637", "#b71828", "#e8401b", "#169eda", "#fbb900", "#931533", "#ee7317", "#dd0076", "#f69c0b", "#c6972c", "#467735", "#0678b8", "#3fa535", "#004e88", "#1e3464"};
 
         xAxis.setLabel("ODS");
         yAxis.setLabel("Porcentaje");
@@ -84,17 +77,38 @@ public class EstadisticaController implements Initializable {
             serie.getData().add(new XYChart.Data<>(Integer.toString(i + 1), valorODS));
         }
 
-        /*for(int i = 0; i < colores.length; i++){
-            serie.getData().get(i).getNode().setStyle("-fx-bar-fill: " + colores[i] + ";");
-        }*/
-        
         graficaOds.getData().add(serie);
 
+        TableColumn<Estadisticas, Integer> colPosicion = new TableColumn<>("Posición");
+        TableColumn<Estadisticas, Integer> colPuntos = new TableColumn<>("Puntos");
+        TableColumn<Estadisticas, String> colUsuarios = new TableColumn<>("Usuario");
+
+        colPosicion.setCellValueFactory(data -> {
+            int position = ranking.getItems().indexOf(data.getValue()) + 1;
+            return new SimpleIntegerProperty(position).asObject();
+        });
+
+        colPuntos.setCellValueFactory(data -> {
+            Estadisticas stat = data.getValue();
+            IntegerProperty integerProperty = new SimpleIntegerProperty(stat.getPuntosTotales());
+            return integerProperty.asObject();
+        });
+
+        colUsuarios.setCellValueFactory(data -> {
+            Estadisticas stats = data.getValue();
+            return new SimpleStringProperty(stats.getUsuario());
+        });
+
+        ranking.getColumns().addAll(colPosicion, colPuntos, colUsuarios);
 
         estadisticas = new RepositorioEstadisticasImpl().getEstadisticas();
         ObservableList<Estadisticas> stats = FXCollections.observableList(estadisticas);
         ranking.setItems(stats);
+
     }
+
+
+
     @FXML
     void botonAtrasPulsado(ActionEvent event) {
         ((Stage) ranking.getScene().getWindow()).close();
