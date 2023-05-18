@@ -53,6 +53,8 @@ public class EstadisticaController implements Initializable {
         Estadisticas est = EstadoJuego.getInstance().getUsuario().getEstadistica();
         labelPuntos.setText(String.valueOf(est.getPuntosTotales()));
 
+
+
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
         int[] datosODS = new int[17];

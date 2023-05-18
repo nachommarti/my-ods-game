@@ -130,7 +130,6 @@ public class RetoPreguntaController implements Initializable {
                             if (timeCountdown <= 0) {
                                 timeline.stop();
                                 endTimer();
-                                showMessage(respuestaCorrectaSeleccionada);
                                 mediaPlayerMusic.stop();
                                 reproducirSonido("src/main/resources/sounds/Fallo.mp3", 0.5);
                             }
@@ -254,28 +253,25 @@ public class RetoPreguntaController implements Initializable {
     void respuesta1Clicked(ActionEvent event) {
         Button respuestaSeleccionada = (Button) event.getSource();
         checkAnswers(respuestaSeleccionada);
-        showMessage(respuestaCorrectaSeleccionada);
     }
 
     @FXML
     void respuesta2Clicked(ActionEvent event) {
         Button respuestaSeleccionada = (Button) event.getSource();
         checkAnswers(respuestaSeleccionada);
-        showMessage(respuestaCorrectaSeleccionada);
     }
 
     @FXML
     void respuesta3Clicked(ActionEvent event) {
         Button respuestaSeleccionada = (Button) event.getSource();
         checkAnswers(respuestaSeleccionada);
-        showMessage(respuestaCorrectaSeleccionada);
     }
 
     @FXML
     void respuesta4Clicked(ActionEvent event) {
         Button respuestaSeleccionada = (Button) event.getSource();
         checkAnswers(respuestaSeleccionada);
-        showMessage(respuestaCorrectaSeleccionada);
+
     }
 
     //@FXML
@@ -377,17 +373,7 @@ public class RetoPreguntaController implements Initializable {
         this.timeCountdown = 30;
     }
 
-    private void showMessage(boolean answered) {
-        if (perdido) return;
-        if (answered) {
-            estatusRespuesta.setText("¡CORRECTO! " + "¡Acabas de conseguir " + obtainedPoints + " puntos!");
-            estatusRespuesta.setTextFill(Color.GREEN);
-        }
-        else {
-            estatusRespuesta.setText("¡INCORRECTO! " + "¡Acabas de perder " + obtainedPoints + " puntos!");
-            estatusRespuesta.setTextFill(Color.RED);
-        }
-    }
+
 
     private void lostGame() {
         perdido = true;
