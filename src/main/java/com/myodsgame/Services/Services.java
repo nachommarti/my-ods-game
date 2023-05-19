@@ -8,6 +8,10 @@ import com.myodsgame.Repository.RepositorioUsuarioImpl;
 import com.myodsgame.Utils.EstadoJuego;
 import com.myodsgame.Utils.TipoReto;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -57,5 +61,72 @@ public class Services implements IServices {
 
         }
         return obtainedPoints;
+    }
+
+    @Override
+    public void linkClicked(Reto retoActual) {
+        StringBuilder sb = new StringBuilder("https://www.un.org/sustainabledevelopment/es/");
+        List<Integer> ods = retoActual.getODS();
+        if (ods.size() == 1) {
+            switch(ods.get(0)) {
+                case 1:
+                    sb.append("poverty/");
+                    break;
+                case 2:
+                    sb.append("hunger/");
+                    break;
+                case 3:
+                    sb.append("health/");
+                    break;
+                case 4:
+                    sb.append("education/");
+                    break;
+                case 5:
+                    sb.append("gender-equality/");
+                    break;
+                case 6:
+                    sb.append("water-and-sanitation/");
+                    break;
+                case 7:
+                    sb.append("energy/");
+                    break;
+                case 8:
+                    sb.append("economic-growth/");
+                    break;
+                case 9:
+                    sb.append("infrastructure/");
+                    break;
+                case 10:
+                    sb.append("inequality/");
+                    break;
+                case 11:
+                    sb.append("cities/");
+                    break;
+                case 12:
+                    sb.append("sustainable-consumption-production/");
+                    break;
+                case 13:
+                    sb.append("climate-change-2/");
+                    break;
+                case 14:
+                    sb.append("oceans/");
+                    break;
+                case 15:
+                    sb.append("biodiversity/");
+                    break;
+                case 16:
+                    sb.append("peace-justice/");
+                    break;
+                case 17:
+                    sb.append("globalpartnerships/");
+                    break;
+            }
+        }
+        else sb.append("sustainable-development-goals//");
+        try {
+            Desktop.getDesktop().browse(new URI(sb.toString()));
+        } catch (IOException | URISyntaxException ex) {
+            ex.printStackTrace();
+        }
     }
 }

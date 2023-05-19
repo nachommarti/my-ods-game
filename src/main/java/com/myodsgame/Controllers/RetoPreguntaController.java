@@ -28,9 +28,12 @@ import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.*;
+import java.awt.Desktop;
 
 public class RetoPreguntaController implements Initializable {
 
@@ -115,7 +118,6 @@ public class RetoPreguntaController implements Initializable {
 
         System.out.println("reto que hay que coger que se va a usar: " + EstadoJuego.getInstance().getPartida().getRetoQueHayQueMirarEnElArray());
         this.retoActual = (RetoPregunta) partidaActual.getRetos().get(EstadoJuego.getInstance().getPartida().getRetoQueHayQueMirarEnElArray());
-
         // KeyFrame event handler
         timeline.getKeyFrames().add(
                 new KeyFrame(Duration.seconds(1),
@@ -434,5 +436,4 @@ public class RetoPreguntaController implements Initializable {
         }
         catch (IOException e) {System.out.println(e.getMessage());}
     }
-
 }

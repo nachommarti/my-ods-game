@@ -3,6 +3,7 @@ module com.myodsgame.myodsgame {
     requires javafx.fxml;
     requires java.sql;
     requires javafx.media;
+    requires java.desktop;
 
 
     opens com.myodsgame to javafx.fxml;
