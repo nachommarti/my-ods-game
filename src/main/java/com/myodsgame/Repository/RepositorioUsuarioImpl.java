@@ -82,6 +82,76 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
         return user;
     }
 
+
+    @Override
+    public Usuario getUsuarioPorEmailYContraseña(String email, String password) {
+        Usuario user = null;
+        Estadisticas estadisticas;
+
+        try {
+            String sql = "SELECT u.username, u.email, u.password, u.birthdate, u.avatar, " +
+                    "e.puntos_totales, e.partidas_jugadas, e.numero_aciertos, " +
+                    "e.numero_fallos, e.aciertos_individual_ods, e.fallos_individual_ods " +
+                    "FROM usuarios u " +
+                    "INNER JOIN estadisticas e ON u.username = e.username " +
+                    "WHERE u.email = ? AND u.password = ?";
+
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, email);
+            statement.setString(2, password);
+
+            // Execute query and retrieve results
+            ResultSet result = statement.executeQuery();
+
+            // Parse results and create User and Statistics objects
+            if (result.next()) {
+                user = new Usuario();
+                user.setUsername(result.getString("username"));
+                user.setEmail(result.getString("email"));
+                user.setPassword(result.getString("password"));
+                user.setBirthdate(result.getDate("birthdate"));
+                user.setAvatar(result.getString("avatar"));
+
+                estadisticas = new Estadisticas();
+                estadisticas.setPuntosTotales(result.getInt("puntos_totales"));
+                estadisticas.setPartidasJugadas(result.getInt("partidas_jugadas"));
+                estadisticas.setNumeroAciertos(result.getInt("numero_aciertos"));
+                estadisticas.setNumeroFallos(result.getInt("numero_fallos"));
+
+                // Parse progresoIndividualOds from the database result
+                String aciertosIndividualOdsString = result.getString("aciertos_individual_ods");
+                String[] aciertosIndividualOdsArray = aciertosIndividualOdsString.split(",");
+                int[] aciertosIndividualOds = new int[17];
+                for (int i = 0; i < aciertosIndividualOdsArray.length; i++) {
+                    int odsNumber = Integer.parseInt(aciertosIndividualOdsArray[i]);
+                    aciertosIndividualOds[i] = odsNumber;
+                }
+                estadisticas.setAciertos_individual_ods(aciertosIndividualOds);
+
+                String fallosIndividualOdsString = result.getString("fallos_individual_ods");
+                String[] fallosIndividualOdsArray = fallosIndividualOdsString.split(",");
+                int[] fallosIndividualOds = new int[17];
+                for (int i = 0; i < fallosIndividualOdsArray.length; i++) {
+                    int odsNumber = Integer.parseInt(fallosIndividualOdsArray[i]);
+                    fallosIndividualOds[i] = odsNumber;
+                }
+                estadisticas.setFallos_individual_ods(fallosIndividualOds);
+
+                user.setEstadistica(estadisticas);
+            }
+
+            // Close JDBC objects
+            result.close();
+            statement.close();
+            connection.close();
+
+        } catch (SQLException e) {
+            System.err.println("Error al obtener usuario: " + e.getMessage());
+        }
+
+        return user;
+    }
+
     @Override
     public boolean checkIfUserExists(String username) {
         try {

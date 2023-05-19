@@ -1,5 +1,8 @@
 package com.myodsgame.Controllers;
 
+import com.myodsgame.Strategy.EstrategiaLoginEmail;
+import com.myodsgame.Strategy.EstrategiaLoginUsuario;
+import com.myodsgame.Strategy.LoginManager;
 import com.myodsgame.Utils.UserUtils;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -73,7 +76,16 @@ public class LoginController implements Initializable {
 
     @FXML
     void loginButtonClicked(ActionEvent event) throws IOException {
-        if (UserUtils.checkAndSetUser(usernameField.getText(), passwordField.getText())) {
+        LoginManager loginManager = new LoginManager();
+
+        if(UserUtils.isEmail(usernameField.getText())){
+            loginManager.setEstrategia(new EstrategiaLoginEmail());
+        }
+        else{
+            loginManager.setEstrategia(new EstrategiaLoginUsuario());
+        }
+
+        if (loginManager.login(usernameField.getText(), passwordField.getText())) {
             FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/pantallaPartidas.fxml"));
             BorderPane root = myLoader.load();
 

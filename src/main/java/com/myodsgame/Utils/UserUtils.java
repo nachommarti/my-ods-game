@@ -97,4 +97,10 @@ public class UserUtils {
         RepositorioUsuario repositorioUsuario = new RepositorioUsuarioImpl();
         repositorioUsuario.updateUsuarioEstadisticas(user);
     }
+
+
+    public static boolean isEmail(String input){
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        return input.matches(emailRegex);
+    }
 }
