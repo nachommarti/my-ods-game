@@ -14,7 +14,6 @@ public class EstrategiaLoginUsuario implements EstrategiaLogin{
             EstadoJuego.getInstance().setUsuario(user);
             return true;
         }
-
         return false;
     }
 }
