@@ -3,8 +3,7 @@ package com.myodsgame.Services;
 import com.myodsgame.Factory.RetoFactory;
 import com.myodsgame.Models.Estadisticas;
 import com.myodsgame.Models.Reto;
-import com.myodsgame.Repository.RepositorioUsuario;
-import com.myodsgame.Repository.RepositorioUsuarioImpl;
+import com.myodsgame.Repository.*;
 import com.myodsgame.Utils.EstadoJuego;
 import com.myodsgame.Utils.TipoReto;
 
@@ -134,4 +133,23 @@ public class Services implements IServices {
         int nivelActual = EstadoJuego.getInstance().getUsuario().getEstadistica().getNivel();
         EstadoJuego.getInstance().getUsuario().getEstadistica().setNivel(nivelActual + 1);
     }
+
+   public int getNumeroTotalRetos(){
+        RepositorioRetos repositorioPreguntas = new RepositorioPreguntaImpl();
+        RepositorioRetos repositorioPalabras = new RepositorioPalabraImpl();
+        return repositorioPreguntas.getNumeroTotalRetos() + repositorioPalabras.getNumeroTotalRetos();
+   }
+
+   public int[] getNumeroTotalRetosPorODS(){
+       RepositorioRetos repositorioPreguntas = new RepositorioPreguntaImpl();
+       RepositorioRetos repositorioPalabras = new RepositorioPalabraImpl();
+
+       int[] retosPorODS = new int[17];
+
+       for(int i = 0; i < retosPorODS.length; i++){
+           retosPorODS[i] = repositorioPreguntas.getNumeroTotalRetosPorODS(i+1) + repositorioPalabras.getNumeroTotalRetosPorODS(i+1);
+       }
+
+       return retosPorODS;
+   }
 }

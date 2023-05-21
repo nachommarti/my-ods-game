@@ -12,4 +12,6 @@ public interface IServices {
     int computePoints(Reto retoActual, boolean ayudaUsada, boolean retoAcertado);
     void linkClicked(Reto retoActual);
     void levelUp();
+    int getNumeroTotalRetos();
+    int[] getNumeroTotalRetosPorODS();
 }

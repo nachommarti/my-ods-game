@@ -55,6 +55,7 @@ public class PerfilController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         user = EstadoJuego.getInstance().getUsuario();
         Estadisticas est = user.getEstadistica();
+        services = new Services();
         puntosAcumulados.setText(Integer.toString(est.getPuntosTotales()));
         usuarioLabel.setText(user.getUsername());
         emailLabel.setText(user.getEmail());
@@ -63,7 +64,7 @@ public class PerfilController implements Initializable {
         if (est.getNumeroAciertos() == 0) porcentaje = 0;
         else if (est.getNumeroFallos() == 0) porcentaje = 100;
         else {
-            porcentaje = (double) est.getNumeroAciertos() / (est.getNumeroAciertos()+est.getNumeroFallos());
+            porcentaje = (double) est.getNumeroAciertos() / services.getNumeroTotalRetos();
         }
         porcentajeODS.setText(String.format("%.2f",porcentaje*100) +" %");
         barraProgreso.setProgress(porcentaje);
@@ -73,7 +74,7 @@ public class PerfilController implements Initializable {
         emailTextField.setVisible(false);
         emailLabel.setVisible(true);
         modificarButton.setDisable(false);
-        services = new Services();
+
     }
     @FXML
     void modificarPerfilBotonPulsado (ActionEvent event) {

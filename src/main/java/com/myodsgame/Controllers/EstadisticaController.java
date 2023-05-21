@@ -2,6 +2,9 @@ package com.myodsgame.Controllers;
 
 import com.myodsgame.Models.Estadisticas;
 import com.myodsgame.Repository.RepositorioEstadisticasImpl;
+import com.myodsgame.Repository.RepositorioPalabraImpl;
+import com.myodsgame.Services.IServices;
+import com.myodsgame.Services.Services;
 import com.myodsgame.Utils.EstadoJuego;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -35,7 +38,7 @@ import java.util.ResourceBundle;
 
 public class EstadisticaController implements Initializable {
     @FXML
-    private Label tusPuntos;
+    private Label labelAciertos;
 
     @FXML
     private Label labelPuntos;
@@ -47,26 +50,37 @@ public class EstadisticaController implements Initializable {
     private BarChart<String, Number> graficaOds;
 
     private List<Estadisticas> estadisticas;
+    private IServices servicios;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        servicios = new Services();
         Estadisticas est = EstadoJuego.getInstance().getUsuario().getEstadistica();
+
+        double porcentajeAciertos = (double) est.getNumeroAciertos() / servicios.getNumeroTotalRetos();
         labelPuntos.setText(String.valueOf(est.getPuntosTotales()));
+        labelAciertos.setText(String.valueOf(String.format("%.2f",porcentajeAciertos*100) +" %"));
 
 
 
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
         int[] datosODS = new int[17];
+        int[] retosTotalesPorODS = servicios.getNumeroTotalRetosPorODS();
+
         for (int i = 0; i < est.getAciertos_individual_ods().length; i++) {
             int aciertos = est.getAciertos_individual_ods()[i];
-            int fallos = est.getFallos_individual_ods()[i];
+            int total = retosTotalesPorODS[i];
 
             if (aciertos == 0) datosODS[i] = 0;
-            else if (fallos == 0) datosODS[i]= 100;
             else{
-                double res = ((double) aciertos / (aciertos+fallos) ) * 100.0;
-                datosODS[i] = (int) Math.round(res);
+                double res = ((double) aciertos / total) * 100.0;
+                if(res > 100){
+                    datosODS[i] = 100;
+                }
+                else {
+                    datosODS[i] = (int) Math.round(res);
+                }
             }
         }
 

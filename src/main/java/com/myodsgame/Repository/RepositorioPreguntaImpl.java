@@ -14,10 +14,11 @@ import java.util.*;
 
 public class RepositorioPreguntaImpl implements RepositorioRetos{
     private final Connection connection;
-    private Services services = new Services();
+    private final Services services;
 
     public RepositorioPreguntaImpl() {
         connection = DBConnection.getConnection();
+        services = new Services();
     }
 
     public List<Reto> getRetosPorNivelDificultadInicial(int nivelDificultad, int numFacil, int numResto) {
@@ -61,6 +62,41 @@ public class RepositorioPreguntaImpl implements RepositorioRetos{
         } catch (SQLException e) {
             System.err.println("Error al obtener preguntas: " + e.getMessage());
             return null;
+        }
+    }
+
+    public int getNumeroTotalRetos(){
+        String query = "SELECT COUNT(*) FROM preguntas";
+        int result = 0;
+        try {
+            PreparedStatement repo = connection.prepareStatement(query);
+            ResultSet rs = repo.executeQuery();
+            if(rs.next()){
+                result = rs.getInt(1);
+            }
+            return result;
+
+        }catch (SQLException e){
+            System.err.println("Error al obtener numero de retos: " + e.getMessage());
+            return -1;
+        }
+    }
+
+    public int getNumeroTotalRetosPorODS(int ods){
+        String query = "SELECT COUNT(*) FROM preguntas p WHERE p.ODS = ?";
+        int result = 0;
+        try{
+            PreparedStatement repo = connection.prepareStatement(query);
+            repo.setInt(1, ods);
+            ResultSet rs = repo.executeQuery();
+
+            if(rs.next()){
+                result = rs.getInt(1);
+            }
+            return result;
+        }catch(SQLException e){
+            System.err.println("Error al obtener numero de retos: " + e.getMessage());
+            return -1;
         }
     }
 }

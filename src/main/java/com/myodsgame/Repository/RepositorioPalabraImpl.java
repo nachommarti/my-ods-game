@@ -63,4 +63,39 @@ public class RepositorioPalabraImpl implements RepositorioRetos {
             return null;
         }
     }
+
+    public int getNumeroTotalRetos(){
+        String query = "SELECT COUNT(*) FROM palabras";
+        int result = -1;
+        try {
+            PreparedStatement repo = connection.prepareStatement(query);
+            ResultSet rs = repo.executeQuery();
+            if(rs.next()){
+                result = rs.getInt(1);
+            }
+            return result;
+
+        }catch (SQLException e){
+            System.err.println("Error al obtener numero de retos: " + e.getMessage());
+            return result;
+        }
+    }
+
+    public int getNumeroTotalRetosPorODS(int ods){
+        String query = "SELECT COUNT(*) FROM palabras p WHERE p.ODS = ?";
+        int result = 0;
+        try{
+            PreparedStatement repo = connection.prepareStatement(query);
+            repo.setInt(1, ods);
+            ResultSet rs = repo.executeQuery();
+
+            if(rs.next()){
+                result = rs.getInt(1);
+            }
+            return result;
+        }catch(SQLException e){
+            System.err.println("Error al obtener numero de retos: " + e.getMessage());
+            return -1;
+        }
+    }
 }
