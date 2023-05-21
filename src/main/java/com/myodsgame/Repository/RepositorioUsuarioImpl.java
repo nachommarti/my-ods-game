@@ -118,6 +118,7 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
                 estadisticas.setPartidasJugadas(result.getInt("partidas_jugadas"));
                 estadisticas.setNumeroAciertos(result.getInt("numero_aciertos"));
                 estadisticas.setNumeroFallos(result.getInt("numero_fallos"));
+                estadisticas.setNivel(result.getInt("nivel"));
 
                 // Parse progresoIndividualOds from the database result
                 String aciertosIndividualOdsString = result.getString("aciertos_individual_ods");

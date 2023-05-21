@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
@@ -12,6 +13,13 @@
                <children>
                   <VBox alignment="CENTER_LEFT" prefHeight="123.0" prefWidth="178.0" spacing="20.0">
                      <children>
+                        <ImageView fx:id="nivelImagen" fitHeight="102.0" fitWidth="102.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../images/nivel9.png" />
+                           </image>
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin></ImageView>
                         <Label fx:id="puntosAlmacenados" text="Puntos almacenados" textFill="WHITE" />
                      </children></VBox>
                   <StackPane fx:id="stackPane" prefHeight="123.0" prefWidth="70.0">

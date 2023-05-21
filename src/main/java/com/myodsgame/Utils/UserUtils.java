@@ -98,6 +98,27 @@ public class UserUtils {
         repositorioUsuario.updateUsuarioEstadisticas(user);
     }
 
+    public static void loadLevel(){
+        Usuario user = EstadoJuego.getInstance().getUsuario();
+        Estadisticas estadisticas = user.getEstadistica();
+        int nivel = estadisticas.getPuntosTotales() / (int) 5000;
+        if (nivel > 10)
+        {
+            estadisticas.setNivel(10);
+        }
+        else if (nivel == 0)
+        {
+            estadisticas.setNivel(1);
+        }
+        else
+        {
+            estadisticas.setNivel(nivel);
+        }
+        user.setEstadistica(estadisticas);
+        RepositorioUsuario repositorioUsuario = new RepositorioUsuarioImpl();
+        repositorioUsuario.updateUsuarioEstadisticas(user);
+    }
+
 
     public static boolean isEmail(String input){
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";

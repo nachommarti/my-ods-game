@@ -7,6 +7,9 @@ import com.myodsgame.Builder.PartidaPreguntasBuilder;
 import com.myodsgame.Models.Partida;
 import com.myodsgame.Models.Reto;
 import com.myodsgame.ODSGame;
+import com.myodsgame.Services.IServices;
+import com.myodsgame.Services.Services;
+import com.myodsgame.Utils.UserUtils;
 import com.myodsgame.Utils.EstadoJuego;
 import com.myodsgame.Utils.TipoReto;
 import javafx.event.ActionEvent;
@@ -45,16 +48,24 @@ public class PantallaPartidasController implements Initializable {
     @FXML
     private ImageView imagenUsuario;
     @FXML
+    private ImageView nivelImagen;
+    @FXML
     private Label puntosAlmacenados;
     int puntosJugador = EstadoJuego.getInstance().getUsuario().getEstadistica().getPuntosTotales();
     final int puntosNecesarios = 1000;
     @FXML
     private StackPane stackPane;
     String avatar;
+    private IServices servicios;
+    private int nivelNecesarioAhorcado = 5;
+    private int nivelUsuario;
+    private UserUtils userUtils = new UserUtils();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        servicios = new Services();
+        userUtils.loadLevel();
         retoAhorcado.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "ahorcado.png").toAbsolutePath().toString())));
         retoPregunta.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "retoPregunta.png").toAbsolutePath().toString())));
         retoMixto.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "mixto.png").toAbsolutePath().toString())));
@@ -63,12 +74,14 @@ public class PantallaPartidasController implements Initializable {
         desplegablePerfil.getItems().add("Cerrar sesión");
         desplegablePerfil.setStyle("-fx-background-color: null");
         puntosAlmacenados.setText("Puntos totales: " + puntosJugador);
+        nivelUsuario = EstadoJuego.getInstance().getUsuario().getEstadistica().getNivel();
         avatar = EstadoJuego.getInstance().getUsuario().getAvatar();
         imagenUsuario.setImage(new Image(Path.of("", "src", "main", "resources", "images", avatar.substring(avatar.lastIndexOf("/") + 1)).toAbsolutePath().toString()));
+        nivelImagen.setImage(new Image(Path.of("", "src", "main", "resources", "images", "nivel" + nivelUsuario + ".png").toAbsolutePath().toString()));
 
-        if (puntosJugador < puntosNecesarios)
+        if (nivelUsuario < nivelNecesarioAhorcado)
         {
-            Tooltip mensajeBloqueado = new Tooltip("Debes conseguir "  + puntosNecesarios + " puntos para poder jugar esta partida");
+            Tooltip mensajeBloqueado = new Tooltip("Debes ser nivel "  + nivelNecesarioAhorcado + "  para poder jugar esta partida");
             mensajeBloqueado.setShowDelay(Duration.seconds(0));
             retoAhorcado.setTooltip(mensajeBloqueado);
             retoMixto.setTooltip(mensajeBloqueado);
@@ -164,7 +177,7 @@ public class PantallaPartidasController implements Initializable {
     @FXML
     void retoMixtoPulsado (ActionEvent event) throws IOException
     {
-        if (puntosJugador >= puntosNecesarios)
+        if (nivelUsuario >= nivelNecesarioAhorcado)
         {
             PartidaDirector partidaDirector = new PartidaDirector(new PartidaMixtaBuilder());
             Partida partida = partidaDirector.BuildPartida();
@@ -212,7 +225,7 @@ public class PantallaPartidasController implements Initializable {
     }
     @FXML
     void retoAhorcadoPulsado (ActionEvent event) throws IOException {
-        if (puntosJugador >= puntosNecesarios)
+        if (nivelUsuario >= nivelNecesarioAhorcado)
         {
             PartidaDirector partidaDirector = new PartidaDirector(new PartidaAhorcadoBuilder());
             Partida partida = partidaDirector.BuildPartida();
