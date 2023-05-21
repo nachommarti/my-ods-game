@@ -17,7 +17,9 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -34,6 +36,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.Random;
 import java.util.ResourceBundle;
 
@@ -334,52 +337,61 @@ public class RetoAhorcadoController implements Initializable {
 
     @FXML
     void ayudaButtonClicked(ActionEvent event) {
-        boolean notFoundChar = true;
-        while (notFoundChar) {
-            char randomChar = palabra.charAt(new Random().nextInt(palabra.length()));
-            System.out.println("Random char is: " + randomChar);
-            if (!palabraMostrada.getText().contains("" + randomChar)) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Usar pista");
+        alert.setHeaderText("Canjear pista por " + EstadoJuego.getInstance().getPartida().getRetos().get(EstadoJuego.getInstance().getPartida().getRetoActual()).getPuntuacion() / 2 + " puntos");
+        alert.setContentText("¿Deseas gastarte esos puntos en canjear esta pista?");
+        ButtonType buttonType = new ButtonType("Cancelar");
+        alert.getButtonTypes().add(buttonType);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            boolean notFoundChar = true;
+            while (notFoundChar) {
+                char randomChar = palabra.charAt(new Random().nextInt(palabra.length()));
+                System.out.println("Random char is: " + randomChar);
+                if (!palabraMostrada.getText().contains("" + randomChar)) {
 
-                for (Node node : botones1.getChildren()) {
-                    Button button = (Button) node;
-                    if (button.getText().equals("" + randomChar)) {
-                        button.setDisable(true);
-                        loadChar(randomChar);
-                        checkWin();
-                        notFoundChar = false;
-                        break;
+                    for (Node node : botones1.getChildren()) {
+                        Button button = (Button) node;
+                        if (button.getText().equals("" + randomChar)) {
+                            button.setDisable(true);
+                            loadChar(randomChar);
+                            checkWin();
+                            notFoundChar = false;
+                            break;
+
+                        }
 
                     }
 
-                }
+                    for (Node node : botones2.getChildren()) {
+                        Button button = (Button) node;
+                        if (button.getText().equals("" + randomChar)) {
+                            button.setDisable(true);
+                            loadChar(randomChar);
+                            checkWin();
+                            notFoundChar = false;
+                            break;
+                        }
+                    }
 
-                for (Node node : botones2.getChildren()) {
-                    Button button = (Button) node;
-                    if (button.getText().equals("" + randomChar)) {
-                        button.setDisable(true);
-                        loadChar(randomChar);
-                        checkWin();
-                        notFoundChar = false;
-                        break;
+                    for (Node node : botones3.getChildren()) {
+                        Button button = (Button) node;
+                        if (button.getText().equals("" + randomChar)) {
+                            button.setDisable(true);
+                            loadChar(randomChar);
+                            checkWin();
+                            notFoundChar = false;
+                            break;
+                        }
                     }
                 }
-
-                for (Node node : botones3.getChildren()) {
-                    Button button = (Button) node;
-                    if (button.getText().equals("" + randomChar)) {
-                        button.setDisable(true);
-                        loadChar(randomChar);
-                        checkWin();
-                        notFoundChar = false;
-                        break;
-                    }
-                }
+                int puntos = EstadoJuego.getInstance().getPartida().getPuntuacion() - retoActual.getPuntuacion() / 2;
+                EstadoJuego.getInstance().getPartida().setPuntuacion(puntos);
+                partidaScore.setText("Score: " + puntos);
+                ayudaButton.setDisable(true);
+                ayudaUsada = true;
             }
-            int puntos =  EstadoJuego.getInstance().getPartida().getPuntuacion() - retoActual.getPuntuacion()/2;
-            EstadoJuego.getInstance().getPartida().setPuntuacion(puntos);
-            partidaScore.setText("Score: " + puntos);
-            ayudaButton.setDisable(true);
-            ayudaUsada = true;
         }
     }
 

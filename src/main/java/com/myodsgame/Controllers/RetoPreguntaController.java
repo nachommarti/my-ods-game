@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -202,28 +203,37 @@ public class RetoPreguntaController implements Initializable {
     @FXML
 
     void ayudaClicked(ActionEvent event) {
-        reproducirSonido("src/main/resources/sounds/pista_larga.mp3", 0.5);
-        mediaPlayerMusic.play();
-        int removedElements = 0;
-        Set<Button> seenElement = new HashSet<>();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Usar pista");
+        alert.setHeaderText("Canjear pista por " + EstadoJuego.getInstance().getPartida().getRetos().get(EstadoJuego.getInstance().getPartida().getRetoActual()).getPuntuacion() / 2 + " puntos");
+        alert.setContentText("¿Deseas gastarte esos puntos en canjear esta pista?");
+        ButtonType buttonType = new ButtonType("Cancelar");
+        alert.getButtonTypes().add(buttonType);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            int removedElements = 0;
+            Set<Button> seenElement = new HashSet<>();
 
-        while (removedElements < 2) {
-            Button respuesta = respuestas.get(new Random().nextInt(respuestas.size()));
-            if (!respuesta.getText().equals(respuestaCorrecta) && !seenElement.contains(respuesta)) {
-                respuesta.setDisable(true);
-                seenElement.add(respuesta);
-                removedElements++;
+            while (removedElements < 2) {
+                Button respuesta = respuestas.get(new Random().nextInt(respuestas.size()));
+                if (!respuesta.getText().equals(respuestaCorrecta) && !seenElement.contains(respuesta)) {
+                    respuesta.setDisable(true);
+                    seenElement.add(respuesta);
+                    removedElements++;
+                }
             }
+            this.ayuda.setDisable(true);
+            this.ayudaPulsada = true;
+
+            int puntos =  EstadoJuego.getInstance().getPartida().getPuntuacion() - retoActual.getPuntuacion()/2;
+            EstadoJuego.getInstance().getPartida().setPuntuacion(puntos);
+            currentScore.setText("Score: " + puntos);
+            ayuda.setDisable(true);
+            ayudaPulsada = true;
+
+            reproducirSonido("src/main/resources/sounds/pista_larga.mp3", 0.5);
+            mediaPlayerMusic.play();
         }
-        this.ayuda.setDisable(true);
-        this.ayudaPulsada = true;
-
-        int puntos =  EstadoJuego.getInstance().getPartida().getPuntuacion() - retoActual.getPuntuacion()/2;
-        EstadoJuego.getInstance().getPartida().setPuntuacion(puntos);
-        currentScore.setText("Score: " + puntos);
-        ayuda.setDisable(true);
-        ayudaPulsada = true;
-
     }
     @FXML
     void abandonarBotonPulsado(ActionEvent event) {
