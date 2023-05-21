@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="681.0" prefWidth="673.0" style="-fx-background-color: #21315A;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.RetoPreguntaController">
+<BorderPane prefHeight="681.0" prefWidth="673.0" style="-fx-background-color: #21315A;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.RetoPreguntaController">
    <center>
       <VBox alignment="CENTER" prefHeight="657.0" prefWidth="673.0" BorderPane.alignment="CENTER">
          <children>
@@ -133,12 +133,6 @@
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>
-               <children>
-                  <Hyperlink fx:id="link" onAction="#linkClicked" text="Contenido adicional">
-                     <font>
-                        <Font size="14.0" />
-                     </font></Hyperlink>
-               </children>
             </HBox>
             <Button fx:id="abandonarBoton" mnemonicParsing="false" onAction="#abandonarBotonPulsado" style="-fx-background-color: red;" text="Abandonar" visible="false" />
          </children>
