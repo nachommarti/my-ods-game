@@ -11,6 +11,15 @@ public class Estadisticas {
     private int numeroAciertos;
     private int numeroFallos;
     private String usuario;
+    private int nivel;
+
+    public int getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(int nivel) {
+        this.nivel = nivel;
+    }
 
     public int[] getAciertos_individual_ods() {
         return aciertos_individual_ods;

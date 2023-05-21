@@ -48,6 +48,7 @@ public class RepositorioEstadisticasImpl implements RepositorioEstadisticas{
                 est.setNumeroAciertos(rs.getInt("numero_aciertos"));
                 est.setNumeroFallos(rs.getInt("numero_fallos"));
                 est.setUsuario(rs.getString("username"));
+                est.setNivel(rs.getInt("nivel"));
 
                 estadisticas.add(est);
             }

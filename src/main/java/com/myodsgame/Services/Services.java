@@ -129,4 +129,9 @@ public class Services implements IServices {
             ex.printStackTrace();
         }
     }
+    public void levelUp()
+    {
+        int nivelActual = EstadoJuego.getInstance().getUsuario().getEstadistica().getNivel();
+        EstadoJuego.getInstance().getUsuario().getEstadistica().setNivel(nivelActual + 1);
+    }
 }

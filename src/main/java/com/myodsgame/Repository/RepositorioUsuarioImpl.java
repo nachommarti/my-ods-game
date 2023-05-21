@@ -21,7 +21,7 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
         try {
             String sql = "SELECT u.username, u.email, u.password, u.birthdate, u.avatar, " +
                     "e.puntos_totales, e.partidas_jugadas, e.numero_aciertos, " +
-                    "e.numero_fallos, e.aciertos_individual_ods, e.fallos_individual_ods " +
+                    "e.numero_fallos, e.aciertos_individual_ods, e.fallos_individual_ods, e.nivel " +
                     "FROM usuarios u " +
                     "INNER JOIN estadisticas e ON u.username = e.username " +
                     "WHERE u.username = ? AND u.password = ?";
@@ -47,6 +47,7 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario{
                 estadisticas.setPartidasJugadas(result.getInt("partidas_jugadas"));
                 estadisticas.setNumeroAciertos(result.getInt("numero_aciertos"));
                 estadisticas.setNumeroFallos(result.getInt("numero_fallos"));
+                estadisticas.setNivel(result.getInt("nivel"));
 
                 // Parse progresoIndividualOds from the database result
                 String aciertosIndividualOdsString = result.getString("aciertos_individual_ods");

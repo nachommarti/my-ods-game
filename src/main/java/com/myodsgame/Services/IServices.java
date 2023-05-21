@@ -11,4 +11,5 @@ public interface IServices {
     void updateUser(String newUser, String oldUser, String email, String avatar);
     int computePoints(Reto retoActual, boolean ayudaUsada, boolean retoAcertado);
     void linkClicked(Reto retoActual);
+    void levelUp();
 }
