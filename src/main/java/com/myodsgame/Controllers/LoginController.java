@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
@@ -27,6 +28,7 @@ import javafx.stage.Window;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -94,6 +96,7 @@ public class LoginController implements Initializable {
             stage.setScene(scene);
             stage.setTitle("Menú");
             stage.initModality(Modality.WINDOW_MODAL);
+            stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
             stage.setResizable(false);
             stage.show();
 
@@ -139,6 +142,7 @@ public class LoginController implements Initializable {
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.setTitle("Formulario de registro");
+        stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
         stage.initModality(Modality.WINDOW_MODAL);
         stage.setResizable(false);
         stage.show();

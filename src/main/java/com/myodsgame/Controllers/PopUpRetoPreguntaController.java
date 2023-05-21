@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -25,6 +26,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -116,6 +118,7 @@ try{FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/
     Stage stage2 = new Stage();
     stage2.setScene(scene);
     stage2.setTitle("Menú");
+    stage2.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
     stage2.initModality(Modality.WINDOW_MODAL);
     stage2.setResizable(false);
     stage2.show();}
