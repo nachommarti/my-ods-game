@@ -39,6 +39,25 @@ public class RetoFactory {
                     return null;
             }
         }
+        else if(tipo.equals(TipoReto.FRASE)){
+            switch (dificultad)
+            {
+                case 1:
+                    return new RetoAhorcado(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo, ODS,
+                            (String) params.get("frase"), (String) params.get("pista"),12);
+
+                case 2:
+                    return new RetoAhorcado(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo, ODS,
+                            (String) params.get("frase"), (String) params.get("pista"),9);
+
+                case 3:
+                    return new RetoAhorcado(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo, ODS,
+                            (String) params.get("frase"), (String) params.get("pista"),6);
+
+                default:
+                    return null;
+            }
+        }
 
         else
             throw new IllegalArgumentException("Tipo de reto desconocido.");

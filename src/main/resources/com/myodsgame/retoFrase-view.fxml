@@ -16,7 +16,7 @@
          <children>
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="150.0">
                <children>
-                  <Label fx:id="timer" alignment="CENTER" prefHeight="50.0" prefWidth="50.0" style="-fx-border-color: black; -fx-border-radius: 500;" text="Label" textFill="WHITE">
+                  <Label fx:id="timer" alignment="CENTER" prefHeight="60.0" prefWidth="63.0" style="-fx-border-color: black; -fx-border-radius: 500;" text="80" textFill="WHITE">
                      <font>
                         <Font size="26.0" />
                      </font></Label>

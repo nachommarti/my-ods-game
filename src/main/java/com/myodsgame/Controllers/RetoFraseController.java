@@ -42,12 +42,11 @@ public class RetoFraseController implements Initializable {
     private String frase;
 
     private List<Character> letrasRestantes = new ArrayList<>();
-    private int timeCountdown = 80;
+    private int timeCountdown = 10;
     private MediaPlayer mediaPlayerSonidos = null, mediaPlayerMusic = null, mediaPlayerTicTac = new MediaPlayer(new Media(new File("src/main/resources/sounds/10S_tick.mp3").toURI().toString()));
 
     private Timeline timeline;
     private Button botonPulsado;
-    private int intentos = 10;
 
     @FXML
     private Label palabraOculta;
@@ -55,7 +54,8 @@ public class RetoFraseController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        this.timeline = new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE);
         frase = "LA CONTAMINACION MATA";
         addSentenceLabels();
         addClickableChars();
@@ -84,6 +84,7 @@ public class RetoFraseController implements Initializable {
                             }
                         })
         );
+        timeline.playFromStart();
 
     }
 
@@ -110,9 +111,6 @@ public class RetoFraseController implements Initializable {
                             botonPulsado = null;
                             letrasRestantes.remove(currentChar);
                             checkWin();
-                        } else {
-
-                            checkLose();
                         }
                 });
 
@@ -142,11 +140,7 @@ public class RetoFraseController implements Initializable {
         clickableChars.getChildren().addAll(clickableCharsArray);
     }
 
-    private void checkLose() {
-        if(intentos == 0){
-            System.out.println("PERDISTE");
-        }
-    }
+
 
     private void checkWin() {
         if (letrasRestantes.size() == 0)
@@ -182,8 +176,7 @@ public class RetoFraseController implements Initializable {
 
     private void endTimer() {
         //retoActual.setIntentos(0);
-        intentos = 0;
-        checkLose();
+        System.out.println("PARTIDA PERDIDA");
     }
 
     private void reproducirSonido(boolean acertado) {

@@ -2,5 +2,6 @@ package com.myodsgame.Utils;
 
 public enum TipoReto {
     PREGUNTA,
-    AHORACADO
+    AHORACADO,
+    FRASE
 }
