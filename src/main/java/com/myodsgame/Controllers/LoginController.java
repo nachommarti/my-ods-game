@@ -146,6 +146,10 @@ public class LoginController implements Initializable {
         stage.initModality(Modality.WINDOW_MODAL);
         stage.setResizable(false);
         stage.show();
+
+        Node source = (Node) event.getSource();
+        Stage oldStage = (Stage) source.getScene().getWindow();
+        oldStage.close();
     }
 
     @FXML
