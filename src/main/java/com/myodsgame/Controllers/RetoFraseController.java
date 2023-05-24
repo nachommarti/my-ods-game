@@ -8,10 +8,11 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.media.Media;
+import javafx.scene.text.Font;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -33,6 +34,8 @@ public class RetoFraseController implements Initializable {
 
     private String frase;
 
+    private Button botonPulsado;
+
     @FXML
     private Label palabraOculta;
 
@@ -49,7 +52,7 @@ public class RetoFraseController implements Initializable {
     private void addSentenceLabels(){
         List<Label> labels = new ArrayList<>();
         for(int i = 0; i < frase.length(); i++){
-            Label currentLabel = new Label();
+            Label currentLabel = null;
             char currentChar = frase.charAt(i);
             if (Character.isWhitespace(currentChar)) {
                 currentLabel = new Label("-");
@@ -58,7 +61,20 @@ public class RetoFraseController implements Initializable {
                 currentLabel = new Label(currentChar+"");
                 labels.add(currentLabel);
             }
-            System.out.println("Adding label: " + currentLabel.getText());
+            currentLabel.setStyle("-fx-text-fill: white; -fx-border-color: white; -fx-border-width: 2;");
+            currentLabel.setFont(new Font("Arial", 30));
+            currentLabel.setPrefSize(30, 30);
+            currentLabel.setAlignment(Pos.CENTER);
+            Label finalCurrentLabel = currentLabel;
+            currentLabel.setOnMouseClicked(e -> {
+                if(botonPulsado != null)
+                   if(botonPulsado.getText().equals(finalCurrentLabel.getText())){
+                       System.out.println("MONDONGO!");
+                       clickableChars.getChildren().remove(botonPulsado);
+                       botonPulsado = null;
+                   }
+
+            });
         }
         sentence.getChildren().addAll(labels);
     }
@@ -74,6 +90,7 @@ public class RetoFraseController implements Initializable {
             Button button = new Button(currentChar+"");
             clickableCharsArray.add(button);
             System.out.println("Added button: " + currentChar);
+            button.setOnAction(e -> botonPulsado = button);
         }
         clickableChars.getChildren().addAll(clickableCharsArray);
 

@@ -266,11 +266,17 @@ public class PantallaPartidasController implements Initializable {
 
     private void loadReto(String reto, String titulo) throws IOException {
 
+        int altura = 600;
+        int anchura = 600;
 
+        if(reto.equals("retoFrase")){
+            altura = 500;
+            anchura = 1200;
+        }
 
         FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/" + reto + "-view.fxml"));
         BorderPane root = myLoader.load();
-        Scene scene = new Scene (root, 600, 600);
+        Scene scene = new Scene (root, anchura, altura);
         Stage  stage = new Stage();
         stage.setScene(scene);
         stage.setTitle(titulo);
