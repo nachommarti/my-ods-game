@@ -299,6 +299,11 @@ public class RetoAhorcadoController implements Initializable {
                 vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
             }
             ayudaButton.setDisable(true);
+            if (EstadoJuego.getInstance().getPartida().isConsolidado())
+            {
+                EstadoJuego.getInstance().getPartida().setPuntuacionConsolidada(EstadoJuego.getInstance().getPartida().getPuntuacionConsolidada()
+                        + obtainedPoints);
+            }
 
             showPopUp();
             EstadoJuego.getInstance().getPartida().setPuntuacion(puntosPartida + obtainedPoints);
@@ -395,23 +400,12 @@ public class RetoAhorcadoController implements Initializable {
         }
     }
 
-    //@FXML
-    //void consolidarButtonClicked(ActionEvent event) {
-//
-    //    consolidarButton.setDisable(true);
-    //    UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacion());
-    //}
-//
-    //@FXML
-    //void botonSalirPulsado(ActionEvent event) {
-//
-    //}
-//
     @FXML
     void botonAbandonarPulsado(ActionEvent event) {
-       Stage stageOld = (Stage) botonAbandonar.getScene().getWindow();
-       stageOld.close();
-       EstadoJuego.getInstance().getPartida().setPartidaAbandonada(true);
+        UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacionConsolidada());
+        Stage stageOld = (Stage) botonAbandonar.getScene().getWindow();
+        stageOld.close();
+        EstadoJuego.getInstance().getPartida().setPartidaAbandonada(true);
 
         FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/pantallaPartidas.fxml"));
         BorderPane root = null;

@@ -94,13 +94,12 @@ public class PopUpRetoPreguntaController implements Initializable {
         partidaActual.setConsolidado(true);
         consolidarBoton.setDisable(true);
         EstadoJuego.getInstance().getPartida().setPuntuacionConsolidada(EstadoJuego.getInstance().getPartida().getPuntuacion());
-        UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacion());
     }
 
     @FXML
     private void abandonarBotonPulsado(ActionEvent event)
     {
-        UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacion() - EstadoJuego.getInstance().getPartida().getPuntuacionConsolidada());
+        UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacion());
         partidaActual.setPartidaAbandonada(true);
         for (Window window : windows)
         {
@@ -111,18 +110,21 @@ public class PopUpRetoPreguntaController implements Initializable {
         }
         Stage stage = (Stage) consolidarBoton.getScene().getWindow();
         stage.close();
-try{FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/pantallaPartidas.fxml"));
-    BorderPane root = myLoader.load();
+        try
+        {
+            FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/pantallaPartidas.fxml"));
+            BorderPane root = myLoader.load();
 
-    Scene scene = new Scene (root);
-    Stage stage2 = new Stage();
-    stage2.setScene(scene);
-    stage2.setTitle("Menú");
-    stage2.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
-    stage2.initModality(Modality.WINDOW_MODAL);
-    stage2.setResizable(false);
-    stage2.show();}
-        catch(IOException e){}
+            Scene scene = new Scene (root);
+            Stage stage2 = new Stage();
+            stage2.setScene(scene);
+            stage2.setTitle("Menú");
+            stage2.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
+            stage2.initModality(Modality.WINDOW_MODAL);
+            stage2.setResizable(false);
+            stage2.show();
+        }
+        catch(IOException e) {}
     }
 
     @FXML
