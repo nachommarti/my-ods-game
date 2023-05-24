@@ -272,7 +272,9 @@ public class RegistroController implements Initializable {
         usuario.setEmail(emailField.getText());
         usuario.setBirthdate(Date.from(birthdateSelector.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
         usuario.setEstadistica(new Estadisticas());
-        usuario.setAvatar(EstadoJuego.getInstance().getUrlAvatarRegistro());
+
+        String avatarRegistro = EstadoJuego.getInstance().getUrlAvatarRegistro();
+        usuario.setAvatar(avatarRegistro == null ? "src/main/resources/images/avatar1.png" : avatarRegistro);
 
         repositorioUsuario.saveUsuario(usuario);
 
