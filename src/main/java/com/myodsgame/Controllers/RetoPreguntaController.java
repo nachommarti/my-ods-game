@@ -237,7 +237,8 @@ public class RetoPreguntaController implements Initializable {
     }
     @FXML
     void abandonarBotonPulsado(ActionEvent event) {
-       if(mediaPlayerTicTac != null) mediaPlayerTicTac.stop();
+        UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacionConsolidada());
+        if(mediaPlayerTicTac != null) mediaPlayerTicTac.stop();
         if(mediaPlayerMusic != null) mediaPlayerMusic.stop();
         Stage stageOld = (Stage) abandonarBoton.getScene().getWindow();
         stageOld.close();
@@ -286,27 +287,6 @@ public class RetoPreguntaController implements Initializable {
 
     }
 
-    //@FXML
-    //void siguientePreguntaClicked(ActionEvent event) {
-    //    if(numeroPregunta == 10){
-    //        UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacion());
-    //    }
-//
-    //    Stage stage = (Stage) nextQuestionButton.getScene().getWindow();
-    //    stage.close();
-    //}
-//
-    //@FXML
-    //void consolidarButtonClicked(ActionEvent event) {
-    //    int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
-    //    consolidarButton.setDisable(true);
-    //    consolidated = true;
-    //    consolidatedScore.setVisible(true);
-    //    consolidatedScore.setText("Consolidated Score: " + puntosPartida);
-    //    botonSalir.setDisable(false);
-    //    UserUtils.saveUserScore(puntosPartida);
-    //}
-
     private void checkAnswers(Button respuestaSeleccionada) {
         timeline.stop();
         if(mediaPlayerMusic !=null)mediaPlayerMusic.stop();
@@ -336,6 +316,7 @@ public class RetoPreguntaController implements Initializable {
                 reproducirSonido("src/main/resources/sounds/Partida_Perdida.mp3", 0.5);
                 vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
             }
+
         }
 
         for (Button respuesta : respuestas) {
@@ -362,6 +343,11 @@ public class RetoPreguntaController implements Initializable {
 
     private void computePoints() {
         obtainedPoints = servicios.computePoints(retoActual, ayudaPulsada, respuestaCorrectaSeleccionada);
+        if (!respuestaCorrectaSeleccionada && EstadoJuego.getInstance().getPartida().isConsolidado())
+        {
+            EstadoJuego.getInstance().getPartida().setPuntuacionConsolidada(EstadoJuego.getInstance().getPartida().getPuntuacionConsolidada()
+                    + obtainedPoints);
+        }
     }
 
     private void endTimer() {
