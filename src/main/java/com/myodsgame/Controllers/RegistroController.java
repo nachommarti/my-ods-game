@@ -21,6 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -264,7 +265,7 @@ public class RegistroController implements Initializable {
 
 
     @FXML
-    void acceptButtonClicked(ActionEvent event) {
+    void acceptButtonClicked(ActionEvent event) throws IOException {
 
         Usuario usuario = new Usuario();
         usuario.setUsername(usernameField.getText());
@@ -287,11 +288,35 @@ public class RegistroController implements Initializable {
             Stage oldStage = (Stage) source.getScene().getWindow();
             oldStage.close();
         }
+
+        FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/loginUsuario-view.fxml"));
+        BorderPane root = myLoader.load();
+
+        Scene scene = new Scene (root);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Login");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.setResizable(false);
+        stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
+        stage.show();
     }
 
 
     @FXML
-    void cancelButtonClicked(ActionEvent event) {
+    void cancelButtonClicked(ActionEvent event) throws IOException {
+        FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/loginUsuario-view.fxml"));
+        BorderPane root = myLoader.load();
+
+        Scene scene = new Scene (root);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Login");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.setResizable(false);
+        stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
+        stage.show();
+
         Node source = (Node) event.getSource();
         Stage oldStage = (Stage) source.getScene().getWindow();
         oldStage.close();
