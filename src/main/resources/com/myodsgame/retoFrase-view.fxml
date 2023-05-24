@@ -41,62 +41,62 @@
                </children></HBox>
             <HBox alignment="CENTER" prefHeight="42.0" prefWidth="600.0" spacing="3.0">
                <children>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
@@ -104,62 +104,62 @@
                </children></HBox>
             <HBox alignment="CENTER" prefHeight="42.0" prefWidth="600.0" spacing="3.0">
                <children>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
@@ -168,62 +168,62 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="42.0" prefWidth="600.0" spacing="3.0">
                <children>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: LIGHTGREY; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" text="1" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="30.0" style="-fx-background-color: grey; -fx-background-radius: 5; -fx-border-color: WHITE; -fx-border-radius: 5;" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
