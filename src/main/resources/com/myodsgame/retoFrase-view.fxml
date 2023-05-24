@@ -14,9 +14,9 @@
    <center>
       <VBox prefHeight="382.0" prefWidth="788.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="100.0" prefWidth="200.0" spacing="150.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="150.0">
                <children>
-                  <Label fx:id="timer" alignment="CENTER" prefHeight="60.0" prefWidth="63.0" style="-fx-border-color: black; -fx-border-radius: 500;" text="80" textFill="WHITE">
+                  <Label fx:id="timer" alignment="CENTER" prefHeight="60.0" prefWidth="63.0" style="-fx-border-color: black; -fx-border-radius: 500;" text="40" textFill="WHITE">
                      <font>
                         <Font size="26.0" />
                      </font></Label>
@@ -37,7 +37,10 @@
                      </font>
                   </Label>
                   <ImageView fitHeight="97.0" fitWidth="97.0" pickOnBounds="true" preserveRatio="true" />
-               </children></HBox>
+               </children>
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin></HBox>
             <HBox fx:id="sentence" alignment="CENTER" prefHeight="42.0" prefWidth="600.0" spacing="3.0">
                <VBox.margin>
                   <Insets top="10.0" />

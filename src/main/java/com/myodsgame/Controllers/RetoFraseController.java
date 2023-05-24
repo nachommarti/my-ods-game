@@ -42,7 +42,7 @@ public class RetoFraseController implements Initializable {
     private String frase;
 
     private List<Character> letrasRestantes = new ArrayList<>();
-    private int timeCountdown = 10;
+    private int timeCountdown = 40;
     private MediaPlayer mediaPlayerSonidos = null, mediaPlayerMusic = null, mediaPlayerTicTac = new MediaPlayer(new Media(new File("src/main/resources/sounds/10S_tick.mp3").toURI().toString()));
 
     private Timeline timeline;
