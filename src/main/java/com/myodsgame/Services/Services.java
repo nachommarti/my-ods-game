@@ -2,6 +2,7 @@ package com.myodsgame.Services;
 
 import com.myodsgame.Factory.RetoFactory;
 import com.myodsgame.Models.Estadisticas;
+import com.myodsgame.Models.PuntuacionDiaria;
 import com.myodsgame.Models.Reto;
 import com.myodsgame.Repository.*;
 import com.myodsgame.Utils.EstadoJuego;
@@ -15,6 +16,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -151,5 +153,16 @@ public class Services implements IServices {
        }
 
        return retosPorODS;
+   }
+
+   public void guardarPuntosDiarios(int puntos){
+       PuntuacionDiaria puntuacionDiaria = new PuntuacionDiaria();
+
+       puntuacionDiaria.setUsuario(EstadoJuego.getInstance().getUsuario().getUsername());
+       puntuacionDiaria.setPuntos(puntos);
+       puntuacionDiaria.setFecha(LocalDate.now());
+
+       RepositorioPuntosFecha repositorioPuntosFecha = new RepositorioPuntosFechaImpl();
+       repositorioPuntosFecha.guardarPuntos(puntuacionDiaria);
    }
 }

@@ -25,6 +25,7 @@ public class RepositorioEstadisticasImpl implements RepositorioEstadisticas{
         try{
             PreparedStatement pstmt = connection.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
+            int posicion = 1;
             while(rs.next()){
                 Estadisticas est = new Estadisticas();
 
@@ -49,6 +50,8 @@ public class RepositorioEstadisticasImpl implements RepositorioEstadisticas{
                 est.setNumeroFallos(rs.getInt("numero_fallos"));
                 est.setUsuario(rs.getString("username"));
                 est.setNivel(rs.getInt("nivel"));
+                est.setPosicion(posicion);
+                posicion++;
 
                 estadisticas.add(est);
             }

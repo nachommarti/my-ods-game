@@ -403,6 +403,7 @@ public class RetoAhorcadoController implements Initializable {
     @FXML
     void botonAbandonarPulsado(ActionEvent event) {
         UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacionConsolidada());
+        servicios.guardarPuntosDiarios(EstadoJuego.getInstance().getPartida().getPuntuacion());
         Stage stageOld = (Stage) botonAbandonar.getScene().getWindow();
         stageOld.close();
         EstadoJuego.getInstance().getPartida().setPartidaAbandonada(true);

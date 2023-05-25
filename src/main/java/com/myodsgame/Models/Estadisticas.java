@@ -13,6 +13,8 @@ public class Estadisticas {
     private String usuario;
     private int nivel;
 
+    private int posicion;
+
     public int getNivel() {
         return nivel;
     }
@@ -71,4 +73,8 @@ public class Estadisticas {
 
     public String getUsuario() {return usuario;}
     public void setUsuario(String user){this.usuario = user;}
+
+    public int getPosicion() {return posicion;}
+
+    public void setPosicion(int pos){posicion = pos;}
 }

@@ -14,4 +14,5 @@ public interface IServices {
     void levelUp();
     int getNumeroTotalRetos();
     int[] getNumeroTotalRetosPorODS();
+    void guardarPuntosDiarios(int puntos);
 }

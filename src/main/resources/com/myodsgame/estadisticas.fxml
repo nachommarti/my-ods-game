@@ -43,7 +43,22 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </HBox.margin>
                <children>
-                  <TableView fx:id="ranking" prefHeight="538.0" prefWidth="360.0" />
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="labelTipoRanking" layoutX="29.0" layoutY="44.0" prefHeight="30.0" prefWidth="124.0" text="Label" />
+                     </children>
+                  </AnchorPane>
+                  <HBox prefHeight="569.0" prefWidth="374.0">
+                     <children>
+                        <TableView fx:id="ranking" prefHeight="457.0" prefWidth="253.0" />
+                        <AnchorPane prefHeight="200.0" prefWidth="125.0">
+                           <children>
+                              <Button layoutX="36.0" layoutY="91.0" mnemonicParsing="false" onAction="#rankingGlobalPulsado" text="Global" />
+                              <Button layoutX="37.0" layoutY="151.0" mnemonicParsing="false" onAction="#rankingDiarioPulsado" text="Diario" />
+                              <Button layoutX="31.0" layoutY="204.0" mnemonicParsing="false" onAction="#rankingSemanalPulsado" text="Semanal" />
+                           </children></AnchorPane>
+                     </children>
+                  </HBox>
                </children>
             </VBox>
          </children>

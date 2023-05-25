@@ -3,6 +3,8 @@ package com.myodsgame.Controllers;
 import com.myodsgame.Models.Estadisticas;
 import com.myodsgame.Repository.RepositorioEstadisticasImpl;
 import com.myodsgame.Repository.RepositorioPalabraImpl;
+import com.myodsgame.Repository.RepositorioPuntosFecha;
+import com.myodsgame.Repository.RepositorioPuntosFechaImpl;
 import com.myodsgame.Services.IServices;
 import com.myodsgame.Services.Services;
 import com.myodsgame.Utils.EstadoJuego;
@@ -20,21 +22,19 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import javax.swing.text.html.Option;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URL;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class EstadisticaController implements Initializable {
     @FXML
@@ -44,12 +44,17 @@ public class EstadisticaController implements Initializable {
     private Label labelPuntos;
 
     @FXML
+    private Label labelTipoRanking;
+
+    @FXML
     private TableView<Estadisticas> ranking = new TableView<>();
 
     @FXML
     private BarChart<String, Number> graficaOds;
 
     private List<Estadisticas> estadisticas;
+    private List<Estadisticas> top10;
+
     private IServices servicios;
 
     @Override
@@ -60,9 +65,10 @@ public class EstadisticaController implements Initializable {
         double porcentajeAciertos = (double) est.getNumeroAciertos() / servicios.getNumeroTotalRetos();
         labelPuntos.setText(String.valueOf(est.getPuntosTotales()));
         labelAciertos.setText(String.valueOf(String.format("%.2f",porcentajeAciertos*100) +" %"));
+        labelTipoRanking.setText("Ranking Global");
 
 
-
+        //Gráfica Estadística
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
         int[] datosODS = new int[17];
@@ -96,18 +102,21 @@ public class EstadisticaController implements Initializable {
 
         graficaOds.getData().add(serie);
 
+
+        //RANKING
         TableColumn<Estadisticas, Integer> colPosicion = new TableColumn<>("Posición");
         TableColumn<Estadisticas, Integer> colPuntos = new TableColumn<>("Puntos");
         TableColumn<Estadisticas, String> colUsuarios = new TableColumn<>("Usuario");
 
         colPosicion.setCellValueFactory(data -> {
-            int position = ranking.getItems().indexOf(data.getValue()) + 1;
-            return new SimpleIntegerProperty(position).asObject();
+            Estadisticas stats = data.getValue();
+            IntegerProperty integerProperty = new SimpleIntegerProperty(stats.getPosicion());
+            return integerProperty.asObject();
         });
 
         colPuntos.setCellValueFactory(data -> {
-            Estadisticas stat = data.getValue();
-            IntegerProperty integerProperty = new SimpleIntegerProperty(stat.getPuntosTotales());
+            Estadisticas stats = data.getValue();
+            IntegerProperty integerProperty = new SimpleIntegerProperty(stats.getPuntosTotales());
             return integerProperty.asObject();
         });
 
@@ -130,7 +139,20 @@ public class EstadisticaController implements Initializable {
 
         ranking.getColumns().addAll(colPosicion, colPuntos, colUsuarios);
         estadisticas = new RepositorioEstadisticasImpl().getEstadisticas();
-        ObservableList<Estadisticas> stats = FXCollections.observableList(estadisticas);
+        top10 = estadisticas.subList(0, Math.min(10, estadisticas.size()));
+        Estadisticas estadisticasUsuarioLogeado = EstadoJuego.getInstance().getUsuario().getEstadistica();
+
+        Optional<Estadisticas> statsUserLoged = estadisticas.stream().filter(stat -> stat.getUsuario().equals(EstadoJuego.getInstance().getUsuario().getUsername())).findFirst();
+        if(statsUserLoged.isPresent()){
+            estadisticasUsuarioLogeado = statsUserLoged.get();
+            String nombreUsuarioLogeado = estadisticasUsuarioLogeado.getUsuario();
+            boolean contieneNombre = top10.stream().anyMatch(item -> item.getUsuario().equals(nombreUsuarioLogeado));
+            if(!contieneNombre){
+                top10.add(estadisticasUsuarioLogeado);
+            }
+        }
+
+        ObservableList<Estadisticas> stats = FXCollections.observableList(top10);
         ranking.setItems(stats);
 
     }
@@ -159,4 +181,68 @@ public class EstadisticaController implements Initializable {
     }
 
 
+    @FXML
+    void rankingGlobalPulsado(ActionEvent event){
+        labelTipoRanking.setText("Ranking Global");
+        estadisticas = new RepositorioEstadisticasImpl().getEstadisticas();
+        top10 = estadisticas.subList(0, Math.min(10, estadisticas.size()));
+        Estadisticas estadisticasUsuarioLogeado = EstadoJuego.getInstance().getUsuario().getEstadistica();
+
+        Optional<Estadisticas> statsUserLoged = estadisticas.stream().filter(stat -> stat.getUsuario().equals(EstadoJuego.getInstance().getUsuario().getUsername())).findFirst();
+        if(statsUserLoged.isPresent()){
+            estadisticasUsuarioLogeado = statsUserLoged.get();
+            String nombreUsuarioLogeado = estadisticasUsuarioLogeado.getUsuario();
+            boolean contieneNombre = top10.stream().anyMatch(item -> item.getUsuario().equals(nombreUsuarioLogeado));
+            if(!contieneNombre){
+                top10.add(estadisticasUsuarioLogeado);
+            }
+        }
+
+        ObservableList<Estadisticas> stats = FXCollections.observableList(top10);
+        ranking.setItems(stats);
+    }
+
+    @FXML
+    void rankingDiarioPulsado(ActionEvent event){
+        labelTipoRanking.setText("Ranking Diario");
+        List<Estadisticas> estadisticas = new RepositorioPuntosFechaImpl().getPuntosDiarios();
+        top10 = estadisticas.subList(0, Math.min(10, estadisticas.size()));
+        Estadisticas estadisticasUsuarioLogeado = EstadoJuego.getInstance().getUsuario().getEstadistica();
+
+        Optional<Estadisticas> statsUserLoged = estadisticas.stream().filter(stat -> stat.getUsuario().equals(EstadoJuego.getInstance().getUsuario().getUsername())).findFirst();
+        if(statsUserLoged.isPresent()){
+            estadisticasUsuarioLogeado = statsUserLoged.get();
+            String nombreUsuarioLogeado = estadisticasUsuarioLogeado.getUsuario();
+            boolean contieneNombre = top10.stream().anyMatch(item -> item.getUsuario().equals(nombreUsuarioLogeado));
+            if(!contieneNombre){
+                top10.add(estadisticasUsuarioLogeado);
+            }
+        }
+
+
+        ObservableList<Estadisticas> stats = FXCollections.observableList(top10);
+        ranking.setItems(stats);
+    }
+
+    @FXML
+    void rankingSemanalPulsado(ActionEvent event){
+        labelTipoRanking.setText("Ranking Semanal");
+        estadisticas = new RepositorioPuntosFechaImpl().getPuntosSemanales();
+        top10 = estadisticas.subList(0, Math.min(10, estadisticas.size()));
+        Estadisticas estadisticasUsuarioLogeado = EstadoJuego.getInstance().getUsuario().getEstadistica();
+
+        Optional<Estadisticas> statsUserLoged = estadisticas.stream().filter(stat -> stat.getUsuario().equals(EstadoJuego.getInstance().getUsuario().getUsername())).findFirst();
+        if(statsUserLoged.isPresent()){
+            estadisticasUsuarioLogeado = statsUserLoged.get();
+            String nombreUsuarioLogeado = estadisticasUsuarioLogeado.getUsuario();
+            boolean contieneNombre = top10.stream().anyMatch(item -> item.getUsuario().equals(nombreUsuarioLogeado));
+            if(!contieneNombre){
+                top10.add(estadisticasUsuarioLogeado);
+            }
+        }
+
+        ObservableList<Estadisticas> stats = FXCollections.observableList(top10);
+        ranking.setItems(stats);
+
+    }
 }

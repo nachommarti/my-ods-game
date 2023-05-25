@@ -238,6 +238,7 @@ public class RetoPreguntaController implements Initializable {
     @FXML
     void abandonarBotonPulsado(ActionEvent event) {
         UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacionConsolidada());
+        servicios.guardarPuntosDiarios(EstadoJuego.getInstance().getPartida().getPuntuacion());
         if(mediaPlayerTicTac != null) mediaPlayerTicTac.stop();
         if(mediaPlayerMusic != null) mediaPlayerMusic.stop();
         Stage stageOld = (Stage) abandonarBoton.getScene().getWindow();

@@ -100,6 +100,8 @@ public class PopUpRetoPreguntaController implements Initializable {
     private void abandonarBotonPulsado(ActionEvent event)
     {
         UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacion());
+        servicios.guardarPuntosDiarios(EstadoJuego.getInstance().getPartida().getPuntuacion());
+
         partidaActual.setPartidaAbandonada(true);
         for (Window window : windows)
         {
@@ -132,6 +134,7 @@ public class PopUpRetoPreguntaController implements Initializable {
     {
         if(partidaActual.getRetoActual() == 10) {
             UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacion());
+            servicios.guardarPuntosDiarios(EstadoJuego.getInstance().getPartida().getPuntuacion());
         }
 
         for (Window window : windows)
