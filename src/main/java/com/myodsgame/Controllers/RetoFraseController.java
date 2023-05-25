@@ -52,6 +52,11 @@ public class RetoFraseController implements Initializable {
     private ImageView vidas;
     @FXML
     private Label frasePista;
+    @FXML
+    private Label puntos;
+
+    @FXML
+    private Label puntosPorAcertar;
 
 
     private String frase;
@@ -95,6 +100,8 @@ public class RetoFraseController implements Initializable {
 
         frase = retoActual.getPalabra().toUpperCase();
         frasePista.setText(retoActual.getPista());
+        puntosPorAcertar.setText("Puntos por acertar: " + retoActual.getDificultad()*100);
+        puntos.setText("Score: " + EstadoJuego.getInstance().getPartida().getPuntuacion());
 
         addSentenceLabels();
         addClickableChars();
@@ -209,6 +216,8 @@ public class RetoFraseController implements Initializable {
             UserUtils.saveStats(true, retoActual.getODS());
             ayuda.setDisable(true);
             timeline.stop();
+            puntos.setText("Score: " + EstadoJuego.getInstance().getPartida().getPuntuacion());
+            disableClickableChars();
             showPopUp();
         }
     }
@@ -301,6 +310,7 @@ public class RetoFraseController implements Initializable {
 
         showPopUp();
         EstadoJuego.getInstance().getPartida().setPuntuacion(puntosPartida + obtainedPoints);
+        disableClickableChars();
     }
 
     private void reproducirSonido(boolean acertado) {
@@ -317,6 +327,13 @@ public class RetoFraseController implements Initializable {
         for (Node node : sentence.getChildren()) {
             Label label = (Label) node;
             label.setStyle("-fx-text-fill: red; -fx-border-color: white; -fx-border-width: 2;");
+        }
+    }
+
+    private void disableClickableChars(){
+        for(Node node : clickableChars.getChildren()){
+            Button button = (Button) node;
+            button.setDisable(true);
         }
     }
 }
