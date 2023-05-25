@@ -2,6 +2,7 @@ package com.myodsgame.Builder;
 
 import com.myodsgame.Models.Partida;
 import com.myodsgame.Repository.RepositorioPreguntaImpl;
+import com.myodsgame.Repository.RepositorioRetos;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 
@@ -11,7 +12,8 @@ import java.nio.file.Path;
 public class PartidaPreguntasBuilder extends PartidaBuilder{
     @Override
     public void BuildRetos() {
-        partida.setRetos(new RepositorioPreguntaImpl().getRetosPorNivelDificultadInicial(1, 5, 4));
+        RepositorioRetos repositorioPregunta = new RepositorioPreguntaImpl();
+        partida.setRetos(repositorioPregunta.getRetosPorNivelDificultadInicial(1, 5, 4));
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.myodsgame.Builder;
 
 import com.myodsgame.Models.Partida;
 import com.myodsgame.Repository.RepositorioPalabraImpl;
+import com.myodsgame.Repository.RepositorioRetos;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 
@@ -11,7 +12,8 @@ import java.nio.file.Path;
 public class PartidaAhorcadoBuilder extends PartidaBuilder{
     @Override
     public void BuildRetos() {
-        partida.setRetos(new RepositorioPalabraImpl().getRetosPorNivelDificultadInicial(1, 5, 4));
+        RepositorioRetos repositorioPalabra = new RepositorioPalabraImpl();
+        partida.setRetos(repositorioPalabra.getRetosPorNivelDificultadInicial(1, 5, 4));
     }
 
     @Override
