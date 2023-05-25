@@ -75,6 +75,8 @@ public class RetoAhorcadoController implements Initializable {
     private Label palabraMostrada;
     @FXML
     private HBox labelArray;
+    @FXML
+    private Label puntosPorAcertar;
     //@FXML
     //private Button nextQuestionButton;
     //@FXML
@@ -189,6 +191,7 @@ public class RetoAhorcadoController implements Initializable {
         clip.setArcWidth(40);
         clip.setArcHeight(40);
         imagenODS.setClip(clip);
+        puntosPorAcertar.setText("Puntos por acertar: " + retoActual.getDificultad()*100);
     }
 
     private void loadRetosState(){

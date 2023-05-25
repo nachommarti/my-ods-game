@@ -1,27 +1,37 @@
 package com.myodsgame.Controllers;
 
+import com.myodsgame.Models.Partida;
 import com.myodsgame.Models.RetoAhorcado;
+import com.myodsgame.Models.RetoFrase;
 import com.myodsgame.Services.Services;
 import com.myodsgame.Utils.EstadoJuego;
+import com.myodsgame.Utils.UserUtils;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.text.Font;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.*;
@@ -38,15 +48,31 @@ public class RetoFraseController implements Initializable {
     private Button ayuda;
     @FXML
     private Label timer;
+    @FXML
+    private ImageView vidas;
+    @FXML
+    private Label frasePista;
+    @FXML
+    private Label puntos;
+
+    @FXML
+    private Label puntosPorAcertar;
+
 
     private String frase;
 
     private List<Character> letrasRestantes = new ArrayList<>();
-    private int timeCountdown = 40;
+    private int timeCountdown = 50;
     private MediaPlayer mediaPlayerSonidos = null, mediaPlayerMusic = null, mediaPlayerTicTac = new MediaPlayer(new Media(new File("src/main/resources/sounds/10S_tick.mp3").toURI().toString()));
 
     private Timeline timeline;
     private Button botonPulsado;
+
+    private Partida partidaActual;
+    private Services servicios;
+    private RetoFrase retoActual;
+    private int obtainedPoints;
+    private boolean ayudaUsada;
 
     @FXML
     private Label palabraOculta;
@@ -54,9 +80,29 @@ public class RetoFraseController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.timeline = new Timeline();
+        servicios = new Services();
+        timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
-        frase = "LA CONTAMINACION MATA";
+        partidaActual = EstadoJuego.getInstance().getPartida();
+
+        if (partidaActual.getRetoActual() > 4 && partidaActual.getRetoActual() <= 7) {
+            while (partidaActual.getRetos().get(partidaActual.getRetoQueHayQueMirarEnElArray()).getDificultad() != 2) {
+                EstadoJuego.getInstance().getPartida().setRetoQueHayQueMirarEnElArray(partidaActual.getRetoQueHayQueMirarEnElArray() + 1);
+            }
+        }
+
+        if (partidaActual.getRetoActual() > 7 && partidaActual.getRetoActual() <= 10) {
+            while (partidaActual.getRetos().get(partidaActual.getRetoQueHayQueMirarEnElArray()).getDificultad() != 3)
+                EstadoJuego.getInstance().getPartida().setRetoQueHayQueMirarEnElArray(partidaActual.getRetoQueHayQueMirarEnElArray() + 1);
+        }
+
+        retoActual = (RetoFrase) EstadoJuego.getInstance().getPartida().getRetos().get(EstadoJuego.getInstance().getPartida().getRetoQueHayQueMirarEnElArray());
+
+        frase = retoActual.getPalabra().toUpperCase();
+        frasePista.setText(retoActual.getPista());
+        puntosPorAcertar.setText("Puntos por acertar: " + retoActual.getDificultad()*100);
+        puntos.setText("Score: " + EstadoJuego.getInstance().getPartida().getPuntuacion());
+
         addSentenceLabels();
         addClickableChars();
 
@@ -84,7 +130,20 @@ public class RetoFraseController implements Initializable {
                             }
                         })
         );
+
+        if (EstadoJuego.getInstance().getPartida().getVidas() == 1) {
+            vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
+        } else if (EstadoJuego.getInstance().getPartida().getVidas() == 0) {
+            vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
+        }
+
         timeline.playFromStart();
+
+        if (EstadoJuego.getInstance().getPartida().getPuntuacion() >= retoActual.getPuntuacion() / 2)
+            ayuda.setDisable(false);
+        else
+            ayuda.setDisable(true);
+
 
     }
 
@@ -111,6 +170,11 @@ public class RetoFraseController implements Initializable {
                             botonPulsado = null;
                             letrasRestantes.remove(currentChar);
                             checkWin();
+                        }else{
+                            botonPulsado.setStyle("-fx-background-color: red;");
+                            Stage stage = (Stage) botonPulsado.getScene().getWindow();
+                            stage.requestFocus();
+                            botonPulsado = null;
                         }
                 });
 
@@ -141,10 +205,52 @@ public class RetoFraseController implements Initializable {
     }
 
 
-
     private void checkWin() {
-        if (letrasRestantes.size() == 0)
-            System.out.println("V DE VICTORIA!");
+        if (letrasRestantes.size() == 0) {
+            if (mediaPlayerMusic != null) {
+                mediaPlayerMusic.stop();
+            }
+            if (mediaPlayerTicTac != null) {
+                mediaPlayerTicTac.stop();
+            }
+            reproducirSonido(true);
+            EstadoJuego.getInstance().getPartida().getRetosFallados()[partidaActual.getRetoActual() - 1] = false;
+            obtainedPoints = servicios.computePoints(retoActual, ayudaUsada, true);
+            int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
+            EstadoJuego.getInstance().getPartida().setPuntuacion(puntosPartida + obtainedPoints);
+            UserUtils.saveStats(true, retoActual.getODS());
+            ayuda.setDisable(true);
+            timeline.stop();
+            puntos.setText("Score: " + EstadoJuego.getInstance().getPartida().getPuntuacion());
+            disableClickableChars();
+            showPopUp();
+        }
+    }
+
+    private void showPopUp() {
+        try {
+            FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/popUpReto.fxml"));
+            BorderPane root = myLoader.load();
+            Scene scene = new Scene(root, 357, 184);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            if (partidaActual.getRetoActual() == 10) {
+                stage.setTitle("¡Ganaste!");
+            } else if (!partidaActual.getRetosFallados()[partidaActual.getRetoActual()]) {
+                stage.setTitle("¡Enhorabuena!");
+            } else {
+                stage.setTitle("Oops!");
+            }
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.setResizable(false);
+            stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
+            stage.setOnCloseRequest(e -> {
+                System.exit(0);
+            });
+            stage.show();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @FXML
@@ -170,13 +276,46 @@ public class RetoFraseController implements Initializable {
         }
         clickableChars.getChildren().removeAll(buttonsToBeRemoved);
 
-
+        ayudaUsada = true;
         ayuda.setDisable(true);
     }
 
     private void endTimer() {
         //retoActual.setIntentos(0);
         System.out.println("PARTIDA PERDIDA");
+        if(mediaPlayerMusic != null ){mediaPlayerMusic.stop();}
+        if(mediaPlayerTicTac != null){mediaPlayerTicTac.stop();}
+        timeline.stop();
+        reproducirSonido(false);
+        //botonSalir.setDisable(false);
+        UserUtils.saveStats(false, retoActual.getODS());
+        obtainedPoints = servicios.computePoints(retoActual, ayudaUsada, false);
+        int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
+
+        EstadoJuego.getInstance().getPartida().getRetosFallados()[partidaActual.getRetoActual()-1] = true;
+        int vidasPartida = EstadoJuego.getInstance().getPartida().getVidas()-1;
+        if(vidasPartida == 0){
+            EstadoJuego.getInstance().getPartida().setPartidaPerdida(true);
+            UserUtils.aumentarPartidasJugadas();
+        }
+        EstadoJuego.getInstance().getPartida().setVidas(vidasPartida);
+        if (EstadoJuego.getInstance().getPartida().getVidas() == 1) {
+            vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
+        }
+        else if (EstadoJuego.getInstance().getPartida().getVidas() == 0)
+        {
+            vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
+        }
+        ayuda.setDisable(true);
+        if (EstadoJuego.getInstance().getPartida().isConsolidado())
+        {
+            EstadoJuego.getInstance().getPartida().setPuntuacionConsolidada(EstadoJuego.getInstance().getPartida().getPuntuacionConsolidada()
+                    + obtainedPoints);
+        }
+
+        showPopUp();
+        EstadoJuego.getInstance().getPartida().setPuntuacion(puntosPartida + obtainedPoints);
+        disableClickableChars();
     }
 
     private void reproducirSonido(boolean acertado) {
@@ -193,6 +332,13 @@ public class RetoFraseController implements Initializable {
         for (Node node : sentence.getChildren()) {
             Label label = (Label) node;
             label.setStyle("-fx-text-fill: red; -fx-border-color: white; -fx-border-width: 2;");
+        }
+    }
+
+    private void disableClickableChars(){
+        for(Node node : clickableChars.getChildren()){
+            Button button = (Button) node;
+            button.setDisable(true);
         }
     }
 }
