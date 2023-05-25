@@ -2,6 +2,7 @@ package com.myodsgame.Factory;
 
 import com.myodsgame.Models.Reto;
 import com.myodsgame.Models.RetoAhorcado;
+import com.myodsgame.Models.RetoFrase;
 import com.myodsgame.Models.RetoPregunta;
 import com.myodsgame.Utils.TipoReto;
 
@@ -43,15 +44,15 @@ public class RetoFactory {
             switch (dificultad)
             {
                 case 1:
-                    return new RetoAhorcado(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo, ODS,
+                    return new RetoFrase(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo, ODS,
                             (String) params.get("frase"), (String) params.get("pista"),12);
 
                 case 2:
-                    return new RetoAhorcado(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo, ODS,
+                    return new RetoFrase(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo, ODS,
                             (String) params.get("frase"), (String) params.get("pista"),9);
 
                 case 3:
-                    return new RetoAhorcado(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo, ODS,
+                    return new RetoFrase(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo, ODS,
                             (String) params.get("frase"), (String) params.get("pista"),6);
 
                 default:

@@ -20,7 +20,7 @@
                      <font>
                         <Font size="26.0" />
                      </font></Label>
-                  <ImageView fitHeight="41.0" fitWidth="141.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="vidas" fitHeight="41.0" fitWidth="141.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../images/vidas.png" />
                      </image></ImageView>
@@ -31,7 +31,7 @@
                </padding></HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label alignment="CENTER" prefHeight="90.0" prefWidth="359.0" style="-fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 15; -fx-border-color: black; -fx-border-radius: 15;" text="PISTA FRASE" textAlignment="CENTER" textFill="WHITE">
+                  <Label fx:id="frasePista" alignment="CENTER" prefHeight="90.0" prefWidth="359.0" style="-fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 15; -fx-border-color: black; -fx-border-radius: 15;" text="PISTA FRASE" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font>

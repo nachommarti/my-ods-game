@@ -1,9 +1,6 @@
 package com.myodsgame.Controllers;
 
-import com.myodsgame.Builder.PartidaAhorcadoBuilder;
-import com.myodsgame.Builder.PartidaDirector;
-import com.myodsgame.Builder.PartidaMixtaBuilder;
-import com.myodsgame.Builder.PartidaPreguntasBuilder;
+import com.myodsgame.Builder.*;
 import com.myodsgame.Models.Partida;
 import com.myodsgame.Models.Reto;
 import com.myodsgame.ODSGame;
@@ -247,7 +244,7 @@ public class PantallaPartidasController implements Initializable {
 
     @FXML
     void retoFrasePulsado(ActionEvent event) throws IOException {
-        PartidaDirector partidaDirector = new PartidaDirector(new PartidaPreguntasBuilder());
+        PartidaDirector partidaDirector = new PartidaDirector(new PartidaFrasesBuilder());
         Partida partida = partidaDirector.BuildPartida();
         EstadoJuego.getInstance().setPartida(partida);
         for(int i = 0; i < partida.getRetos().size(); i++){

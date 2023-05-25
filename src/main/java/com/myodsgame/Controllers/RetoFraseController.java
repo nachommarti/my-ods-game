@@ -1,27 +1,37 @@
 package com.myodsgame.Controllers;
 
+import com.myodsgame.Models.Partida;
 import com.myodsgame.Models.RetoAhorcado;
+import com.myodsgame.Models.RetoFrase;
 import com.myodsgame.Services.Services;
 import com.myodsgame.Utils.EstadoJuego;
+import com.myodsgame.Utils.UserUtils;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.text.Font;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.*;
@@ -38,6 +48,11 @@ public class RetoFraseController implements Initializable {
     private Button ayuda;
     @FXML
     private Label timer;
+    @FXML
+    private ImageView vidas;
+    @FXML
+    private Label frasePista;
+
 
     private String frase;
 
@@ -48,15 +63,39 @@ public class RetoFraseController implements Initializable {
     private Timeline timeline;
     private Button botonPulsado;
 
+    private Partida partidaActual;
+    private Services servicios;
+    private RetoFrase retoActual;
+    private int obtainedPoints;
+    private boolean ayudaUsada;
+
     @FXML
     private Label palabraOculta;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.timeline = new Timeline();
+        servicios = new Services();
+        timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
-        frase = "LA CONTAMINACION MATA";
+        partidaActual = EstadoJuego.getInstance().getPartida();
+
+        if (partidaActual.getRetoActual() > 4 && partidaActual.getRetoActual() <= 7) {
+            while (partidaActual.getRetos().get(partidaActual.getRetoQueHayQueMirarEnElArray()).getDificultad() != 2) {
+                EstadoJuego.getInstance().getPartida().setRetoQueHayQueMirarEnElArray(partidaActual.getRetoQueHayQueMirarEnElArray() + 1);
+            }
+        }
+
+        if (partidaActual.getRetoActual() > 7 && partidaActual.getRetoActual() <= 10) {
+            while (partidaActual.getRetos().get(partidaActual.getRetoQueHayQueMirarEnElArray()).getDificultad() != 3)
+                EstadoJuego.getInstance().getPartida().setRetoQueHayQueMirarEnElArray(partidaActual.getRetoQueHayQueMirarEnElArray() + 1);
+        }
+
+        retoActual = (RetoFrase) EstadoJuego.getInstance().getPartida().getRetos().get(EstadoJuego.getInstance().getPartida().getRetoQueHayQueMirarEnElArray());
+
+        frase = retoActual.getPalabra().toUpperCase();
+        frasePista.setText(retoActual.getPista());
+
         addSentenceLabels();
         addClickableChars();
 
@@ -84,7 +123,20 @@ public class RetoFraseController implements Initializable {
                             }
                         })
         );
+
+        if (EstadoJuego.getInstance().getPartida().getVidas() == 1) {
+            vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
+        } else if (EstadoJuego.getInstance().getPartida().getVidas() == 0) {
+            vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
+        }
+
         timeline.playFromStart();
+
+        if (EstadoJuego.getInstance().getPartida().getPuntuacion() >= retoActual.getPuntuacion() / 2)
+            ayuda.setDisable(false);
+        else
+            ayuda.setDisable(true);
+
 
     }
 
@@ -141,10 +193,47 @@ public class RetoFraseController implements Initializable {
     }
 
 
-
     private void checkWin() {
-        if (letrasRestantes.size() == 0)
-            System.out.println("V DE VICTORIA!");
+        if (letrasRestantes.size() == 0) {
+            if (mediaPlayerMusic != null) {
+                mediaPlayerMusic.stop();
+            }
+            if (mediaPlayerTicTac != null) {
+                mediaPlayerTicTac.stop();
+            }
+            reproducirSonido(true);
+            EstadoJuego.getInstance().getPartida().getRetosFallados()[partidaActual.getRetoActual() - 1] = false;
+            obtainedPoints = servicios.computePoints(retoActual, ayudaUsada, true);
+            int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
+            EstadoJuego.getInstance().getPartida().setPuntuacion(puntosPartida + obtainedPoints);
+            UserUtils.saveStats(true, retoActual.getODS());
+            ayuda.setDisable(true);
+            timeline.stop();
+            showPopUp();
+        }
+    }
+
+    private void showPopUp() throws IOException {
+
+        FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/popUpReto.fxml"));
+        BorderPane root = myLoader.load();
+        Scene scene = new Scene(root, 357, 184);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        if (partidaActual.getRetoActual() == 10) {
+            stage.setTitle("¡Ganaste!");
+        } else if (!partidaActual.getRetosFallados()[partidaActual.getRetoActual()]) {
+            stage.setTitle("¡Enhorabuena!");
+        } else {
+            stage.setTitle("Oops!");
+        }
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.setResizable(false);
+        stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
+        stage.setOnCloseRequest(e -> {
+            System.exit(0);
+        });
+        stage.show();
     }
 
     @FXML
@@ -170,7 +259,7 @@ public class RetoFraseController implements Initializable {
         }
         clickableChars.getChildren().removeAll(buttonsToBeRemoved);
 
-
+        ayudaUsada = true;
         ayuda.setDisable(true);
     }
 
