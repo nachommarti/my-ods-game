@@ -170,6 +170,11 @@ public class RetoFraseController implements Initializable {
                             botonPulsado = null;
                             letrasRestantes.remove(currentChar);
                             checkWin();
+                        }else{
+                            botonPulsado.setStyle("-fx-background-color: red;");
+                            Stage stage = (Stage) botonPulsado.getScene().getWindow();
+                            stage.requestFocus();
+                            botonPulsado = null;
                         }
                 });
 
