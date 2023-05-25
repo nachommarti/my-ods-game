@@ -210,11 +210,11 @@ public class PantallaPartidasController implements Initializable {
 
                 if (retoActual.getTipoReto().equals(TipoReto.PREGUNTA)) {
                     loadReto("retoPregunta", "Reto Pregunta");
-                } else {
+                } else if (retoActual.getTipoReto().equals(TipoReto.AHORACADO)){
                     loadReto("retoAhorcado", "Reto Ahorcado");
+                } else {
+                    loadReto("retoFrase", "Reto Frase");
                 }
-
-                // TODO - Al implementar el tercer reto, cambiar esto
             }
             Node source = (Node) event.getSource();
             Stage oldStage = (Stage) source.getScene().getWindow();

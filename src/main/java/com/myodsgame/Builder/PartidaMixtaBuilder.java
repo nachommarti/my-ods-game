@@ -2,6 +2,7 @@ package com.myodsgame.Builder;
 
 import com.myodsgame.Models.Partida;
 import com.myodsgame.Models.Reto;
+import com.myodsgame.Repository.RepositorioFraseImpl;
 import com.myodsgame.Repository.RepositorioPalabraImpl;
 import com.myodsgame.Repository.RepositorioPreguntaImpl;
 import com.myodsgame.Repository.RepositorioRetos;
@@ -20,18 +21,19 @@ public class PartidaMixtaBuilder extends PartidaBuilder {
         IServices servicios = new Services();
         RepositorioRetos repositorioPreguntas = new RepositorioPreguntaImpl();
         RepositorioRetos repositorioPalabras = new RepositorioPalabraImpl();
+        RepositorioRetos repositorioFrases = new RepositorioFraseImpl();
 
         Random random = new Random();
         int preguntasFacil = random.nextInt(6);
-        // Para cuando hayan más retos, se hace así:
-        // int palabrasFacil = random.nextInt(6 - preguntasFacil);
-        // y el último, la resta.
-        int palabrasFacil = 5 - preguntasFacil;
+        int palabrasFacil = random.nextInt(6 - preguntasFacil);
+        int frasesFacil = 5 - preguntasFacil - palabrasFacil;
 
         int preguntasResto = random.nextInt(5);
-        int palabrasResto = 4 - preguntasResto;
+        int palabrasResto = random.nextInt(5 - preguntasResto);
+        int frasesResto = 4 - preguntasResto;
         List<Reto> retos = repositorioPreguntas.getRetosPorNivelDificultadInicial(1, preguntasFacil, preguntasResto);
         retos.addAll(repositorioPalabras.getRetosPorNivelDificultadInicial(1, palabrasFacil, palabrasResto));
+        retos.addAll(repositorioFrases.getRetosPorNivelDificultadInicial(1, frasesFacil, frasesResto));
         retos.sort(Comparator.comparingInt(Reto::getDificultad));
 
         int lastNivelDificultad = -1;
