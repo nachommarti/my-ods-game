@@ -67,6 +67,8 @@ public class RetoPreguntaController implements Initializable {
     private Button abandonarBoton;
     @FXML
     private ImageView vidas;
+    @FXML
+    private Label puntosPorAcertar;
 
     @FXML
     private Label estatusRespuesta;
@@ -166,6 +168,7 @@ public class RetoPreguntaController implements Initializable {
         clip.setArcWidth(40);
         clip.setArcHeight(40);
         imagenODS.setClip(clip);
+        puntosPorAcertar.setText("Puntos por acertar: " + retoActual.getDificultad()*100);
     }
 
     private void loadRetosState(){

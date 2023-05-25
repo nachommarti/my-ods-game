@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="681.0" prefWidth="673.0" style="-fx-background-color: #21315A;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.RetoPreguntaController">
+<BorderPane prefHeight="681.0" prefWidth="673.0" style="-fx-background-color: #21315A;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.RetoPreguntaController">
    <center>
       <VBox alignment="CENTER" prefHeight="657.0" prefWidth="673.0" BorderPane.alignment="CENTER">
          <children>
@@ -102,7 +106,12 @@
                </padding>
             </HBox>
             <Label fx:id="estatusRespuesta" alignment="CENTER" prefHeight="18.0" prefWidth="510.0" />
-            <Label fx:id="currentScore" alignment="CENTER" prefHeight="18.0" prefWidth="101.0" text="Score: 0" textFill="WHITE" />
+            <HBox alignment="CENTER" prefHeight="22.0" prefWidth="674.0">
+               <children>
+                  <Label fx:id="currentScore" alignment="CENTER" prefHeight="18.0" prefWidth="174.0" text="Score: 0" textFill="WHITE" />
+                  <Label fx:id="puntosPorAcertar" alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="158.0" text="Puntos por acertar:" textFill="WHITE" />
+               </children>
+            </HBox>
             <Label fx:id="consolidatedScore" alignment="CENTER" layoutX="309.0" layoutY="344.0" prefHeight="18.0" prefWidth="170.0" text="Consolidated Score:" textFill="WHITE" visible="false" />
             <HBox alignment="CENTER" prefHeight="65.0" prefWidth="704.0" spacing="30.0">
                <children>
