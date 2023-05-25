@@ -1,5 +1,7 @@
 package com.myodsgame.Controllers;
 
+import com.myodsgame.Mediator.Mediador;
+import com.myodsgame.Mediator.MediadorPregunta;
 import com.myodsgame.Models.Partida;
 import com.myodsgame.Models.RetoPregunta;
 import com.myodsgame.Services.IServices;
@@ -12,7 +14,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -29,12 +30,9 @@ import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.*;
-import java.awt.Desktop;
 
 public class RetoPreguntaController implements Initializable {
 
@@ -97,10 +95,12 @@ public class RetoPreguntaController implements Initializable {
     private boolean fallado;
 
     private IServices servicios;
+    private Mediador mediador;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         servicios = new Services();
+        mediador = new MediadorPregunta();
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
         this.partidaActual = EstadoJuego.getInstance().getPartida();
@@ -206,17 +206,10 @@ public class RetoPreguntaController implements Initializable {
     @FXML
 
     void ayudaClicked(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Usar pista");
-        alert.setHeaderText("Canjear pista por " + EstadoJuego.getInstance().getPartida().getRetos().get(EstadoJuego.getInstance().getPartida().getRetoActual()).getPuntuacion() / 2 + " puntos");
-        alert.setContentText("¿Deseas gastarte esos puntos en canjear esta pista?");
-        ButtonType buttonType = new ButtonType("Cancelar");
-        alert.getButtonTypes().add(buttonType);
-        Optional<ButtonType> result = alert.showAndWait();
+        Optional<ButtonType> result = mediador.ayudaClicked(retoActual, currentScore, ayuda);
         if (result.isPresent() && result.get() == ButtonType.OK) {
             int removedElements = 0;
             Set<Button> seenElement = new HashSet<>();
-
             while (removedElements < 2) {
                 Button respuesta = respuestas.get(new Random().nextInt(respuestas.size()));
                 if (!respuesta.getText().equals(respuestaCorrecta) && !seenElement.contains(respuesta)) {
@@ -225,15 +218,7 @@ public class RetoPreguntaController implements Initializable {
                     removedElements++;
                 }
             }
-            this.ayuda.setDisable(true);
-            this.ayudaPulsada = true;
-
-            int puntos =  EstadoJuego.getInstance().getPartida().getPuntuacion() - retoActual.getPuntuacion()/2;
-            EstadoJuego.getInstance().getPartida().setPuntuacion(puntos);
-            currentScore.setText("Score: " + puntos);
-            ayuda.setDisable(true);
             ayudaPulsada = true;
-
             reproducirSonido("src/main/resources/sounds/pista_larga.mp3", 0.5);
             mediaPlayerMusic.play();
         }
@@ -391,22 +376,13 @@ public class RetoPreguntaController implements Initializable {
 
     private void reproducirSonido(String sonidoPath, double volumen){
         mediaPlayerMusic.pause();
-        Media media = new Media(new File(sonidoPath).toURI().toString());
-        mediaPlayerSonidos = new MediaPlayer(media);
-        mediaPlayerSonidos.setVolume(volumen);
+        mediaPlayerSonidos = mediador.sonidoSetter(sonidoPath, volumen);
         mediaPlayerSonidos.play();
     }
 
     private void reproducirMusica(){
-        String[] musics = {"src/main/resources/sounds/cancion_1.mp3", "src/main/resources/sounds/cancion_2.mp3"};
-        Random random = new Random();
-        int index = random.nextInt(2);
-        String selected = musics[index];
-
-        mediaPlayerMusic = new MediaPlayer(new Media(new File(selected).toURI().toString()));
-        mediaPlayerMusic.setVolume(0.15);
+        mediaPlayerMusic = mediador.musicaSetter();
         mediaPlayerMusic.play();
-
     }
 
     private void showPopUp() {

@@ -19,13 +19,14 @@ public class PartidaFrasesBuilder extends PartidaBuilder {
 
     @Override
     public void BuildMusica() {
-        partida.setMusica(new Media(new File("src/main/resources/sounds/cancion_3.mp3").toURI().toString()));
+        partida.setMusica(new Media(new File("src/main/resources/sounds/cancion_4.mp3").toURI().toString()));
     }
 
     @Override
     public void BuildImagenes() {
         super.BuildImagenes();
-       //todo add imagenes??
+        partida.setImagenFondo(new Image(Path.of("", "src", "main", "resources", "images", "fondo_frase.png")
+                .toAbsolutePath().toString()));
     }
 
     @Override

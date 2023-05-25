@@ -1,7 +1,8 @@
 package com.myodsgame.Controllers;
 
+import com.myodsgame.Mediator.Mediador;
+import com.myodsgame.Mediator.MediadorAhorcado;
 import com.myodsgame.Models.Partida;
-import com.myodsgame.Models.Reto;
 import com.myodsgame.Models.RetoAhorcado;
 import com.myodsgame.Services.IServices;
 import com.myodsgame.Services.Services;
@@ -94,10 +95,12 @@ public class RetoAhorcadoController implements Initializable {
     private IServices servicios;
 
     private MediaPlayer mediaPlayerMusic = null, mediaPlayerTicTac = null, mediaPlayerSonidos = null;
+    private Mediador mediador;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         servicios = new Services();
+        mediador = new MediadorAhorcado();
         timeline = new Timeline();
         reproducirMusica();
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -139,7 +142,7 @@ public class RetoAhorcadoController implements Initializable {
                             timer.setText(Integer.toString(timeCountdown));
 
                             if (timeCountdown <= 0) {
-                                reproducirSonido(false);
+                                reproducirSonido("src/main/resources/sounds/Fallo.mp3", 0.5);
                                 timeline.stop();
                                 palabraMostrada.setText(palabra);
                                 endTimer();
@@ -260,7 +263,7 @@ public class RetoAhorcadoController implements Initializable {
         if (palabraMostrada.getText().equals(palabra)) {
             if(mediaPlayerMusic != null ){mediaPlayerMusic.stop();}
             if(mediaPlayerTicTac != null){mediaPlayerTicTac.stop();}
-            reproducirSonido(true);
+            reproducirSonido("src/main/resources/sounds/Acierto.mp3", 0.15);
             disableKeyboard();
             EstadoJuego.getInstance().getPartida().getRetosFallados()[partidaActual.getRetoActual()-1] = false;
             obtainedPoints = servicios.computePoints(retoActual, ayudaUsada, true);
@@ -279,7 +282,7 @@ public class RetoAhorcadoController implements Initializable {
             if(mediaPlayerMusic != null ){mediaPlayerMusic.stop();}
             if(mediaPlayerTicTac != null){mediaPlayerTicTac.stop();}
             timeline.stop();
-            reproducirSonido(false);
+            reproducirSonido("src/main/resources/sounds/Fallo.mp3", 0.5);
             disableKeyboard();
             //botonSalir.setDisable(false);
             UserUtils.saveStats(false, retoActual.getODS());
@@ -290,6 +293,7 @@ public class RetoAhorcadoController implements Initializable {
             int vidasPartida = EstadoJuego.getInstance().getPartida().getVidas()-1;
             if(vidasPartida == 0){
                 showMessage("HAS PERDIDO LA PARTIDA Y " + obtainedPoints + " PUNTOS!", false);
+                reproducirSonido("src/main/resources/sounds/Partida_Perdida.mp3", 0.5);
                 EstadoJuego.getInstance().getPartida().setPartidaPerdida(true);
                 UserUtils.aumentarPartidasJugadas();
             }
@@ -345,20 +349,13 @@ public class RetoAhorcadoController implements Initializable {
 
     @FXML
     void ayudaButtonClicked(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Usar pista");
-        alert.setHeaderText("Canjear pista por " + EstadoJuego.getInstance().getPartida().getRetos().get(EstadoJuego.getInstance().getPartida().getRetoActual()).getPuntuacion() / 2 + " puntos");
-        alert.setContentText("¿Deseas gastarte esos puntos en canjear esta pista?");
-        ButtonType buttonType = new ButtonType("Cancelar");
-        alert.getButtonTypes().add(buttonType);
-        Optional<ButtonType> result = alert.showAndWait();
+        Optional<ButtonType> result = mediador.ayudaClicked(retoActual, partidaScore, ayudaButton);
         if (result.isPresent() && result.get() == ButtonType.OK) {
             boolean notFoundChar = true;
             while (notFoundChar) {
                 char randomChar = palabra.charAt(new Random().nextInt(palabra.length()));
                 System.out.println("Random char is: " + randomChar);
-                if (!palabraMostrada.getText().contains("" + randomChar)) {
-
+                if (!palabraMostrada.getText().contains(String.valueOf(randomChar))) {
                     for (Node node : botones1.getChildren()) {
                         Button button = (Button) node;
                         if (button.getText().equals("" + randomChar)) {
@@ -367,14 +364,11 @@ public class RetoAhorcadoController implements Initializable {
                             checkWin();
                             notFoundChar = false;
                             break;
-
                         }
-
                     }
-
                     for (Node node : botones2.getChildren()) {
                         Button button = (Button) node;
-                        if (button.getText().equals("" + randomChar)) {
+                        if (button.getText().equals(String.valueOf(randomChar))) {
                             button.setDisable(true);
                             loadChar(randomChar);
                             checkWin();
@@ -382,10 +376,9 @@ public class RetoAhorcadoController implements Initializable {
                             break;
                         }
                     }
-
                     for (Node node : botones3.getChildren()) {
                         Button button = (Button) node;
-                        if (button.getText().equals("" + randomChar)) {
+                        if (button.getText().equals(String.valueOf(randomChar))) {
                             button.setDisable(true);
                             loadChar(randomChar);
                             checkWin();
@@ -394,12 +387,10 @@ public class RetoAhorcadoController implements Initializable {
                         }
                     }
                 }
-                int puntos = EstadoJuego.getInstance().getPartida().getPuntuacion() - retoActual.getPuntuacion() / 2;
-                EstadoJuego.getInstance().getPartida().setPuntuacion(puntos);
-                partidaScore.setText("Score: " + puntos);
-                ayudaButton.setDisable(true);
-                ayudaUsada = true;
             }
+            ayudaUsada = true;
+            reproducirSonido("src/main/resources/sounds/pista_larga.mp3", 0.5);
+            mediaPlayerMusic.play();
         }
     }
 
@@ -461,18 +452,13 @@ public class RetoAhorcadoController implements Initializable {
 
 
     private void reproducirMusica(){
-        mediaPlayerMusic = new MediaPlayer(new Media(new File("src/main/resources/sounds/cancion_3.mp3").toURI().toString()));
-        mediaPlayerMusic.setVolume(0.15);
+        mediaPlayerMusic = mediador.musicaSetter();
         mediaPlayerMusic.play();
     }
 
-    private void reproducirSonido(boolean acertado){
-        String path;
-        if(acertado) path = "src/main/resources/sounds/Acierto.mp3";
-        else path = "src/main/resources/sounds/Fallo.mp3";
-
-        mediaPlayerSonidos = new MediaPlayer(new Media(new File(path).toURI().toString()));
-        mediaPlayerSonidos.setVolume(0.2);
+    private void reproducirSonido(String sonidoPath, double volumen){
+        mediaPlayerMusic.pause();
+        mediaPlayerSonidos = mediador.sonidoSetter(sonidoPath, volumen);
         mediaPlayerSonidos.play();
     }
 }

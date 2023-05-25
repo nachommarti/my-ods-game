@@ -1,7 +1,8 @@
 package com.myodsgame.Controllers;
 
+import com.myodsgame.Mediator.Mediador;
+import com.myodsgame.Mediator.MediadorFrase;
 import com.myodsgame.Models.Partida;
-import com.myodsgame.Models.RetoAhorcado;
 import com.myodsgame.Models.RetoFrase;
 import com.myodsgame.Services.Services;
 import com.myodsgame.Utils.EstadoJuego;
@@ -16,6 +17,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,12 +26,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.text.Font;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -70,6 +70,7 @@ public class RetoFraseController implements Initializable {
 
     private Partida partidaActual;
     private Services servicios;
+    private Mediador mediador;
     private RetoFrase retoActual;
     private int obtainedPoints;
     private boolean ayudaUsada;
@@ -81,6 +82,7 @@ public class RetoFraseController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         servicios = new Services();
+        mediador = new MediadorFrase();
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
         partidaActual = EstadoJuego.getInstance().getPartida();
@@ -116,7 +118,7 @@ public class RetoFraseController implements Initializable {
                             timer.setText(Integer.toString(timeCountdown));
 
                             if (timeCountdown <= 0) {
-                                reproducirSonido(false);
+                                reproducirSonido("src/main/resources/sounds/Fallo.mp3", 0.5);
                                 timeline.stop();
                                 mostrarFrase();
                                 endTimer();
@@ -130,6 +132,7 @@ public class RetoFraseController implements Initializable {
                             }
                         })
         );
+        reproducirMusica();
 
         if (EstadoJuego.getInstance().getPartida().getVidas() == 1) {
             vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
@@ -213,7 +216,7 @@ public class RetoFraseController implements Initializable {
             if (mediaPlayerTicTac != null) {
                 mediaPlayerTicTac.stop();
             }
-            reproducirSonido(true);
+            reproducirSonido("src/main/resources/sounds/Acierto.mp3", 0.15);
             EstadoJuego.getInstance().getPartida().getRetosFallados()[partidaActual.getRetoActual() - 1] = false;
             obtainedPoints = servicios.computePoints(retoActual, ayudaUsada, true);
             int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
@@ -255,29 +258,33 @@ public class RetoFraseController implements Initializable {
 
     @FXML
     void ayudaPulsada(ActionEvent event) {
-        List<String> letters = Arrays.asList(frase.split(""));
-        Collections.shuffle(letters);
-        String shuffled = letters.stream().collect(Collectors.joining()).replaceAll("\\s", "");
-        Character letraRandomRestante = shuffled.charAt(new Random().nextInt(shuffled.length()));
+        Optional<ButtonType> result = mediador.ayudaClicked(retoActual, puntos, ayuda);
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            List<String> letters = Arrays.asList(frase.split(""));
+            Collections.shuffle(letters);
+            String shuffled = letters.stream().collect(Collectors.joining()).replaceAll("\\s", "");
+            Character letraRandomRestante = shuffled.charAt(new Random().nextInt(shuffled.length()));
 
-        for (Node node : sentence.getChildren()) {
-            Label label = (Label) node;
-            if (label.getText().equals(Character.toString(letraRandomRestante))) {
-                label.setStyle("-fx-text-fill: green; -fx-border-color: white; -fx-border-width: 2;");
-                letrasRestantes.remove(letraRandomRestante);
+            for (Node node : sentence.getChildren()) {
+                Label label = (Label) node;
+                if (label.getText().equals(Character.toString(letraRandomRestante))) {
+                    label.setStyle("-fx-text-fill: green; -fx-border-color: white; -fx-border-width: 2;");
+                    letrasRestantes.remove(letraRandomRestante);
+                }
             }
-        }
-        List<Button> buttonsToBeRemoved = new ArrayList<>();
-        for (Node node : clickableChars.getChildren()) {
-            Button button = (Button) node;
-            if (button.getText().equals(Character.toString(letraRandomRestante))) {
-                buttonsToBeRemoved.add(button);
+            List<Button> buttonsToBeRemoved = new ArrayList<>();
+            for (Node node : clickableChars.getChildren()) {
+                Button button = (Button) node;
+                if (button.getText().equals(Character.toString(letraRandomRestante))) {
+                    buttonsToBeRemoved.add(button);
+                }
             }
-        }
-        clickableChars.getChildren().removeAll(buttonsToBeRemoved);
+            clickableChars.getChildren().removeAll(buttonsToBeRemoved);
 
-        ayudaUsada = true;
-        ayuda.setDisable(true);
+            ayudaUsada = true;
+            reproducirSonido("src/main/resources/sounds/pista_larga.mp3", 0.5);
+            mediaPlayerMusic.play();
+        }
     }
 
     private void endTimer() {
@@ -286,7 +293,7 @@ public class RetoFraseController implements Initializable {
         if(mediaPlayerMusic != null ){mediaPlayerMusic.stop();}
         if(mediaPlayerTicTac != null){mediaPlayerTicTac.stop();}
         timeline.stop();
-        reproducirSonido(false);
+        reproducirSonido("src/main/resources/sounds/Fallo.mp3", 0.5);
         //botonSalir.setDisable(false);
         UserUtils.saveStats(false, retoActual.getODS());
         obtainedPoints = servicios.computePoints(retoActual, ayudaUsada, false);
@@ -295,6 +302,7 @@ public class RetoFraseController implements Initializable {
         EstadoJuego.getInstance().getPartida().getRetosFallados()[partidaActual.getRetoActual()-1] = true;
         int vidasPartida = EstadoJuego.getInstance().getPartida().getVidas()-1;
         if(vidasPartida == 0){
+            reproducirSonido("src/main/resources/sounds/Partida_Perdida.mp3", 0.5);
             EstadoJuego.getInstance().getPartida().setPartidaPerdida(true);
             UserUtils.aumentarPartidasJugadas();
         }
@@ -318,13 +326,14 @@ public class RetoFraseController implements Initializable {
         disableClickableChars();
     }
 
-    private void reproducirSonido(boolean acertado) {
-        String path;
-        if (acertado) path = "src/main/resources/sounds/Acierto.mp3";
-        else path = "src/main/resources/sounds/Fallo.mp3";
+    private void reproducirMusica() {
+        mediaPlayerMusic = mediador.musicaSetter();
+        mediaPlayerMusic.play();
+    }
 
-        mediaPlayerSonidos = new MediaPlayer(new Media(new File(path).toURI().toString()));
-        mediaPlayerSonidos.setVolume(0.2);
+    private void reproducirSonido(String sonidoPath, double volumen) {
+        mediaPlayerMusic.pause();
+        mediaPlayerSonidos = mediador.sonidoSetter(sonidoPath, volumen);
         mediaPlayerSonidos.play();
     }
 
