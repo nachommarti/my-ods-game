@@ -139,7 +139,7 @@ public class PopUpRetoPreguntaController implements Initializable {
 
         for (Window window : windows)
         {
-            if (((Stage) window).getTitle().equals("Reto Ahorcado") || ((Stage) window).getTitle().equals("Reto Pregunta"))
+            if (((Stage) window).getTitle().equals("Reto Ahorcado") || ((Stage) window).getTitle().equals("Reto Pregunta") || ((Stage) window).getTitle().equals("Reto Frase"))
             {
                 ((Stage) window).close();
             }
