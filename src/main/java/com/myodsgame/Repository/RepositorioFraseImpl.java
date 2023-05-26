@@ -24,16 +24,16 @@ public class RepositorioFraseImpl implements RepositorioRetos{
         services = new Services();
     }
 
-    public List<Reto> getRetosPorNivelDificultadInicial(int nivelDificultad, int numFacil, int numResto) {
+    public List<Reto> getRetosPorNivelDificultadInicial(int numFacil, int numResto) {
         String query =
                 "SELECT * FROM " +
-                        "(SELECT * FROM frases WHERE nivel_dificultad = " + nivelDificultad +
+                        "(SELECT * FROM frases WHERE nivel_dificultad = " + 1 +
                         " ORDER BY RAND() LIMIT ?) AS dificultad_incial " +
                         "UNION ALL" +
-                        "(SELECT * FROM frases WHERE nivel_dificultad = " + ++nivelDificultad +
+                        "(SELECT * FROM frases WHERE nivel_dificultad = " + 2 +
                         " ORDER BY RAND() LIMIT ?) " +
                         "UNION ALL" +
-                        "(SELECT * FROM frases WHERE nivel_dificultad = " + ++nivelDificultad +
+                        "(SELECT * FROM frases WHERE nivel_dificultad = " + 3 +
                         " ORDER BY RAND() LIMIT ?) "
                 ;
         return getPalabrasHelper(query, numFacil, numResto);
@@ -41,7 +41,7 @@ public class RepositorioFraseImpl implements RepositorioRetos{
 
     public List<Reto> getPalabrasHelper(String query, int numFacil, int numResto) {
         List<Reto> palabras = new ArrayList<>();
-        HashMap<String, Object> map = new HashMap<>();
+        HashMap<String, String> map = new HashMap<>();
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setInt(1, numFacil);

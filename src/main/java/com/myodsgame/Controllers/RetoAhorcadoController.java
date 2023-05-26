@@ -407,8 +407,6 @@ public class RetoAhorcadoController implements Initializable {
         stage.show();
     }
 
-
-
     private void reproducirMusica(){
         mediaPlayerMusic = mediador.musicaSetter();
         mediaPlayerMusic.play();

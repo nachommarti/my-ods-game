@@ -5,14 +5,11 @@ public class Estadisticas {
     private int [] aciertos_individual_ods = new int[17];
     private int [] fallos_individual_ods = new int[17];
     private int puntosTotales;
-
     private int partidasJugadas;
-
     private int numeroAciertos;
     private int numeroFallos;
     private String usuario;
     private int nivel;
-
     private int posicion;
 
     public int getNivel() {

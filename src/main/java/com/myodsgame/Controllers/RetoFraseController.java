@@ -358,8 +358,6 @@ public class RetoFraseController implements Initializable {
     private void botonAbandonarPulsado(ActionEvent event) {
         mediador.botonAbandonarPulsado(mediaPlayerTicTac, mediaPlayerMusic, botonAbandonar, timeline);
     }
-
-
 }
 
 
