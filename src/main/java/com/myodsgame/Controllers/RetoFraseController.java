@@ -57,6 +57,10 @@ public class RetoFraseController implements Initializable {
 
     @FXML
     private Label puntosPorAcertar;
+    @FXML
+    private Button botonAbandonar;
+    @FXML
+    private HBox labelArray;
 
 
     private String frase;
@@ -99,8 +103,7 @@ public class RetoFraseController implements Initializable {
                 EstadoJuego.getInstance().getPartida().setRetoQueHayQueMirarEnElArray(partidaActual.getRetoQueHayQueMirarEnElArray() + 1);
         }
 
-        if (EstadoJuego.getInstance().getPartida().getAyudasRestantes() <= 0)
-        {
+        if (EstadoJuego.getInstance().getPartida().getAyudasRestantes() <= 0) {
             ayuda.setDisable(true);
         }
 
@@ -108,7 +111,7 @@ public class RetoFraseController implements Initializable {
 
         frase = retoActual.getPalabra().toUpperCase();
         frasePista.setText(retoActual.getPista());
-        puntosPorAcertar.setText("Puntos por acertar: " + retoActual.getDificultad()*100);
+        puntosPorAcertar.setText("Puntos por acertar: " + retoActual.getDificultad() * 100);
         puntos.setText("Score: " + EstadoJuego.getInstance().getPartida().getPuntuacion());
 
         addSentenceLabels();
@@ -153,7 +156,17 @@ public class RetoFraseController implements Initializable {
         else
             ayuda.setDisable(true);
 
+        botonAbandonar.setVisible(partidaActual.isConsolidado());
+        loadRetosState();
 
+
+    }
+
+    private void loadRetosState() {
+        for (int i = 0; i < partidaActual.getRetoActual(); i++) {
+            ((Label) labelArray.getChildren().get(i))
+                    .setStyle(partidaActual.getRetosFallados()[i] ? "-fx-background-color: rgb(255,25,25); " : "-fx-background-color: rgba(184, 218, 186, 1)");
+        }
     }
 
     private void addSentenceLabels() {
@@ -179,7 +192,7 @@ public class RetoFraseController implements Initializable {
                             botonPulsado = null;
                             letrasRestantes.remove(currentChar);
                             checkWin();
-                        }else{
+                        } else {
                             botonPulsado.setStyle("-fx-background-color: red;");
                             Stage stage = (Stage) botonPulsado.getScene().getWindow();
                             stage.requestFocus();
@@ -207,7 +220,10 @@ public class RetoFraseController implements Initializable {
             Button button = new Button(currentChar + "");
             clickableCharsArray.add(button);
             System.out.println("Added button: " + currentChar);
-            button.setOnAction(e -> botonPulsado = button);
+            button.setOnAction(e -> {
+                botonPulsado = button;
+                button.setStyle("-fx-background-color: white;");
+            });
             letrasRestantes.add(currentChar);
         }
         clickableChars.getChildren().addAll(clickableCharsArray);
@@ -276,8 +292,12 @@ public class RetoFraseController implements Initializable {
     private void endTimer() {
         //retoActual.setIntentos(0);
         System.out.println("PARTIDA PERDIDA");
-        if(mediaPlayerMusic != null ){mediaPlayerMusic.stop();}
-        if(mediaPlayerTicTac != null){mediaPlayerTicTac.stop();}
+        if (mediaPlayerMusic != null) {
+            mediaPlayerMusic.stop();
+        }
+        if (mediaPlayerTicTac != null) {
+            mediaPlayerTicTac.stop();
+        }
         timeline.stop();
         reproducirSonido("src/main/resources/sounds/Fallo.mp3", 0.5);
         //botonSalir.setDisable(false);
@@ -285,9 +305,9 @@ public class RetoFraseController implements Initializable {
         obtainedPoints = servicios.computePoints(retoActual, ayudaUsada, false);
         int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
 
-        EstadoJuego.getInstance().getPartida().getRetosFallados()[partidaActual.getRetoActual()-1] = true;
-        int vidasPartida = EstadoJuego.getInstance().getPartida().getVidas()-1;
-        if(vidasPartida == 0){
+        EstadoJuego.getInstance().getPartida().getRetosFallados()[partidaActual.getRetoActual() - 1] = true;
+        int vidasPartida = EstadoJuego.getInstance().getPartida().getVidas() - 1;
+        if (vidasPartida == 0) {
             reproducirSonido("src/main/resources/sounds/Partida_Perdida.mp3", 0.5);
             EstadoJuego.getInstance().getPartida().setPartidaPerdida(true);
             UserUtils.aumentarPartidasJugadas();
@@ -295,14 +315,11 @@ public class RetoFraseController implements Initializable {
         EstadoJuego.getInstance().getPartida().setVidas(vidasPartida);
         if (EstadoJuego.getInstance().getPartida().getVidas() == 1) {
             vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
-        }
-        else if (EstadoJuego.getInstance().getPartida().getVidas() == 0)
-        {
+        } else if (EstadoJuego.getInstance().getPartida().getVidas() == 0) {
             vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
         }
         ayuda.setDisable(true);
-        if (EstadoJuego.getInstance().getPartida().isConsolidado())
-        {
+        if (EstadoJuego.getInstance().getPartida().isConsolidado()) {
             EstadoJuego.getInstance().getPartida().setPuntuacionConsolidada(EstadoJuego.getInstance().getPartida().getPuntuacionConsolidada()
                     + obtainedPoints);
         }
@@ -330,12 +347,25 @@ public class RetoFraseController implements Initializable {
         }
     }
 
-    private void disableClickableChars(){
-        for(Node node : clickableChars.getChildren()){
+    private void disableClickableChars() {
+        for (Node node : clickableChars.getChildren()) {
             Button button = (Button) node;
             button.setDisable(true);
         }
     }
+
+    @FXML
+    private void botonAbandonarPulsado() {
+
+        UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacionConsolidada());
+        servicios.guardarPuntosDiarios(EstadoJuego.getInstance().getPartida().getPuntuacion());
+        Stage stageOld = (Stage) botonAbandonar.getScene().getWindow();
+        stageOld.close();
+        EstadoJuego.getInstance().getPartida().setPartidaAbandonada(true);
+
+    }
+
+
 }
 
 
