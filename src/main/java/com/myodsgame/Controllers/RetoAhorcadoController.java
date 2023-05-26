@@ -252,12 +252,10 @@ public class RetoAhorcadoController implements Initializable {
             Button button = (Button) node;
             button.setDisable(true);
         }
-
         for(Node node : botones2.getChildren()){
             Button button = (Button) node;
             button.setDisable(true);
         }
-
         for(Node node : botones3.getChildren()){
             Button button = (Button) node;
             button.setDisable(true);
@@ -394,7 +392,6 @@ public class RetoAhorcadoController implements Initializable {
                 }
             }
             ayudaUsada = true;
-            EstadoJuego.getInstance().getPartida().setAyudasRestantes(EstadoJuego.getInstance().getPartida().getAyudasRestantes() - 1);
             reproducirSonido("src/main/resources/sounds/pista_larga.mp3", 0.5);
             mediaPlayerMusic.play();
         }
@@ -402,15 +399,7 @@ public class RetoAhorcadoController implements Initializable {
 
     @FXML
     void botonAbandonarPulsado(ActionEvent event) {
-        if(mediaPlayerTicTac != null) mediaPlayerTicTac.stop();
-        if(mediaPlayerMusic != null) mediaPlayerMusic.stop();
-        UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacionConsolidada());
-        servicios.guardarPuntosDiarios(EstadoJuego.getInstance().getPartida().getPuntuacion());
-        Stage stageOld = (Stage) botonAbandonar.getScene().getWindow();
-        stageOld.close();
-        EstadoJuego.getInstance().getPartida().setPartidaAbandonada(true);
-        timeline.stop();
-
+        mediador.botonAbandonarPulsado(mediaPlayerTicTac, mediaPlayerMusic, botonAbandonar, timeline);
     }
 
     private void showPopUp() {

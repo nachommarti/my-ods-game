@@ -134,6 +134,7 @@ public class RetoPreguntaController implements Initializable {
                             }
                             if (timeCountdown <= 0) {
                                 timeline.stop();
+                                mediaPlayerTicTac.stop();
                                 endTimer();
                                 mediaPlayerMusic.stop();
                                 reproducirSonido("src/main/resources/sounds/Fallo.mp3", 0.5);
@@ -174,6 +175,7 @@ public class RetoPreguntaController implements Initializable {
         clip.setArcHeight(40);
         imagenODS.setClip(clip);
         puntosPorAcertar.setText("Puntos por acertar: " + retoActual.getDificultad()*100);
+        vidas.setImage(partidaActual.getImagenVidas());
     }
 
     private void loadRetosState(){
@@ -198,14 +200,13 @@ public class RetoPreguntaController implements Initializable {
         timeline.playFromStart();
 
         if (EstadoJuego.getInstance().getPartida().getVidas() == 1) {
-            vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
+            EstadoJuego.getInstance().getPartida().setImagenVidas(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
+            vidas.setImage(EstadoJuego.getInstance().getPartida().getImagenVidas());
         }
-        else if (EstadoJuego.getInstance().getPartida().getVidas() == 0)
-        {
-            vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
+        else if (EstadoJuego.getInstance().getPartida().getVidas() == 0) {
+            EstadoJuego.getInstance().getPartida().setImagenVidas(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
+            vidas.setImage(EstadoJuego.getInstance().getPartida().getImagenVidas());
         }
-        //String odsString = "ODS_" + retoPreguntaActual.getOds() + ".jpg";
-        //imagenODS.setImage(new Image(Path.of("", "src", "main", "resources", "images", odsString).toAbsolutePath().toString()));
     }
 
     @FXML
@@ -224,22 +225,13 @@ public class RetoPreguntaController implements Initializable {
                 }
             }
             ayudaPulsada = true;
-            EstadoJuego.getInstance().getPartida().setAyudasRestantes(EstadoJuego.getInstance().getPartida().getAyudasRestantes() - 1);
             reproducirSonido("src/main/resources/sounds/pista_larga.mp3", 0.5);
             mediaPlayerMusic.play();
         }
     }
     @FXML
     void abandonarBotonPulsado(ActionEvent event) {
-        UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacionConsolidada());
-        servicios.guardarPuntosDiarios(EstadoJuego.getInstance().getPartida().getPuntuacion());
-        if(mediaPlayerTicTac != null) mediaPlayerTicTac.stop();
-        if(mediaPlayerMusic != null) mediaPlayerMusic.stop();
-        Stage stageOld = (Stage) abandonarBoton.getScene().getWindow();
-        stageOld.close();
-        EstadoJuego.getInstance().getPartida().setPartidaAbandonada(true);
-        timeline.stop();
-
+        mediador.botonAbandonarPulsado(mediaPlayerTicTac, mediaPlayerMusic, abandonarBoton, timeline);
     }
 
     @FXML
@@ -287,14 +279,16 @@ public class RetoPreguntaController implements Initializable {
             EstadoJuego.getInstance().getPartida().setVidas(partidaActual.getVidas()-1);
             reproducirSonido("src/main/resources/sounds/Fallo.mp3", 0.5);
             UserUtils.saveStats(false, retoActual.getODS());
-            vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
+            EstadoJuego.getInstance().getPartida().setImagenVidas(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
+            vidas.setImage(EstadoJuego.getInstance().getPartida().getImagenVidas());
             EstadoJuego.getInstance().getPartida().getRetosFallados()[partidaActual.getRetoActual()-1] = true;
             if (EstadoJuego.getInstance().getPartida().getVidas() == 0) {
                 if(mediaPlayerSonidos!=null) mediaPlayerSonidos.stop();
                 lostGame();
                 EstadoJuego.getInstance().getPartida().setPartidaPerdida(true);
                 reproducirSonido("src/main/resources/sounds/Partida_Perdida.mp3", 0.5);
-                vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
+                EstadoJuego.getInstance().getPartida().setImagenVidas(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
+                vidas.setImage(EstadoJuego.getInstance().getPartida().getImagenVidas());
             }
 
         }
@@ -336,11 +330,13 @@ public class RetoPreguntaController implements Initializable {
 
         EstadoJuego.getInstance().getPartida().setVidas(partidaActual.getVidas()-1);
         if (EstadoJuego.getInstance().getPartida().getVidas() == 1) {
-            vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
+            EstadoJuego.getInstance().getPartida().setImagenVidas(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
+            vidas.setImage(EstadoJuego.getInstance().getPartida().getImagenVidas());
         }
         if (EstadoJuego.getInstance().getPartida().getVidas() == 2) {
             if(mediaPlayerSonidos!=null) mediaPlayerSonidos.stop();
-            vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
+            EstadoJuego.getInstance().getPartida().setImagenVidas(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
+            vidas.setImage(EstadoJuego.getInstance().getPartida().getImagenVidas());
             lostGame();
             reproducirSonido("src/main/resources/sounds/Partida_Perdida.mp3", 0.5);
 

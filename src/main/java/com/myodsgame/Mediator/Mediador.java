@@ -1,8 +1,12 @@
 package com.myodsgame.Mediator;
 
+import com.myodsgame.Controllers.WindowShower;
 import com.myodsgame.Models.Partida;
 import com.myodsgame.Models.Reto;
+import com.myodsgame.Services.Services;
 import com.myodsgame.Utils.EstadoJuego;
+import com.myodsgame.Utils.UserUtils;
+import javafx.animation.Timeline;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -23,20 +27,16 @@ import java.util.HashMap;
 import java.util.Optional;
 
 public abstract class Mediador {
-    Optional<ButtonType> result;
+    WindowShower windowShower = new WindowShower();
+    Services servicios = new Services();
     public Optional<ButtonType> ayudaClicked(Reto retoActual, Label currentScore, Button ayuda) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Usar pista");
-        alert.setHeaderText("Canjear pista por " + EstadoJuego.getInstance().getPartida().getRetos().get(EstadoJuego.getInstance().getPartida().getRetoActual()).getPuntuacion() / 2 + " puntos");
-        alert.setContentText("¿Deseas gastarte esos puntos en canjear esta pista?");
-        ButtonType buttonType = new ButtonType("Cancelar");
-        alert.getButtonTypes().add(buttonType);
-        result = alert.showAndWait();
+        Optional<ButtonType> result = windowShower.showAyuda();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             int puntos =  EstadoJuego.getInstance().getPartida().getPuntuacion() - retoActual.getPuntuacion()/2;
             EstadoJuego.getInstance().getPartida().setPuntuacion(puntos);
             currentScore.setText("Score: " + puntos);
             ayuda.setDisable(true);
+            EstadoJuego.getInstance().getPartida().setAyudasRestantes(EstadoJuego.getInstance().getPartida().getAyudasRestantes() - 1);
         }
         return result;
     }
@@ -54,31 +54,25 @@ public abstract class Mediador {
     }
 
     public Stage showPopUp(Partida partidaActual) {
-        try
-        {
-            FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/popUpReto.fxml"));
-            BorderPane root = myLoader.load();
-            Scene scene = new Scene (root, 357, 184);
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            if (partidaActual.getRetoActual() == 10)
-            {
-                stage.setTitle("¡Ganaste!");
-            }
-            else if (!partidaActual.getRetosFallados()[partidaActual.getRetoActual()]) {
-                stage.setTitle("¡Enhorabuena!");
-            } else {
-                stage.setTitle("Oops!");
-            }
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.setResizable(false);
-            stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
-            stage.setOnCloseRequest(e -> {
-                System.exit(0);
-            });
-            return stage;
+        try {
+            return windowShower.showPopUp(partidaActual);
         }
         catch (IOException e) {System.out.println(e.getMessage());}
         return null;
+    }
+
+    public void botonAbandonarPulsado(MediaPlayer mediaPlayerTicTac, MediaPlayer mediaPlayerMusic, Button abandonarBoton, Timeline timeline) {
+        UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacionConsolidada());
+        servicios.guardarPuntosDiarios(EstadoJuego.getInstance().getPartida().getPuntuacion());
+        if(mediaPlayerTicTac != null) mediaPlayerTicTac.stop();
+        if(mediaPlayerMusic != null) mediaPlayerMusic.stop();
+        Stage stageOld = (Stage) abandonarBoton.getScene().getWindow();
+        stageOld.close();
+        EstadoJuego.getInstance().getPartida().setPartidaAbandonada(true);
+        timeline.stop();
+    }
+
+    public void checkLose() {
+
     }
 }

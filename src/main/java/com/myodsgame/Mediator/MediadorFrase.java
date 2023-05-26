@@ -9,9 +9,4 @@ import java.util.HashMap;
 import java.util.Optional;
 
 public class MediadorFrase extends Mediador{
-    @Override
-    public Optional<ButtonType> ayudaClicked(Reto retoActual, Label currentScore, Button ayuda) {
-        super.ayudaClicked(retoActual, currentScore, ayuda);
-        return result;
-    }
 }

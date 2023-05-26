@@ -284,7 +284,6 @@ public class RetoFraseController implements Initializable {
             clickableChars.getChildren().removeAll(buttonsToBeRemoved);
 
             ayudaUsada = true;
-            EstadoJuego.getInstance().getPartida().setAyudasRestantes(EstadoJuego.getInstance().getPartida().getAyudasRestantes() - 1);
             reproducirSonido("src/main/resources/sounds/pista_larga.mp3", 0.5);
             mediaPlayerMusic.play();
         }
@@ -357,15 +356,7 @@ public class RetoFraseController implements Initializable {
 
     @FXML
     private void botonAbandonarPulsado(ActionEvent event) {
-        if(mediaPlayerTicTac != null) mediaPlayerTicTac.stop();
-        if(mediaPlayerMusic != null) mediaPlayerMusic.stop();
-        timeline.stop();
-        UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacionConsolidada());
-        servicios.guardarPuntosDiarios(EstadoJuego.getInstance().getPartida().getPuntuacion());
-        EstadoJuego.getInstance().getPartida().setPartidaAbandonada(true);
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.close();
-
+        mediador.botonAbandonarPulsado(mediaPlayerTicTac, mediaPlayerMusic, botonAbandonar, timeline);
     }
 
 
