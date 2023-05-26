@@ -1,15 +1,24 @@
 package com.myodsgame.Mediator;
 
+import com.myodsgame.Models.Partida;
 import com.myodsgame.Models.Reto;
 import com.myodsgame.Utils.EstadoJuego;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -42,5 +51,34 @@ public abstract class Mediador {
         MediaPlayer mediaPlayerSonidos = new MediaPlayer(new Media(new File(sonidoPath).toURI().toString()));
         mediaPlayerSonidos.setVolume(volumen);
         return mediaPlayerSonidos;
+    }
+
+    public Stage showPopUp(Partida partidaActual) {
+        try
+        {
+            FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/popUpReto.fxml"));
+            BorderPane root = myLoader.load();
+            Scene scene = new Scene (root, 357, 184);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            if (partidaActual.getRetoActual() == 10)
+            {
+                stage.setTitle("¡Ganaste!");
+            }
+            else if (!partidaActual.getRetosFallados()[partidaActual.getRetoActual()]) {
+                stage.setTitle("¡Enhorabuena!");
+            } else {
+                stage.setTitle("Oops!");
+            }
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.setResizable(false);
+            stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
+            stage.setOnCloseRequest(e -> {
+                System.exit(0);
+            });
+            return stage;
+        }
+        catch (IOException e) {System.out.println(e.getMessage());}
+        return null;
     }
 }
