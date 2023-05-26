@@ -158,6 +158,7 @@ public class RetoFraseController implements Initializable {
 
         botonAbandonar.setVisible(partidaActual.isConsolidado());
         loadRetosState();
+        ((Label) labelArray.getChildren().get(partidaActual.getRetoActual() - 1)).setStyle("-fx-background-color: rgb(202,184,218)");
 
 
     }
@@ -355,13 +356,15 @@ public class RetoFraseController implements Initializable {
     }
 
     @FXML
-    private void botonAbandonarPulsado() {
-
+    private void botonAbandonarPulsado(ActionEvent event) {
+        if(mediaPlayerTicTac != null) mediaPlayerTicTac.stop();
+        if(mediaPlayerMusic != null) mediaPlayerMusic.stop();
+        timeline.stop();
         UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacionConsolidada());
         servicios.guardarPuntosDiarios(EstadoJuego.getInstance().getPartida().getPuntuacion());
-        Stage stageOld = (Stage) botonAbandonar.getScene().getWindow();
-        stageOld.close();
         EstadoJuego.getInstance().getPartida().setPartidaAbandonada(true);
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.close();
 
     }
 

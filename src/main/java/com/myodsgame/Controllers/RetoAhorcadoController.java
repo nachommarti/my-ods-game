@@ -402,28 +402,15 @@ public class RetoAhorcadoController implements Initializable {
 
     @FXML
     void botonAbandonarPulsado(ActionEvent event) {
+        if(mediaPlayerTicTac != null) mediaPlayerTicTac.stop();
+        if(mediaPlayerMusic != null) mediaPlayerMusic.stop();
         UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacionConsolidada());
         servicios.guardarPuntosDiarios(EstadoJuego.getInstance().getPartida().getPuntuacion());
         Stage stageOld = (Stage) botonAbandonar.getScene().getWindow();
         stageOld.close();
         EstadoJuego.getInstance().getPartida().setPartidaAbandonada(true);
+        timeline.stop();
 
-        FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/pantallaPartidas.fxml"));
-        BorderPane root = null;
-        try {
-            root = myLoader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.setTitle("Menú Principal");
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
-        stage.setResizable(false);
-        stage.show();
     }
 
     private void showPopUp() {

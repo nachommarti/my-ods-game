@@ -183,9 +183,7 @@ public class PantallaPartidasController implements Initializable {
         }
         puntosJugador = EstadoJuego.getInstance().getUsuario().getEstadistica().getPuntosTotales();
         puntosAlmacenados.setText("Puntos totales: " + puntosJugador);
-        Node source = (Node) event.getSource();
-        Stage oldStage = (Stage) source.getScene().getWindow();
-        oldStage.close();
+
     }
 
 
@@ -274,9 +272,7 @@ public class PantallaPartidasController implements Initializable {
             }
             puntosJugador = EstadoJuego.getInstance().getUsuario().getEstadistica().getPuntosTotales();
             puntosAlmacenados.setText("Puntos totales: " + puntosJugador);
-            Node source = (Node) event.getSource();
-            Stage oldStage = (Stage) source.getScene().getWindow();
-            oldStage.close();
+
         }
     }
 
