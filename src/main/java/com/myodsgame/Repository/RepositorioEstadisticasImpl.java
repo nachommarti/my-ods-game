@@ -119,6 +119,21 @@ public class RepositorioEstadisticasImpl implements Repositorio<Estadisticas, St
         return estadisticasList;
     }
 
+    @Override
+    public void update(Estadisticas entidad) {
+
+    }
+
+    @Override
+    public void delete(Estadisticas entidad) {
+
+    }
+
+    @Override
+    public void deleteById(String s) {
+
+    }
+
     /*
     @Override
     public void update(Estadisticas estadisticas) {
