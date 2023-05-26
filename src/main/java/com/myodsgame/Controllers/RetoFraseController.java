@@ -86,6 +86,7 @@ public class RetoFraseController implements Initializable {
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
         partidaActual = EstadoJuego.getInstance().getPartida();
+        ayuda.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "ayuda.png").toAbsolutePath().toString())));
 
         if (partidaActual.getRetoActual() > 4 && partidaActual.getRetoActual() <= 7) {
             while (partidaActual.getRetos().get(partidaActual.getRetoQueHayQueMirarEnElArray()).getDificultad() != 2) {

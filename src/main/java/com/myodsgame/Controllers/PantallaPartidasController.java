@@ -56,7 +56,11 @@ public class PantallaPartidasController implements Initializable {
     private StackPane stackPane;
     String avatar;
     private IServices servicios;
-    private int nivelNecesarioAhorcado = 5;
+    private int nivelNecesarioAhorcado = 3;
+
+    private int nivelNecesarioFrase= 6;
+
+    private int nivelNecesarioMixto = 9;
     private int nivelUsuario;
     private UserUtils userUtils = new UserUtils();
 
@@ -67,6 +71,7 @@ public class PantallaPartidasController implements Initializable {
         userUtils.loadLevel();
         retoAhorcado.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "ahorcado.png").toAbsolutePath().toString())));
         retoPregunta.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "retoPregunta.png").toAbsolutePath().toString())));
+        retoFrase.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "frase.png").toAbsolutePath().toString())));
         retoMixto.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "mixto.png").toAbsolutePath().toString())));
         desplegablePerfil.getItems().add("Perfil");
         desplegablePerfil.getItems().add("Estadísticas");
@@ -80,14 +85,26 @@ public class PantallaPartidasController implements Initializable {
 
         if (nivelUsuario < nivelNecesarioAhorcado)
         {
-            Tooltip mensajeBloqueado = new Tooltip("Debes ser nivel "  + nivelNecesarioAhorcado + "  para poder jugar esta partida");
+            Tooltip mensajeBloqueado = new Tooltip("Debes ser nivel "  + nivelNecesarioAhorcado + " para poder jugar esta partida");
             mensajeBloqueado.setShowDelay(Duration.seconds(0));
             retoAhorcado.setTooltip(mensajeBloqueado);
-            retoMixto.setTooltip(mensajeBloqueado);
-
             retoAhorcado.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "ahorcado sin desbloquear.png").toAbsolutePath().toString())));
-            retoMixto.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "mixto sin desbloquear.png").toAbsolutePath().toString())));
+        }
 
+        if (nivelUsuario < nivelNecesarioFrase)
+        {
+            Tooltip mensajeBloqueado = new Tooltip("Debes ser nivel "  + nivelNecesarioFrase + " para poder jugar esta partida");
+            mensajeBloqueado.setShowDelay(Duration.seconds(0));
+            retoFrase.setTooltip(mensajeBloqueado);
+            retoFrase.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "frase sin desbloquear.png").toAbsolutePath().toString())));
+        }
+
+        if (nivelUsuario < nivelNecesarioMixto)
+        {
+            Tooltip mensajeBloqueado = new Tooltip("Debes ser nivel "  + nivelNecesarioMixto + " para poder jugar esta partida");
+            mensajeBloqueado.setShowDelay(Duration.seconds(0));
+            retoMixto.setTooltip(mensajeBloqueado);
+            retoMixto.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "mixto sin desbloquear.png").toAbsolutePath().toString())));
         }
 
         desplegablePerfil.valueProperty().addListener((ov, p1, p2) ->
@@ -244,21 +261,23 @@ public class PantallaPartidasController implements Initializable {
 
     @FXML
     void retoFrasePulsado(ActionEvent event) throws IOException {
-        PartidaDirector partidaDirector = new PartidaDirector(new PartidaFrasesBuilder());
-        Partida partida = partidaDirector.BuildPartida();
-        EstadoJuego.getInstance().setPartida(partida);
-        for(int i = 0; i < partida.getRetos().size(); i++){
-            if(EstadoJuego.getInstance().getPartida().isPartidaPerdida() || EstadoJuego.getInstance().getPartida().isPartidaAbandonada()) {
-                //TODO:show message saying how many points the user has won during this game
-                break;
+        if (nivelUsuario >= nivelNecesarioFrase) {
+            PartidaDirector partidaDirector = new PartidaDirector(new PartidaFrasesBuilder());
+            Partida partida = partidaDirector.BuildPartida();
+            EstadoJuego.getInstance().setPartida(partida);
+            for (int i = 0; i < partida.getRetos().size(); i++) {
+                if (EstadoJuego.getInstance().getPartida().isPartidaPerdida() || EstadoJuego.getInstance().getPartida().isPartidaAbandonada()) {
+                    //TODO:show message saying how many points the user has won during this game
+                    break;
+                }
+                loadReto("retoFrase", "Reto Frase");
             }
-            loadReto("retoFrase", "Reto Frase");
+            puntosJugador = EstadoJuego.getInstance().getUsuario().getEstadistica().getPuntosTotales();
+            puntosAlmacenados.setText("Puntos totales: " + puntosJugador);
+            Node source = (Node) event.getSource();
+            Stage oldStage = (Stage) source.getScene().getWindow();
+            oldStage.close();
         }
-        puntosJugador = EstadoJuego.getInstance().getUsuario().getEstadistica().getPuntosTotales();
-        puntosAlmacenados.setText("Puntos totales: " + puntosJugador);
-        Node source = (Node) event.getSource();
-        Stage oldStage = (Stage) source.getScene().getWindow();
-        oldStage.close();
     }
 
     private void loadReto(String reto, String titulo) throws IOException {

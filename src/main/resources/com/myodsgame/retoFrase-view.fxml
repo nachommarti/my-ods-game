@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="390.0" prefWidth="1058.0" style="-fx-background-color: #21315A;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.RetoFraseController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="390.0" prefWidth="1058.0" style="-fx-background-color: #21315A;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.RetoFraseController">
    <center>
       <VBox prefHeight="382.0" prefWidth="788.0" BorderPane.alignment="CENTER">
          <children>
@@ -24,7 +20,7 @@
                      <image>
                         <Image url="@../../images/vidas.png" />
                      </image></ImageView>
-                  <Button fx:id="ayuda" mnemonicParsing="false" onAction="#ayudaPulsada" style="-fx-background-color: null;" text="ayuda" textFill="WHITE" />
+                  <Button fx:id="ayuda" mnemonicParsing="false" onAction="#ayudaPulsada" style="-fx-background-color: null;" textFill="WHITE" />
                </children>
                <padding>
                   <Insets left="30.0" right="30.0" top="30.0" />
