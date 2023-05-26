@@ -156,6 +156,11 @@ public class RetoPreguntaController implements Initializable {
 
         abandonarBoton.setVisible(partidaActual.isConsolidado());
 
+        if (EstadoJuego.getInstance().getPartida().getAyudasRestantes() <= 0)
+        {
+            ayuda.setDisable(true);
+        }
+
         for(int i = 1; i <= partidaActual.getRetos().size(); i++){
             System.out.println("Desde PREGUNTA - Reto numero " + i + " es de tipo " + partidaActual.getRetos().get(i-1).getTipoReto());
         }
@@ -219,6 +224,7 @@ public class RetoPreguntaController implements Initializable {
                 }
             }
             ayudaPulsada = true;
+            EstadoJuego.getInstance().getPartida().setAyudasRestantes(EstadoJuego.getInstance().getPartida().getAyudasRestantes() - 1);
             reproducirSonido("src/main/resources/sounds/pista_larga.mp3", 0.5);
             mediaPlayerMusic.play();
         }

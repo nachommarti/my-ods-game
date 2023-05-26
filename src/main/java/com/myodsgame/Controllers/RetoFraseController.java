@@ -99,6 +99,11 @@ public class RetoFraseController implements Initializable {
                 EstadoJuego.getInstance().getPartida().setRetoQueHayQueMirarEnElArray(partidaActual.getRetoQueHayQueMirarEnElArray() + 1);
         }
 
+        if (EstadoJuego.getInstance().getPartida().getAyudasRestantes() <= 0)
+        {
+            ayuda.setDisable(true);
+        }
+
         retoActual = (RetoFrase) EstadoJuego.getInstance().getPartida().getRetos().get(EstadoJuego.getInstance().getPartida().getRetoQueHayQueMirarEnElArray());
 
         frase = retoActual.getPalabra().toUpperCase();
@@ -283,6 +288,7 @@ public class RetoFraseController implements Initializable {
             clickableChars.getChildren().removeAll(buttonsToBeRemoved);
 
             ayudaUsada = true;
+            EstadoJuego.getInstance().getPartida().setAyudasRestantes(EstadoJuego.getInstance().getPartida().getAyudasRestantes() - 1);
             reproducirSonido("src/main/resources/sounds/pista_larga.mp3", 0.5);
             mediaPlayerMusic.play();
         }
