@@ -392,30 +392,7 @@ public class RetoPreguntaController implements Initializable {
     }
 
     private void showPopUp() {
-        try
-        {
-            FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/com/myodsgame/popUpReto.fxml"));
-            BorderPane root = myLoader.load();
-            Scene scene = new Scene (root, 357, 184);
-            Stage  stage = new Stage();
-            stage.setScene(scene);
-            if (partidaActual.getRetoActual() == 10)
-            {
-                stage.setTitle("¡Ganaste!");
-            }
-            else if (!partidaActual.getRetosFallados()[partidaActual.getRetoActual()]) {
-                stage.setTitle("¡Enhorabuena!");
-            } else {
-                stage.setTitle("Oops!");
-            }
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.setResizable(false);
-            stage.getIcons().add(new Image(Path.of("", "src", "main", "resources", "images", "LogoODS.png").toAbsolutePath().toString()));
-            stage.setOnCloseRequest(e -> {
-                System.exit(0);
-            });
-            stage.show();
-        }
-        catch (IOException e) {System.out.println(e.getMessage());}
+        Stage stage = mediador.showPopUp(partidaActual);
+        stage.show();
     }
 }
