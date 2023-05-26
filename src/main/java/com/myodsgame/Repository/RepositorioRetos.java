@@ -7,7 +7,6 @@ import java.util.List;
 public interface RepositorioRetos {
 
     List<Reto> getRetosPorNivelDificultadInicial(int numFacil, int numResto);
-
     int getNumeroTotalRetos();
     int getNumeroTotalRetosPorODS(int ods);
 }

@@ -1,10 +1,7 @@
 package com.myodsgame.Controllers;
 
 import com.myodsgame.Models.Estadisticas;
-import com.myodsgame.Repository.RepositorioEstadisticasImpl;
-import com.myodsgame.Repository.RepositorioPalabraImpl;
-import com.myodsgame.Repository.RepositorioPuntosFecha;
-import com.myodsgame.Repository.RepositorioPuntosFechaImpl;
+import com.myodsgame.Repository.*;
 import com.myodsgame.Services.IServices;
 import com.myodsgame.Services.Services;
 import com.myodsgame.Utils.EstadoJuego;
@@ -56,10 +53,12 @@ public class EstadisticaController implements Initializable {
     private List<Estadisticas> top10;
 
     private IServices servicios;
+    private Repositorio<Estadisticas, String, String, String> repositorio;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         servicios = new Services();
+        repositorio = new RepositorioEstadisticasImpl();
         Estadisticas est = EstadoJuego.getInstance().getUsuario().getEstadistica();
 
         double porcentajeAciertos = (double) est.getNumeroAciertos() / servicios.getNumeroTotalRetos();
@@ -138,7 +137,7 @@ public class EstadisticaController implements Initializable {
         });
 
         ranking.getColumns().addAll(colPosicion, colPuntos, colUsuarios);
-        estadisticas = new RepositorioEstadisticasImpl().getEstadisticas();
+        estadisticas = repositorio.findAll();
         top10 = estadisticas.subList(0, Math.min(10, estadisticas.size()));
         Estadisticas estadisticasUsuarioLogeado = EstadoJuego.getInstance().getUsuario().getEstadistica();
 
@@ -184,7 +183,7 @@ public class EstadisticaController implements Initializable {
     @FXML
     void rankingGlobalPulsado(ActionEvent event){
         labelTipoRanking.setText("Ranking Global");
-        estadisticas = new RepositorioEstadisticasImpl().getEstadisticas();
+        estadisticas = repositorio.findAll();
         top10 = estadisticas.subList(0, Math.min(10, estadisticas.size()));
         Estadisticas estadisticasUsuarioLogeado = EstadoJuego.getInstance().getUsuario().getEstadistica();
 

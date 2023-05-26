@@ -18,49 +18,6 @@ public class RepositorioEstadisticasImpl implements Repositorio<Estadisticas, St
 
     public RepositorioEstadisticasImpl() {connection = DBConnection.getConnection();}
 
-    public List<Estadisticas> getEstadisticas(){
-        String query = "SELECT * FROM estadisticas ORDER BY puntos_totales DESC;";
-        List<Estadisticas> estadisticas = new ArrayList<>();
-
-        try{
-            PreparedStatement pstmt = connection.prepareStatement(query);
-            ResultSet rs = pstmt.executeQuery();
-            int posicion = 1;
-            while(rs.next()){
-                Estadisticas est = new Estadisticas();
-
-                String aIndOds = rs.getString("aciertos_individual_ods");
-                String[] aciertosIndOds = aIndOds.split(",");
-                int[] aciertosIndividualOds = new int[aciertosIndOds.length];
-                for(int i = 0; i < aciertosIndOds.length; i++) {
-                    aciertosIndividualOds[i] = Integer.parseInt(aciertosIndOds[i].trim());
-                }
-                est.setAciertos_individual_ods(aciertosIndividualOds);
-
-                String fIndOds = rs.getString("fallos_individual_ods");
-                String[] fallosIndOds = fIndOds.split(",");
-                int[] fallosIndividualOds = new int[fallosIndOds.length];
-                for(int i = 0; i < fallosIndOds.length; i++) {
-                    fallosIndividualOds[i] = Integer.parseInt(fallosIndOds[i].trim());
-                }
-                est.setFallos_individual_ods(fallosIndividualOds);
-
-                est.setPuntosTotales(rs.getInt("puntos_totales"));
-                est.setNumeroAciertos(rs.getInt("numero_aciertos"));
-                est.setNumeroFallos(rs.getInt("numero_fallos"));
-                est.setUsuario(rs.getString("username"));
-                est.setNivel(rs.getInt("nivel"));
-                est.setPosicion(posicion);
-                posicion++;
-
-                estadisticas.add(est);
-            }
-            return estadisticas;
-        }catch(SQLException e){
-            System.err.println("Error al obtener estadísticas: " + e.getMessage());
-            return null;
-        }
-    }
     @Override
     public void create(Estadisticas estadisticas) {
         String sql = "INSERT INTO estadisticas (username, puntos_totales, partidas_jugadas, " +
@@ -108,18 +65,15 @@ public class RepositorioEstadisticasImpl implements Repositorio<Estadisticas, St
         String sql = "SELECT * FROM estadisticas WHERE username = ?";
         Estadisticas estadisticas = null;
 
-        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
-
             if (resultSet.next()) {
                 estadisticas = mapResultSetToEstadisticas(resultSet);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Manejar excepciones según sea necesario
         }
 
         return estadisticas;
@@ -130,22 +84,42 @@ public class RepositorioEstadisticasImpl implements Repositorio<Estadisticas, St
         String sql = "SELECT * FROM estadisticas";
         List<Estadisticas> estadisticasList = new ArrayList<>();
 
-        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) {
-
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Estadisticas estadisticas = mapResultSetToEstadisticas(resultSet);
                 estadisticasList.add(estadisticas);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Manejar excepciones según sea necesario
         }
 
         return estadisticasList;
     }
 
+    @Override
+    public List<Estadisticas> findByProperty(String username, String nivel) {
+        String sql = "SELECT * FROM estadisticas WHERE username = ? AND nivel = ?";
+        List<Estadisticas> estadisticasList = new ArrayList<>();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, username);
+            statement.setString(2, nivel);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Estadisticas estadisticas = mapResultSetToEstadisticas(resultSet);
+                estadisticasList.add(estadisticas);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return estadisticasList;
+    }
+
+    /*
     @Override
     public void update(Estadisticas estadisticas) {
         String sql = "UPDATE estadisticas SET puntos_totales = ?, partidas_jugadas = ?, " +
@@ -199,7 +173,8 @@ public class RepositorioEstadisticasImpl implements Repositorio<Estadisticas, St
         }
     }
 
-    // Método auxiliar para mapear un ResultSet a un objeto Estadisticas
+     */
+
     private Estadisticas mapResultSetToEstadisticas(ResultSet resultSet) throws SQLException {
         Estadisticas estadisticas = new Estadisticas();
         estadisticas.setUsuario(resultSet.getString("username"));
@@ -207,7 +182,24 @@ public class RepositorioEstadisticasImpl implements Repositorio<Estadisticas, St
         estadisticas.setPartidasJugadas(resultSet.getInt("partidas_jugadas"));
         estadisticas.setNumeroAciertos(resultSet.getInt("numero_aciertos"));
         estadisticas.setNumeroFallos(resultSet.getInt("numero_fallos"));
-        // Establece los valores restantes aciertos_individual_ods, fallos_individual_ods, nivel
+
+        String aciertosIndividualOdsString = resultSet.getString("aciertos_individual_ods");
+        String[] aciertosIndividualOdsArray = aciertosIndividualOdsString.split(",");
+        int[] aciertosIndividualOds = new int[17];
+        for (int i = 0; i < aciertosIndividualOdsArray.length; i++) {
+            aciertosIndividualOds[i] = Integer.parseInt(aciertosIndividualOdsArray[i]);
+        }
+        estadisticas.setAciertos_individual_ods(aciertosIndividualOds);
+
+        String fallosIndividualOdsString = resultSet.getString("fallos_individual_ods");
+        String[] fallosIndividualOdsArray = fallosIndividualOdsString.split(",");
+        int[] fallosIndividualOds = new int[17];
+        for (int i = 0; i < fallosIndividualOdsArray.length; i++) {
+            fallosIndividualOds[i] = Integer.parseInt(fallosIndividualOdsArray[i]);
+        }
+        estadisticas.setFallos_individual_ods(fallosIndividualOds);
+
+        estadisticas.setNivel(resultSet.getInt("nivel"));
 
         return estadisticas;
     }

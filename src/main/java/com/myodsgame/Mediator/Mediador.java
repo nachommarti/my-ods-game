@@ -54,11 +54,12 @@ public abstract class Mediador {
     }
 
     public Stage showPopUp(Partida partidaActual) {
+        Stage stage = null;
         try {
-            return windowShower.showPopUp(partidaActual);
+            stage = windowShower.showPopUp(partidaActual);
         }
         catch (IOException e) {System.out.println(e.getMessage());}
-        return null;
+        return stage;
     }
 
     public void botonAbandonarPulsado(MediaPlayer mediaPlayerTicTac, MediaPlayer mediaPlayerMusic, Button abandonarBoton, Timeline timeline) {
