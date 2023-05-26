@@ -21,8 +21,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.text.Font;
 import javafx.scene.media.MediaPlayer;
@@ -42,6 +41,8 @@ public class RetoFraseController implements Initializable {
 
     @FXML
     private HBox clickableChars;
+    @FXML
+    private BorderPane borderPane;
     @FXML
     private HBox sentence;
     @FXML
@@ -106,6 +107,13 @@ public class RetoFraseController implements Initializable {
         if (EstadoJuego.getInstance().getPartida().getAyudasRestantes() <= 0) {
             ayuda.setDisable(true);
         }
+
+        BackgroundImage fill = new BackgroundImage(EstadoJuego.getInstance().getPartida().getImagenFondo(), null,
+                null,
+                null,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, false, true));
+        Background background = new Background(fill);
+        borderPane.setBackground(background);
 
         retoActual = (RetoFrase) EstadoJuego.getInstance().getPartida().getRetos().get(EstadoJuego.getInstance().getPartida().getRetoQueHayQueMirarEnElArray());
 
@@ -176,9 +184,10 @@ public class RetoFraseController implements Initializable {
             Label currentLabel;
             Character currentChar = frase.charAt(i);
             if (Character.isWhitespace(currentChar)) {
-                currentLabel = new Label("-");
+                currentLabel = new Label("");
                 labels.add(currentLabel);
-                currentLabel.setStyle("-fx-text-fill: white; -fx-border-color: white; -fx-border-width: 2;");
+                currentLabel.setVisible(false);
+                currentLabel.setStyle("-fx-background-color: grey; -fx-text-fill: white; -fx-border-color: white; -fx-border-width: 2;");
             } else {
                 currentLabel = new Label(currentChar + "");
                 labels.add(currentLabel);
@@ -189,7 +198,7 @@ public class RetoFraseController implements Initializable {
                         if (botonPulsado.getText().equals(currentLabel.getText())) {
                             System.out.println("MONDONGO!");
                             clickableChars.getChildren().remove(botonPulsado);
-                            currentLabel.setStyle("-fx-text-fill: white; -fx-border-color: white; -fx-border-width: 2;");
+                            currentLabel.setStyle("-fx-background-color: grey; -fx-text-fill: white; -fx-border-color: white; -fx-border-width: 2;");
                             botonPulsado = null;
                             letrasRestantes.remove(currentChar);
                             checkWin();
@@ -270,7 +279,7 @@ public class RetoFraseController implements Initializable {
             for (Node node : sentence.getChildren()) {
                 Label label = (Label) node;
                 if (label.getText().equals(Character.toString(letraRandomRestante))) {
-                    label.setStyle("-fx-text-fill: green; -fx-border-color: white; -fx-border-width: 2;");
+                    label.setStyle("-fx-background-color: lightgreen; -fx-text-fill: white; -fx-border-color: white; -fx-border-width: 2;");
                     letrasRestantes.remove(letraRandomRestante);
                 }
             }
@@ -343,7 +352,7 @@ public class RetoFraseController implements Initializable {
     private void mostrarFrase() {
         for (Node node : sentence.getChildren()) {
             Label label = (Label) node;
-            label.setStyle("-fx-text-fill: red; -fx-border-color: white; -fx-border-width: 2;");
+            label.setStyle("-fx-background-color:red; -fx-text-fill: white; -fx-border-color: white; -fx-border-width: 2;");
         }
     }
 

@@ -47,6 +47,8 @@ public class RetoAhorcadoController implements Initializable {
     private ImageView vidas;
     @FXML
     private Button ayudaButton;
+    @FXML
+    private BorderPane borderPane;
 
     @FXML
     private Label timer;
@@ -99,6 +101,12 @@ public class RetoAhorcadoController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        BackgroundImage fill = new BackgroundImage(EstadoJuego.getInstance().getPartida().getImagenFondo(), null,
+                null,
+                null,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, false, true));
+        Background background = new Background(fill);
+        borderPane.setBackground(background);
         servicios = new Services();
         mediador = new MediadorAhorcado();
         timeline = new Timeline();
@@ -327,8 +335,7 @@ public class RetoAhorcadoController implements Initializable {
         estatusRespuesta.setTextFill(win ? Color.GREEN : Color.RED);
         partidaScore.setText("Score: " + EstadoJuego.getInstance().getPartida().getPuntuacion());
     }
-
-
+    
     private void loadPalabra(){
         ((Label) labelArray.getChildren().get(partidaActual.getRetoActual() - 1)).setStyle("-fx-background-color: rgb(202,184,218)");
 

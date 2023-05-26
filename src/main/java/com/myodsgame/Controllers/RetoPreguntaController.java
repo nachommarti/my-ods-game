@@ -18,8 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -104,6 +103,13 @@ public class RetoPreguntaController implements Initializable {
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
         this.partidaActual = EstadoJuego.getInstance().getPartida();
+        BackgroundImage fill = new BackgroundImage(EstadoJuego.getInstance().getPartida().getImagenFondo(), null,
+                null,
+                null,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, false, true));
+        Background background = new Background(fill);
+        borderPane.setBackground(background);
+
 
         if(partidaActual.getRetoActual() > 4 && partidaActual.getRetoActual() <= 7){
             while(partidaActual.getRetos().get(partidaActual.getRetoQueHayQueMirarEnElArray()).getDificultad() != 2) {
@@ -142,7 +148,7 @@ public class RetoPreguntaController implements Initializable {
                         })
         );
         reproducirMusica();
-        this.initialStyle = "-fx-background-color:  rgba(255, 255, 255, 0.5); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10";
+        this.initialStyle = "-fx-background-color:  rgba(255, 255, 255, 1); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10";
         ayuda.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "ayuda.png").toAbsolutePath().toString())));
 
         loadRetosState();
