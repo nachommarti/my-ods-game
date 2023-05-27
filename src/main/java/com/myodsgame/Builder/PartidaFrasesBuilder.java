@@ -1,8 +1,9 @@
 package com.myodsgame.Builder;
 
 import com.myodsgame.Models.Partida;
+import com.myodsgame.Models.RetoFrase;
+import com.myodsgame.Repository.Repositorio;
 import com.myodsgame.Repository.RepositorioFraseImpl;
-import com.myodsgame.Repository.RepositorioRetos;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 
@@ -13,8 +14,8 @@ public class PartidaFrasesBuilder extends PartidaBuilder {
 
     @Override
     public void BuildRetos() {
-        RepositorioRetos repositorioFrase = new RepositorioFraseImpl();
-        partida.setRetos(repositorioFrase.getRetosPorNivelDificultadInicial(1, 5, 4));
+        Repositorio<RetoFrase, Integer> repositorioFrase = new RepositorioFraseImpl<>();
+        partida.setRetos(repositorioFrase.findByLimit(5, 4));
     }
 
     @Override

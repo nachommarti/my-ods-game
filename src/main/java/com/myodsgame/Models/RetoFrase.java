@@ -10,20 +10,20 @@ public class RetoFrase extends Reto{
     private String pista;
     private int intentos;
 
-    public RetoFrase(boolean ayudaUsada, int duracion, int tiempoTicTac, int dificultad, int puntuacion,
+    public RetoFrase(int id, boolean ayudaUsada, int duracion, int tiempoTicTac, int dificultad, int puntuacion,
                         TipoReto tipoReto, List<Integer> ODS, String palabra, String pista, int intentos) {
-        super(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipoReto, ODS);
+        super(id, ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipoReto, ODS);
         this.frase = palabra;
         this.pista = pista;
         this.intentos = intentos;
     }
 
-    public String getPalabra() {
+    public String getFrase() {
         return frase;
     }
 
-    public void setPalabra(String palabra) {
-        this.frase = palabra;
+    public void setFrase(String frase) {
+        this.frase = frase;
     }
 
     public String getPista() {

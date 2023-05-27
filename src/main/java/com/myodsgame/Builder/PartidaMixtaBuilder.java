@@ -2,10 +2,11 @@ package com.myodsgame.Builder;
 
 import com.myodsgame.Models.Partida;
 import com.myodsgame.Models.Reto;
+import com.myodsgame.Models.RetoPregunta;
 import com.myodsgame.Repository.RepositorioFraseImpl;
 import com.myodsgame.Repository.RepositorioPalabraImpl;
 import com.myodsgame.Repository.RepositorioPreguntaImpl;
-import com.myodsgame.Repository.RepositorioRetos;
+import com.myodsgame.Repository.Repositorio;
 import com.myodsgame.Services.IServices;
 import com.myodsgame.Services.Services;
 import javafx.scene.image.Image;
@@ -19,9 +20,9 @@ public class PartidaMixtaBuilder extends PartidaBuilder {
     @Override
     public void BuildRetos() {
         IServices servicios = new Services();
-        RepositorioRetos repositorioPreguntas = new RepositorioPreguntaImpl();
-        RepositorioRetos repositorioPalabras = new RepositorioPalabraImpl();
-        RepositorioRetos repositorioFrases = new RepositorioFraseImpl();
+        Repositorio<Reto, Integer> repositorioPreguntas = new RepositorioPreguntaImpl<>();
+        Repositorio<Reto, Integer> repositorioPalabras = new RepositorioPalabraImpl<>();
+        Repositorio<Reto, Integer> repositorioFrases = new RepositorioFraseImpl<>();
 
         Random random = new Random();
         int preguntasFacil = random.nextInt(6);
@@ -31,9 +32,9 @@ public class PartidaMixtaBuilder extends PartidaBuilder {
         int preguntasResto = random.nextInt(5);
         int palabrasResto = random.nextInt(5 - preguntasResto);
         int frasesResto = 4 - preguntasResto;
-        List<Reto> retos = repositorioPreguntas.getRetosPorNivelDificultadInicial(1, preguntasFacil, preguntasResto);
-        retos.addAll(repositorioPalabras.getRetosPorNivelDificultadInicial(1, palabrasFacil, palabrasResto));
-        retos.addAll(repositorioFrases.getRetosPorNivelDificultadInicial(1, frasesFacil, frasesResto));
+        List<Reto> retos = repositorioPreguntas.findByLimit(preguntasFacil, preguntasResto);
+        retos.addAll(repositorioPalabras.findByLimit(palabrasFacil, palabrasResto));
+        retos.addAll(repositorioFrases.findByLimit(frasesFacil, frasesResto));
         retos.sort(Comparator.comparingInt(Reto::getDificultad));
 
         int lastNivelDificultad = -1;

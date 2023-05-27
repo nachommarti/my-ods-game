@@ -11,11 +11,9 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -25,12 +23,10 @@ import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.text.Font;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.*;
@@ -117,7 +113,7 @@ public class RetoFraseController implements Initializable {
 
         retoActual = (RetoFrase) EstadoJuego.getInstance().getPartida().getRetos().get(EstadoJuego.getInstance().getPartida().getRetoQueHayQueMirarEnElArray());
 
-        frase = retoActual.getPalabra().toUpperCase();
+        frase = retoActual.getFrase().toUpperCase();
         frasePista.setText(retoActual.getPista());
         puntosPorAcertar.setText("Puntos por acertar: " + retoActual.getDificultad() * 100);
         puntos.setText("Score: " + EstadoJuego.getInstance().getPartida().getPuntuacion());

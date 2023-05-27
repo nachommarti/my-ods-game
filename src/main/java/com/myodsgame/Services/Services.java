@@ -1,39 +1,64 @@
 package com.myodsgame.Services;
 
-import com.myodsgame.Factory.RetoFactory;
 import com.myodsgame.Models.Estadisticas;
-import com.myodsgame.Models.PuntuacionDiaria;
+import com.myodsgame.Models.PuntuacionDiariaPK;
 import com.myodsgame.Models.Reto;
 import com.myodsgame.Repository.*;
 import com.myodsgame.Utils.EstadoJuego;
-import com.myodsgame.Utils.TipoReto;
 
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 
 public class Services implements IServices {
     RepositorioUsuario repositorioUsuario = new RepositorioUsuarioImpl();
+    Repositorio<Estadisticas, String> repositorioEstadisticas = new RepositorioEstadisticasImpl();
+    Repositorio<Estadisticas, PuntuacionDiariaPK> repositorioPuntosFecha = new RepositorioPuntosFechaImpl();
+    RepositorioRetos<Reto> repositorioRetos = new RepositorioRetos<>();
 
-    public List<Integer> buildOds(String OdsString) {
-        String[] OdsArray = OdsString.split(",");
-        List<Integer> Ods = new ArrayList<>();
-        for (int i = 0; i < OdsArray.length; i++) {
-            int odsNumber = Integer.parseInt(OdsArray[i]);
-            Ods.add(i, odsNumber);
+    public List<Integer> stringToIntList(String string) {
+        String[] array = string.split(",");
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < array.length; i++) {
+            list.add(i, Integer.parseInt(array[i]));
         }
-        return Ods;
+        return list;
+    }
+
+    public String intListToString(List<Integer> list) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            stringBuilder.append(list.get(i));
+            if (i < list.size() - 1) {
+                stringBuilder.append(",");
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    public int[] stringToIntArray(String string) {
+        String[] split = string.split(",");
+        int[] array = new int[split.length];
+        for (int i = 0; i < split.length; i++) {
+            array[i] = Integer.parseInt(split[i]);
+        }
+        return array;
+    }
+
+    public String intArrayToString(int[] array) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < array.length; i++) {
+            stringBuilder.append(array[i]);
+            if (i < array.length - 1) {
+                stringBuilder.append(",");
+            }
+        }
+        return stringBuilder.toString();
     }
 
     @Override
@@ -137,32 +162,19 @@ public class Services implements IServices {
     }
 
    public int getNumeroTotalRetos(){
-        RepositorioRetos repositorioPreguntas = new RepositorioPreguntaImpl();
-        RepositorioRetos repositorioPalabras = new RepositorioPalabraImpl();
-        return repositorioPreguntas.getNumeroTotalRetos() + repositorioPalabras.getNumeroTotalRetos();
+        return repositorioRetos.getNumeroTotalRetos();
    }
 
    public int[] getNumeroTotalRetosPorODS(){
-       RepositorioRetos repositorioPreguntas = new RepositorioPreguntaImpl();
-       RepositorioRetos repositorioPalabras = new RepositorioPalabraImpl();
-
        int[] retosPorODS = new int[17];
-
        for(int i = 0; i < retosPorODS.length; i++){
-           retosPorODS[i] = repositorioPreguntas.getNumeroTotalRetosPorODS(i+1) + repositorioPalabras.getNumeroTotalRetosPorODS(i+1);
+           retosPorODS[i] = repositorioRetos.getNumeroTotalRetosPorODS(i+1);
        }
-
        return retosPorODS;
    }
 
    public void guardarPuntosDiarios(int puntos){
-       PuntuacionDiaria puntuacionDiaria = new PuntuacionDiaria();
-
-       puntuacionDiaria.setUsuario(EstadoJuego.getInstance().getUsuario().getUsername());
-       puntuacionDiaria.setPuntos(puntos);
-       puntuacionDiaria.setFecha(LocalDate.now());
-
-       RepositorioPuntosFecha repositorioPuntosFecha = new RepositorioPuntosFechaImpl();
-       repositorioPuntosFecha.guardarPuntos(puntuacionDiaria);
+       Estadisticas estadisticas = repositorioEstadisticas.findById(EstadoJuego.getInstance().getUsuario().getUsername());
+       repositorioPuntosFecha.insert(estadisticas);
    }
 }

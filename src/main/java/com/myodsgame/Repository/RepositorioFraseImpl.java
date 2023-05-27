@@ -2,11 +2,9 @@ package com.myodsgame.Repository;
 
 import com.myodsgame.Factory.RetoFactory;
 import com.myodsgame.Models.Reto;
-import com.myodsgame.Services.Services;
-import com.myodsgame.Utils.DBConnection;
+import com.myodsgame.Models.RetoFrase;
 import com.myodsgame.Utils.TipoReto;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,17 +12,48 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class RepositorioFraseImpl implements RepositorioRetos{
+public class RepositorioFraseImpl<T extends Reto> extends RepositorioRetos<T> implements Repositorio<T, Integer>{
+    @Override
+    public void create(T entidad) {
+        String sql = "INSERT INTO frases (id, frase, pista, nivel_dificultad, ODS) " +
+                "VALUES (?, ?, ?, ?, ?)";
+        RetoFrase reto = null;
+        if (entidad instanceof RetoFrase) reto = (RetoFrase) entidad;
 
-    private final Connection connection;
-    private final Services services;
-
-    public RepositorioFraseImpl() {
-        connection = DBConnection.getConnection();
-        services = new Services();
+        try {
+            if (reto == null) throw new IllegalArgumentException("Tipo erróneo.");
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, reto.getId());
+            statement.setString(2, reto.getFrase());
+            statement.setString(3, reto.getPista());
+            statement.setInt(4, reto.getDificultad());
+            statement.setString(5, services.intListToString(reto.getODS()));
+            statement.executeUpdate();
+            statement.close();
+        } catch (SQLException | IllegalArgumentException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
     }
 
-    public List<Reto> getRetosPorNivelDificultadInicial(int numFacil, int numResto) {
+    @Override
+    public T findById(Integer id) {
+        T retoFrase = null;
+        try {
+            String sql = "SELECT * FROM frases WHERE id = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) retoFrase = mapResultSetToRetoFrase(resultSet);
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return retoFrase;
+    }
+
+    @Override
+    public List<T> findByLimit(Integer numFacil, Integer numResto) {
+        List<T> frases = new ArrayList<>();
         String query =
                 "SELECT * FROM " +
                         "(SELECT * FROM frases WHERE nivel_dificultad = " + 1 +
@@ -36,66 +65,55 @@ public class RepositorioFraseImpl implements RepositorioRetos{
                         "(SELECT * FROM frases WHERE nivel_dificultad = " + 3 +
                         " ORDER BY RAND() LIMIT ?) "
                 ;
-        return getPalabrasHelper(query, numFacil, numResto);
-    }
 
-    public List<Reto> getPalabrasHelper(String query, int numFacil, int numResto) {
-        List<Reto> palabras = new ArrayList<>();
-        HashMap<String, String> map = new HashMap<>();
         try {
-            PreparedStatement pstmt = connection.prepareStatement(query);
-            pstmt.setInt(1, numFacil);
-            pstmt.setInt(2, numResto);
-            pstmt.setInt(3, numResto);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                map.put("frase", rs.getString("frase"));
-                map.put("pista", rs.getString("pista"));
-                List<Integer> Ods = services.buildOds(rs.getString("ODS"));
-
-                palabras.add(RetoFactory.crearReto(false, 120, 20,
-                        rs.getInt("nivel_dificultad"), rs.getInt("nivel_dificultad")*100,
-                        Ods, TipoReto.FRASE, map));
+            ResultSet resultSet = findBylimitHelper(query, numFacil, numResto);
+            while (resultSet.next()) {
+                frases.add(mapResultSetToRetoAhorcado(resultSet));
             }
-            return palabras;
         } catch (SQLException e) {
             System.err.println("Error al obtener frases: " + e.getMessage());
-            return null;
         }
+        return frases;
     }
 
-    public int getNumeroTotalRetos(){
-        String query = "SELECT COUNT(*) FROM frases";
-        int result = -1;
+    @Override
+    public void insert(T reto) {
+        if (findById(reto.getId()) == null) create(reto);
+        else update(reto);
+    }
+
+    @Override
+    public void update(T entidad) {
+        String sql = "UPDATE frases SET frase = ?, pista = ?, nivel_dificultad = ?, ODS = ? WHERE id = ? ";
+        RetoFrase reto = null;
+        if (entidad instanceof RetoFrase) reto = (RetoFrase) entidad;
+
         try {
-            PreparedStatement repo = connection.prepareStatement(query);
-            ResultSet rs = repo.executeQuery();
-            if(rs.next()){
-                result = rs.getInt(1);
-            }
-            return result;
-
-        }catch (SQLException e){
-            System.err.println("Error al obtener numero de retos: " + e.getMessage());
-            return result;
+            if (reto == null) throw new IllegalArgumentException("Tipo erróneo.");
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, reto.getFrase());
+            statement.setString(2, reto.getPista());
+            statement.setInt(3, reto.getDificultad());
+            statement.setString(4, services.intListToString(reto.getODS()));
+            statement.setInt(5, reto.getId());
+            statement.executeUpdate();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
-    public int getNumeroTotalRetosPorODS(int ods){
-        String query = "SELECT COUNT(*) FROM frases p WHERE p.ODS = ?";
-        int result = 0;
-        try{
-            PreparedStatement repo = connection.prepareStatement(query);
-            repo.setInt(1, ods);
-            ResultSet rs = repo.executeQuery();
+    @Override
+    public void delete(T reto) {
+        String sql = "DELETE FROM frases WHERE id = ?";
+        if (reto.getTipoReto() != TipoReto.FRASE) throw new IllegalArgumentException("Tipo de reto incorrecto");
+        deleteHelper(reto, sql);
+    }
 
-            if(rs.next()){
-                result = rs.getInt(1);
-            }
-            return result;
-        }catch(SQLException e){
-            System.err.println("Error al obtener numero de retos: " + e.getMessage());
-            return -1;
-        }
+    @Override
+    public void deleteById(Integer id) {
+        String sql = "DELETE FROM frases WHERE id = ?";
+        deleteByIDHelper(id, sql);
     }
 }

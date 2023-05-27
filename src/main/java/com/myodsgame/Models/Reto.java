@@ -5,6 +5,7 @@ import com.myodsgame.Utils.TipoReto;
 import java.util.List;
 
 public abstract class Reto {
+    private int id;
     private boolean ayudaUsada;
     private int duracion;
     private int tiempoTicTac;
@@ -13,8 +14,9 @@ public abstract class Reto {
     private TipoReto tipoReto;
     private List<Integer> ODS;
 
-    public Reto(boolean ayudaUsada, int duracion, int tiempoTicTac, int dificultad, int puntuacion, TipoReto tipoReto,
+    protected Reto(int id, boolean ayudaUsada, int duracion, int tiempoTicTac, int dificultad, int puntuacion, TipoReto tipoReto,
                 List<Integer> ODS) {
+        this.id = id;
         this.ayudaUsada = ayudaUsada;
         this.duracion = duracion;
         this.tiempoTicTac = tiempoTicTac;
@@ -24,6 +26,9 @@ public abstract class Reto {
         this.ODS = ODS;
     }
 
+    public int getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
 
     public boolean isAyudaUsada() {
         return ayudaUsada;

@@ -13,10 +13,10 @@ import java.util.Set;
 
 public class RetoFactory {
     // De momento se pone el map de objetos, pero si al implementar todos los retos, todos son strings, se pasa a string
-    public static Reto crearReto(boolean ayudaUsada, int duracion, int tiempoTicTac, int dificultad, int puntuacion,
+    public static Reto crearReto(int id, boolean ayudaUsada, int duracion, int tiempoTicTac, int dificultad, int puntuacion,
                                  List<Integer> ODS, TipoReto tipo, HashMap<String, String> params) {
         if (tipo.equals(TipoReto.PREGUNTA)) {
-            return new RetoPregunta(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo, ODS,
+            return new RetoPregunta(id, ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo, ODS,
                      params.get("enunciado"),  params.get("respuesta1"),
                      params.get("respuesta2"),  params.get("respuesta3"),
                      params.get("respuesta4"),  params.get("respuesta_correcta"));
@@ -24,15 +24,15 @@ public class RetoFactory {
             switch (dificultad)
             {
                 case 1:
-                    return new RetoAhorcado(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo, ODS,
+                    return new RetoAhorcado(id, ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo, ODS,
                              params.get("palabra"),  params.get("pista"),10);
 
                 case 2:
-                    return new RetoAhorcado(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo, ODS,
+                    return new RetoAhorcado(id, ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo, ODS,
                              params.get("palabra"),  params.get("pista"),7);
 
                 case 3:
-                    return new RetoAhorcado(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo, ODS,
+                    return new RetoAhorcado(id, ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo, ODS,
                              params.get("palabra"),  params.get("pista"),5);
 
                 default:
@@ -42,15 +42,15 @@ public class RetoFactory {
             switch (dificultad)
             {
                 case 1:
-                    return new RetoFrase(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo, ODS,
+                    return new RetoFrase(id, ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo, ODS,
                              params.get("frase"),  params.get("pista"),12);
 
                 case 2:
-                    return new RetoFrase(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo, ODS,
+                    return new RetoFrase(id, ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo, ODS,
                              params.get("frase"),  params.get("pista"),9);
 
                 case 3:
-                    return new RetoFrase(ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo, ODS,
+                    return new RetoFrase(id, ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, tipo, ODS,
                              params.get("frase"),  params.get("pista"),6);
 
                 default:

@@ -20,15 +20,12 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import javax.swing.text.html.Option;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.*;
@@ -53,12 +50,14 @@ public class EstadisticaController implements Initializable {
     private List<Estadisticas> top10;
 
     private IServices servicios;
-    private Repositorio<Estadisticas, String, String, String> repositorio;
+    private Repositorio<Estadisticas, String> repositorioEstadisticas;
+    private RepositorioPuntosFechaImpl repositorioPuntosFecha;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         servicios = new Services();
-        repositorio = new RepositorioEstadisticasImpl();
+        repositorioEstadisticas = new RepositorioEstadisticasImpl();
+        repositorioPuntosFecha = new RepositorioPuntosFechaImpl();
         Estadisticas est = EstadoJuego.getInstance().getUsuario().getEstadistica();
 
         double porcentajeAciertos = (double) est.getNumeroAciertos() / servicios.getNumeroTotalRetos();
@@ -137,7 +136,7 @@ public class EstadisticaController implements Initializable {
         });
 
         ranking.getColumns().addAll(colPosicion, colPuntos, colUsuarios);
-        estadisticas = repositorio.findAll();
+        estadisticas = repositorioEstadisticas.findAll();
         top10 = estadisticas.subList(0, Math.min(10, estadisticas.size()));
         Estadisticas estadisticasUsuarioLogeado = EstadoJuego.getInstance().getUsuario().getEstadistica();
 
@@ -183,7 +182,7 @@ public class EstadisticaController implements Initializable {
     @FXML
     void rankingGlobalPulsado(ActionEvent event){
         labelTipoRanking.setText("Ranking Global");
-        estadisticas = repositorio.findAll();
+        estadisticas = repositorioEstadisticas.findAll();
         top10 = estadisticas.subList(0, Math.min(10, estadisticas.size()));
         Estadisticas estadisticasUsuarioLogeado = EstadoJuego.getInstance().getUsuario().getEstadistica();
 
@@ -204,7 +203,7 @@ public class EstadisticaController implements Initializable {
     @FXML
     void rankingDiarioPulsado(ActionEvent event){
         labelTipoRanking.setText("Ranking Diario");
-        List<Estadisticas> estadisticas = new RepositorioPuntosFechaImpl().getPuntosDiarios();
+        List<Estadisticas> estadisticas = repositorioPuntosFecha.getPuntosDiarios();
         top10 = estadisticas.subList(0, Math.min(10, estadisticas.size()));
         Estadisticas estadisticasUsuarioLogeado = EstadoJuego.getInstance().getUsuario().getEstadistica();
 
@@ -226,7 +225,7 @@ public class EstadisticaController implements Initializable {
     @FXML
     void rankingSemanalPulsado(ActionEvent event){
         labelTipoRanking.setText("Ranking Semanal");
-        estadisticas = new RepositorioPuntosFechaImpl().getPuntosSemanales();
+        estadisticas = repositorioPuntosFecha.getPuntosSemanales();
         top10 = estadisticas.subList(0, Math.min(10, estadisticas.size()));
         Estadisticas estadisticasUsuarioLogeado = EstadoJuego.getInstance().getUsuario().getEstadistica();
 
