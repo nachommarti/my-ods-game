@@ -38,6 +38,25 @@ public class Services implements IServices {
         return stringBuilder.toString();
     }
 
+    public int[] stringToIntArray(String string) {
+        String[] split = string.split(",");
+        int[] array = new int[split.length];
+        for (int i = 0; i < split.length; i++) {
+            array[i] = Integer.parseInt(split[i]);
+        }
+        return array;
+    }
+
+    public String intArrayToString(int[] array) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < array.length; i++) {
+            stringBuilder.append(array[i]);
+            if (i < array.length - 1) {
+                stringBuilder.append(",");
+            }
+        }
+        return stringBuilder.toString();
+    }
 
     @Override
     public void reorderRetos(List<Reto> retos, int inicio, List<Integer> randomIndices) {
