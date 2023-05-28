@@ -166,7 +166,7 @@ public class RepositorioPuntosFechaImpl implements Repositorio<Estadisticas, Pun
     public List<Estadisticas> getPuntosSemanales(){
         List<Estadisticas> stats = null;
         try {
-            String query = "SELECT usuario, SUM(puntos) AS total_puntos FROM puntuacionDiaria WHERE fecha >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) GROUP BY usuario ORDER BY total_puntos";
+            String query = "SELECT usuario, SUM(puntos) AS total_puntos FROM puntuacionDiaria WHERE fecha >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) GROUP BY usuario ORDER BY total_puntos DESC";
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet rs = statement.executeQuery();
             stats = fillEstadisticas(rs, "total_puntos");
