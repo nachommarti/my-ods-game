@@ -108,7 +108,7 @@ public class RepositorioPuntosFechaImpl implements Repositorio<Estadisticas, Pun
                                  "WHERE usuario = ? AND fecha = ?";
             PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
             insertStatement.setString(1, estadisticas.getUsuario());
-            insertStatement.setInt(2, EstadoJuego.getInstance().getPartida().getPuntuacion());
+            insertStatement.setInt(2, findById(pk).getPuntosTotales() + EstadoJuego.getInstance().getPartida().getPuntuacion());
             insertStatement.setString(3, LocalDate.now().toString());
             insertStatement.setString(4, pk.getUsuario());
             insertStatement.setString(5, pk.getFecha().toString());

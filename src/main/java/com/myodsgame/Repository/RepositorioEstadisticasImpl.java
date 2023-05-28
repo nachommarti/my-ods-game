@@ -66,14 +66,16 @@ public class RepositorioEstadisticasImpl implements Repositorio<Estadisticas, St
 
     @Override
     public List<Estadisticas> findAll() {
-        String sql = "SELECT * FROM estadisticas";
+        String sql = "SELECT * FROM estadisticas ORDER BY puntos_totales DESC";
         List<Estadisticas> estadisticasList = new ArrayList<>();
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet resultSet = statement.executeQuery();
+            int i = 1;
             while (resultSet.next()) {
                 Estadisticas estadisticas = mapResultSetToEstadisticas(resultSet);
+                estadisticas.setPosicion(i++);
                 estadisticasList.add(estadisticas);
             }
             statement.close();
