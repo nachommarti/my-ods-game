@@ -25,6 +25,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
 
 import java.io.IOException;
 import java.net.URL;
@@ -76,8 +78,7 @@ public class LoginController implements Initializable {
         loginButton.disableProperty().bind(Bindings.not(validFields));
     }
 
-    @FXML
-    void loginButtonClicked(ActionEvent event) throws IOException {
+    void loginMethod() throws IOException{
         LoginManager loginManager = new LoginManager();
 
         if(UserUtils.isEmail(usernameField.getText())){
@@ -100,8 +101,8 @@ public class LoginController implements Initializable {
             stage.setResizable(false);
             stage.show();
 
-            Node source = (Node) event.getSource();
-            Stage oldStage = (Stage) source.getScene().getWindow();
+            //Node source = (Node) event.getSource();
+            Stage oldStage = (Stage) loginButton.getScene().getWindow();
             oldStage.close();
 
             ObservableList<Window> windows = Stage.getWindows();
@@ -117,6 +118,18 @@ public class LoginController implements Initializable {
             clearFields();
             showErrorMessage();
             System.out.println(wrongCredentials.getText());
+        }
+    }
+
+    @FXML
+    void loginButtonClicked(ActionEvent event) throws IOException {
+        loginMethod();
+    }
+
+    @FXML
+    void enterPulsado(KeyEvent event) throws IOException{
+        if(event.getCode() == KeyCode.ENTER){
+            loginMethod();
         }
     }
 

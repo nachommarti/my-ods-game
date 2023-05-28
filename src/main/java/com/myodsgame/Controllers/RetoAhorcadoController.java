@@ -32,6 +32,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
 
 import java.io.File;
 import java.io.IOException;
@@ -222,6 +224,7 @@ public class RetoAhorcadoController implements Initializable {
         for(Node node : botones.getChildren()){
             Button button = (Button) node;
             button.setOnAction(eventHandler);
+            button.setOnKeyPressed(keyEventHandler);
         }
     }
 
@@ -246,6 +249,41 @@ public class RetoAhorcadoController implements Initializable {
        pressedButton.setDisable(true);
 
     };
+
+    EventHandler<KeyEvent> keyEventHandler = event -> {
+        char selectedChar = Character.toUpperCase(event.getText().charAt(0));
+        Button pressedButton = getButtonForPressedKey(selectedChar, botones1, botones2, botones3);
+        Background background = new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY));
+        if(Character.toUpperCase(selectedChar) == pressedButton.getText().charAt(0)) {
+            if (palabra.contains(selectedChar + "")) {
+                background = new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY));
+                pressedButton.setBackground(background);
+                loadChar(selectedChar);
+                checkWin();
+            } else {
+                pressedButton.setBackground(background);
+                retoActual.setIntentos(retoActual.getIntentos() - 1);
+
+                checkLose();
+                imagenAhorcado.setImage(new Image(Path.of("", "src", "main", "resources", "images", "ahorcado" + retoActual.getIntentos() + ".png").toAbsolutePath().toString()));
+            }
+            pressedButton.setDisable(true);
+        }
+    };
+
+    private Button getButtonForPressedKey(char pressedChar, HBox ... hboxes) {
+        for(HBox hbox : hboxes) {
+            for (javafx.scene.Node node : hbox.getChildren()) {
+                if (node instanceof Button) {
+                    Button button = (Button) node;
+                    if (Character.toUpperCase(pressedChar) == button.getText().charAt(0)) {
+                        return button;
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
     private void endTimer(){
         disableKeyboard();
