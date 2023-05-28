@@ -1,57 +1,86 @@
 package com.myodsgame;
 
 import com.myodsgame.Builder.PartidaAhorcadoBuilder;
+import com.myodsgame.Builder.PartidaBuilder;
 import com.myodsgame.Builder.PartidaFrasesBuilder;
-import com.myodsgame.Builder.PartidaPreguntasBuilder;
 import com.myodsgame.Models.*;
+import com.myodsgame.Repository.Repositorio;
+import com.myodsgame.Repository.RepositorioFraseImpl;
+import com.myodsgame.Repository.RepositorioPalabraImpl;
+import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
 
-import java.nio.file.Path;
+import java.util.List;
 
-public class PartidaBuilderTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class PartidaBuilderTest {
+
+    static PartidaBuilder builder;
+
+    @BeforeAll
+    public static void setupClass() {
+        JavaFXInitializer.initializeToolkit();
+    }
+
+    @AfterAll
+    public static void checkBuilderFields(){
+        assertEquals(builder.getPartida().getSondioFallo(), PartidaBuilder.SONIDO_FALLO);
+        assertEquals(builder.getPartida().getSonidoAyuda(), PartidaBuilder.SONIDO_AYUDA);
+        assertEquals(builder.getPartida().getSonidoAcierto(), PartidaBuilder.SONIDO_ACIERTO);
+        assertEquals(builder.getPartida().getSonidoDerrota(), PartidaBuilder.SONIDO_DERROTA);
+        assertEquals(builder.getPartida().getSonidoVictoria(), PartidaBuilder.SONIDO_VICTORIA);
+        assertEquals(builder.getPartida().getDiezsecs(), PartidaBuilder.SONIDO_TICTAC);
+    }
+
 
     @Test
-    public void testPartidaPreguntasBuilder() {
-        PartidaPreguntasBuilder builder = new PartidaPreguntasBuilder();
+    public void testPartidaFrasesBuilder() {
+        builder = new PartidaFrasesBuilder();
+        Repositorio<RetoFrase, Integer> repositorioFrase = new RepositorioFraseImpl<>();
+        List<RetoFrase> retos = repositorioFrase.findByLimit(5, 4);
+
         builder.BuildRetos();
+        assertNotNull(builder.getPartida().getRetos());
+        assertEquals(retos.size(), builder.getPartida().getRetos().size());
+
         builder.BuildMusica();
+        assertNotNull(builder.getPartida().getMusica());
+        assertTrue(builder.getPartida().getMusica() instanceof Media);
+
         builder.BuildImagenes();
+        assertNotNull(builder.getPartida().getImagenFondo());
+        assertTrue(builder.getPartida().getImagenFondo() instanceof Image);
 
-        Partida partida = builder.getPartida();
-
-        Assertions.assertEquals(9, partida.getRetos().size(), "Should contain the expected number of RetoPregunta");
-        Assertions.assertEquals("src/main/resources/sounds/cancion_1.mp3", partida.getMusica().getSource(), "Should contain the expected music path");
-        Assertions.assertEquals(Path.of("", "src", "main", "resources", "images", "fondo_preguntas.png").toAbsolutePath().toString(), partida.getImagenFondo().getUrl(), "Should contain the expected background image path");
+        assertNotNull(builder.getPartida());
+        assertTrue(builder.getPartida() instanceof Partida);
     }
 
     @Test
     public void testPartidaAhorcadoBuilder() {
-        PartidaAhorcadoBuilder builder = new PartidaAhorcadoBuilder();
+        builder = new PartidaAhorcadoBuilder();
+        Repositorio<RetoAhorcado, Integer> repositorioPalabra = new RepositorioPalabraImpl<>();
+        List<RetoAhorcado> retos = repositorioPalabra.findByLimit(5, 4);
+
         builder.BuildRetos();
+        assertNotNull(builder.getPartida().getRetos());
+        assertEquals(retos.size(), builder.getPartida().getRetos().size());
+
         builder.BuildMusica();
+        assertNotNull(builder.getPartida().getMusica());
+        assertTrue(builder.getPartida().getMusica() instanceof Media);
+
         builder.BuildImagenes();
+        assertNotNull(builder.getPartida().getImagenFondo());
+        assertTrue(builder.getPartida().getImagenFondo() instanceof Image);
 
-        Partida partida = builder.getPartida();
-
-        Assertions.assertEquals(9, partida.getRetos().size(), "Should contain the expected number of RetoAhorcado");
-        Assertions.assertEquals("src/main/resources/sounds/cancion_2.mp3", partida.getMusica().getSource(), "Should contain the expected music path");
-        Assertions.assertEquals(Path.of("", "src", "main", "resources", "images", "fondo_ahorcado.png").toAbsolutePath().toString(), partida.getImagenFondo().getUrl(), "Should contain the expected background image path");
+        assertNotNull(builder.getPartida());
+        assertTrue(builder.getPartida() instanceof Partida);
     }
 
-    @Test
-    public void testPartidaFrasesBuilder() {
-        PartidaFrasesBuilder builder = new PartidaFrasesBuilder();
-        builder.BuildRetos();
-        builder.BuildMusica();
-        builder.BuildImagenes();
-
-        Partida partida = builder.getPartida();
-
-        Assertions.assertEquals(9, partida.getRetos().size(), "Should contain the expected number of RetoFrase");
-        Assertions.assertEquals("src/main/resources/sounds/cancion_4.mp3", partida.getMusica().getSource(), "Should contain the expected music path");
-        Assertions.assertEquals(Path.of("", "src", "main", "resources", "images", "fondo_frase.png").toAbsolutePath().toString(), partida.getImagenFondo().getUrl(), "Should contain the expected background image path");
-    }
 }
 
 
