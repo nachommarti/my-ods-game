@@ -7,8 +7,6 @@ import java.util.List;
 public interface IServices {
     List<Integer> stringToIntList(String string);
     String intListToString(List<Integer> list);
-    int[] stringToIntArray(String string);
-    String intArrayToString(int[] array);
     void reorderRetos(List<Reto> retos, int inicio, List<Integer> randomIndices);
     void updateUser(String newUser, String oldUser, String email, String avatar);
     int computePoints(Reto retoActual, boolean ayudaUsada, boolean retoAcertado);

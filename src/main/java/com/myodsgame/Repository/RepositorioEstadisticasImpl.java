@@ -13,7 +13,6 @@ import java.util.List;
 public class RepositorioEstadisticasImpl implements Repositorio<Estadisticas, String>{
 
     private final Connection connection;
-    private final Services services = new Services();
 
     public RepositorioEstadisticasImpl() {connection = DBConnection.getConnection();}
 
@@ -30,8 +29,8 @@ public class RepositorioEstadisticasImpl implements Repositorio<Estadisticas, St
             statement.setInt(3, estadisticas.getPartidasJugadas());
             statement.setInt(4, estadisticas.getNumeroAciertos());
             statement.setInt(5, estadisticas.getNumeroFallos());
-            statement.setString(6, services.intArrayToString(estadisticas.getAciertos_individual_ods()));
-            statement.setString(7, services.intArrayToString(estadisticas.getFallos_individual_ods()));
+            statement.setString(6, intArrayToString(estadisticas.getAciertos_individual_ods()));
+            statement.setString(7, intArrayToString(estadisticas.getFallos_individual_ods()));
             statement.setInt(8, estadisticas.getNivel());
             statement.executeUpdate();
             statement.close();
@@ -120,8 +119,8 @@ public class RepositorioEstadisticasImpl implements Repositorio<Estadisticas, St
             statement.setInt(3, estadisticas.getPartidasJugadas());
             statement.setInt(4, estadisticas.getNumeroAciertos());
             statement.setInt(5, estadisticas.getNumeroFallos());
-            statement.setString(6, services.intArrayToString(estadisticas.getAciertos_individual_ods()));
-            statement.setString(7, services.intArrayToString(estadisticas.getFallos_individual_ods()));
+            statement.setString(6, intArrayToString(estadisticas.getAciertos_individual_ods()));
+            statement.setString(7, intArrayToString(estadisticas.getFallos_individual_ods()));
             statement.setInt(8, estadisticas.getNivel());
             statement.setString(9, estadisticas.getUsuario());
             statement.executeUpdate();
@@ -166,10 +165,30 @@ public class RepositorioEstadisticasImpl implements Repositorio<Estadisticas, St
         estadisticas.setPartidasJugadas(resultSet.getInt("partidas_jugadas"));
         estadisticas.setNumeroAciertos(resultSet.getInt("numero_aciertos"));
         estadisticas.setNumeroFallos(resultSet.getInt("numero_fallos"));
-        estadisticas.setAciertos_individual_ods(services.stringToIntArray(resultSet.getString("aciertos_individual_ods")));
-        estadisticas.setAciertos_individual_ods(services.stringToIntArray(resultSet.getString("fallos_individual_ods")));
+        estadisticas.setAciertos_individual_ods(stringToIntArray(resultSet.getString("aciertos_individual_ods")));
+        estadisticas.setAciertos_individual_ods(stringToIntArray(resultSet.getString("fallos_individual_ods")));
         estadisticas.setNivel(resultSet.getInt("nivel"));
 
         return estadisticas;
+    }
+
+    private String intArrayToString(int[] array) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < array.length; i++) {
+            stringBuilder.append(array[i]);
+            if (i < array.length - 1) {
+                stringBuilder.append(",");
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    private int[] stringToIntArray(String string) {
+        String[] split = string.split(",");
+        int[] array = new int[split.length];
+        for (int i = 0; i < split.length; i++) {
+            array[i] = Integer.parseInt(split[i]);
+        }
+        return array;
     }
 }
