@@ -11,13 +11,16 @@ import com.myodsgame.Utils.UserUtils;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -73,6 +76,11 @@ public class RetoPreguntaController implements Initializable {
     private ImageView imagenODS;
     @FXML
     private HBox labelArray;
+    @FXML
+    private HBox botones1;
+    @FXML
+    private HBox botones2;
+
     private List<Button> respuestas;
     private String respuestaCorrecta;
     private boolean ayudaPulsada;
@@ -182,6 +190,9 @@ public class RetoPreguntaController implements Initializable {
         imagenODS.setClip(clip);
         puntosPorAcertar.setText("Puntos por acertar: " + retoActual.getDificultad()*100);
         vidas.setImage(partidaActual.getImagenVidas());
+
+        setKeyBoardListeners(botones1);
+        setKeyBoardListeners(botones2);
     }
 
     private void loadRetosState(){
@@ -262,7 +273,35 @@ public class RetoPreguntaController implements Initializable {
     void respuesta4Clicked(ActionEvent event) {
         Button respuestaSeleccionada = (Button) event.getSource();
         checkAnswers(respuestaSeleccionada);
+    }
 
+    EventHandler<KeyEvent> keyEventHandler = event -> {
+        char selectedChar = event.getText().charAt(0);
+        Button pressedButton = getButtonForPressedKey(selectedChar, botones1, botones2);
+        if(selectedChar == pressedButton.getId().charAt(9)){
+            checkAnswers(pressedButton);
+        }
+    };
+
+    private void setKeyBoardListeners(HBox botones){
+        for(Node node : botones.getChildren()){
+            Button button = (Button) node;
+            button.setOnKeyPressed(keyEventHandler);
+        }
+    }
+
+    private Button getButtonForPressedKey(char pressedChar, HBox ... hboxes) {
+        for(HBox hbox : hboxes) {
+            for (javafx.scene.Node node : hbox.getChildren()) {
+                if (node instanceof Button) {
+                    Button button = (Button) node;
+                    if (Character.toUpperCase(pressedChar) == button.getId().charAt(9)) {
+                        return button;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     private void checkAnswers(Button respuestaSeleccionada) {

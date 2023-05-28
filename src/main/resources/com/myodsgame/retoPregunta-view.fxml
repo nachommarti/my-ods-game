@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane fx:id="borderPane" prefHeight="681.0" prefWidth="673.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.RetoPreguntaController">
+<BorderPane fx:id="borderPane" prefHeight="681.0" prefWidth="673.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.myodsgame.Controllers.RetoPreguntaController">
    <center>
-      <VBox alignment="CENTER" prefHeight="657.0" prefWidth="673.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="root" alignment="CENTER" prefHeight="657.0" prefWidth="673.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER" prefHeight="76.0" prefWidth="673.0" spacing="150.0">
                <children>
@@ -109,7 +109,7 @@
                </children>
             </HBox>
             <Label fx:id="consolidatedScore" alignment="CENTER" layoutX="309.0" layoutY="344.0" prefHeight="18.0" prefWidth="170.0" text="Consolidated Score:" textFill="WHITE" visible="false" />
-            <HBox alignment="CENTER" prefHeight="65.0" prefWidth="704.0" spacing="30.0">
+            <HBox fx:id="botones1" alignment="CENTER" prefHeight="65.0" prefWidth="704.0" spacing="30.0">
                <children>
                   <Button fx:id="respuesta1" mnemonicParsing="false" onAction="#respuesta1Clicked" prefHeight="60.0" prefWidth="220.0" style="-fx-background-color: rgba(255, 255, 255); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10; -fx-text-fill: black;" text="Respuesta 1" textAlignment="CENTER" wrapText="true" />
                   <Button fx:id="respuesta2" mnemonicParsing="false" onAction="#respuesta2Clicked" prefHeight="60.0" prefWidth="220.0" style="-fx-background-color: rgba(255, 255, 255); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10; -fx-text-fill: black;" text="Respuesta 2" textAlignment="CENTER" wrapText="true">
@@ -125,7 +125,7 @@
                   <Insets top="15.0" />
                </VBox.margin>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="70.0" prefWidth="704.0" spacing="30.0">
+            <HBox fx:id="botones2" alignment="CENTER" prefHeight="70.0" prefWidth="704.0" spacing="30.0">
                <children>
                   <Button fx:id="respuesta3" mnemonicParsing="false" onAction="#respuesta3Clicked" prefHeight="60.0" prefWidth="220.0" style="-fx-background-color: rgba(255, 255, 255); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10; -fx-text-fill: black;" text="Respuesta 3" textAlignment="CENTER" wrapText="true" />
                   <Button fx:id="respuesta4" mnemonicParsing="false" onAction="#respuesta4Clicked" prefHeight="60.0" prefWidth="220.0" style="-fx-background-color: rgba(255, 255, 255); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10; -fx-text-fill: black;" text="Respuesta 4" textAlignment="CENTER" wrapText="true" />
