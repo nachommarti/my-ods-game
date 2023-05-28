@@ -78,13 +78,13 @@ public class RepositorioFraseImpl<T extends Reto> extends RepositorioRetos<T> im
     }
 
     @Override
-    public void insert(T reto) {
-        if (findById(reto.getId()) == null) create(reto);
-        else update(reto);
+    public void insert(T reto, Integer id) {
+        if (findById(id) == null) create(reto);
+        else update(reto, id);
     }
 
     @Override
-    public void update(T entidad) {
+    public void update(T entidad, Integer id) {
         String sql = "UPDATE frases SET frase = ?, pista = ?, nivel_dificultad = ?, ODS = ? WHERE id = ? ";
         RetoFrase reto = null;
         if (entidad instanceof RetoFrase) reto = (RetoFrase) entidad;
@@ -96,7 +96,7 @@ public class RepositorioFraseImpl<T extends Reto> extends RepositorioRetos<T> im
             statement.setString(2, reto.getPista());
             statement.setInt(3, reto.getDificultad());
             statement.setString(4, services.intListToString(reto.getODS()));
-            statement.setInt(5, reto.getId());
+            statement.setInt(5, id);
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {

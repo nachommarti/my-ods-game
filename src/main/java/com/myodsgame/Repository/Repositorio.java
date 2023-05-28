@@ -7,8 +7,8 @@ public interface Repositorio<T, ID> {
     T findById(ID id);
     List<T> findAll();
     List<T> findByLimit(Integer valor1, Integer valor2);
-    void insert(T entidad);
-    void update(T entidad);
+    void insert(T entidad, ID id);
+    void update(T entidad, ID id);
     void delete(T entidad);
     void deleteById(ID id);
 }

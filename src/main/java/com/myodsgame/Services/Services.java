@@ -3,6 +3,7 @@ package com.myodsgame.Services;
 import com.myodsgame.Models.Estadisticas;
 import com.myodsgame.Models.PuntuacionDiariaPK;
 import com.myodsgame.Models.Reto;
+import com.myodsgame.Models.Usuario;
 import com.myodsgame.Repository.*;
 import com.myodsgame.Utils.EstadoJuego;
 
@@ -16,10 +17,6 @@ import java.util.List;
 
 
 public class Services implements IServices {
-    RepositorioUsuario repositorioUsuario = new RepositorioUsuarioImpl();
-    Repositorio<Estadisticas, String> repositorioEstadisticas = new RepositorioEstadisticasImpl();
-    Repositorio<Estadisticas, PuntuacionDiariaPK> repositorioPuntosFecha = new RepositorioPuntosFechaImpl();
-    RepositorioRetos<Reto> repositorioRetos = new RepositorioRetos<>();
 
     public List<Integer> stringToIntList(String string) {
         String[] array = string.split(",");
@@ -71,8 +68,9 @@ public class Services implements IServices {
     }
 
     @Override
-    public void updateUser(String newUser, String oldUser, String email, String avatar) {
-        repositorioUsuario.updateUsuario(newUser, oldUser, email, avatar);
+    public void updateUser(Usuario user, String oldUsername) {
+        RepositorioUsuarioImpl repositorioUsuario = new RepositorioUsuarioImpl();
+        repositorioUsuario.update(user, oldUsername);
     }
 
     public int computePoints(Reto retoActual, boolean ayudaUsada, boolean retoAcertado) {
@@ -162,10 +160,12 @@ public class Services implements IServices {
     }
 
    public int getNumeroTotalRetos(){
+        RepositorioRetos<Reto> repositorioRetos = new RepositorioRetos<>();
         return repositorioRetos.getNumeroTotalRetos();
    }
 
    public int[] getNumeroTotalRetosPorODS(){
+       RepositorioRetos<Reto> repositorioRetos = new RepositorioRetos<>();
        int[] retosPorODS = new int[17];
        for(int i = 0; i < retosPorODS.length; i++){
            retosPorODS[i] = repositorioRetos.getNumeroTotalRetosPorODS(i+1);
@@ -174,7 +174,10 @@ public class Services implements IServices {
    }
 
    public void guardarPuntosDiarios(int puntos){
+       Repositorio<Estadisticas, String> repositorioEstadisticas = new RepositorioEstadisticasImpl();
+       Repositorio<Estadisticas, PuntuacionDiariaPK> repositorioPuntosFecha = new RepositorioPuntosFechaImpl();
        Estadisticas estadisticas = repositorioEstadisticas.findById(EstadoJuego.getInstance().getUsuario().getUsername());
-       repositorioPuntosFecha.insert(estadisticas);
+       PuntuacionDiariaPK pk = new PuntuacionDiariaPK(estadisticas.getUsuario());
+       repositorioPuntosFecha.insert(estadisticas, pk);
    }
 }

@@ -1,9 +1,9 @@
 package com.myodsgame.Utils;
 
 import com.myodsgame.Models.Estadisticas;
-import com.myodsgame.Models.Reto;
 import com.myodsgame.Models.Usuario;
-import com.myodsgame.Repository.RepositorioUsuario;
+import com.myodsgame.Repository.Repositorio;
+import com.myodsgame.Repository.RepositorioEstadisticasImpl;
 import com.myodsgame.Repository.RepositorioUsuarioImpl;
 
 import java.util.List;
@@ -21,37 +21,23 @@ public class UserUtils {
     public static boolean checkEmail(String email) {
         return email.matches(EMAIL_REGEX);
     }
+    public static RepositorioUsuarioImpl repositorioUsuario = new RepositorioUsuarioImpl();
+    public static Repositorio<Estadisticas, String> repositorioEstadisticas = new RepositorioEstadisticasImpl();
 
     public static boolean checkUserExists(String username){
-        RepositorioUsuario repositorioUsuario = new RepositorioUsuarioImpl();
-        return repositorioUsuario.checkIfUserExists(username);
+        return repositorioUsuario.findById(username) != null;
     }
 
     public static boolean checkUsername(String username) {
         return username.matches(USERNAME_REGEX);
     }
 
-    public static boolean checkAndSetUser(String username, String password){
-        RepositorioUsuario repositorioUsuario = new RepositorioUsuarioImpl();
-        Usuario user = repositorioUsuario.getUsuarioPorUsernameYContraseña(username, password);
-
-        if(user != null) {
-            EstadoJuego.getInstance().setUsuario(user);
-            return true;
-        }
-
-        return false;
-
-    }
-
-
     public static void saveUserScore(int score){
         Usuario user = EstadoJuego.getInstance().getUsuario();
         Estadisticas estadisticas = user.getEstadistica();
         estadisticas.setPuntosTotales(estadisticas.getPuntosTotales() + score);
         user.setEstadistica(estadisticas);
-        RepositorioUsuario repositorioUsuario = new RepositorioUsuarioImpl();
-        repositorioUsuario.updateUsuarioEstadisticas(user);
+        repositorioEstadisticas.update(estadisticas, user.getUsername());
     }
 
     public static void saveStats(boolean correcto, List<Integer> ODS){
@@ -85,8 +71,7 @@ public class UserUtils {
         }
 
         user.setEstadistica(estadisticas);
-        RepositorioUsuario repositorioUsuario = new RepositorioUsuarioImpl();
-        repositorioUsuario.updateUsuarioEstadisticas(user);
+        repositorioEstadisticas.update(estadisticas, user.getUsername());
     }
 
     public static void aumentarPartidasJugadas(){
@@ -94,8 +79,7 @@ public class UserUtils {
         Estadisticas estadisticas = user.getEstadistica();
         estadisticas.setPartidasJugadas(estadisticas.getPartidasJugadas() + 1);
         user.setEstadistica(estadisticas);
-        RepositorioUsuario repositorioUsuario = new RepositorioUsuarioImpl();
-        repositorioUsuario.updateUsuarioEstadisticas(user);
+        repositorioEstadisticas.update(estadisticas, user.getUsername());
     }
 
     public static void loadLevel(){
@@ -115,8 +99,7 @@ public class UserUtils {
             estadisticas.setNivel(nivel);
         }
         user.setEstadistica(estadisticas);
-        RepositorioUsuario repositorioUsuario = new RepositorioUsuarioImpl();
-        repositorioUsuario.updateUsuarioEstadisticas(user);
+        repositorioEstadisticas.update(estadisticas, user.getUsername());
     }
 
 

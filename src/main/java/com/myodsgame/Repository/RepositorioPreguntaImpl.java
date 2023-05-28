@@ -80,13 +80,13 @@ public class RepositorioPreguntaImpl<T extends Reto> extends RepositorioRetos<T>
     }
 
     @Override
-    public void insert(T reto) {
-        if (findById(reto.getId()) == null) create(reto);
-        else update(reto);
+    public void insert(T reto, Integer id) {
+        if (findById(id) == null) create(reto);
+        else update(reto, id);
     }
 
     @Override
-    public void update(T entidad) {
+    public void update(T entidad, Integer id) {
         String sql = "UPDATE preguntas SET enunciado = ?, respuesta1 = ?, respuesta2 = ?, respuesta3 = ?, " +
                 "respuesta4 = ?, respuesta_correcta = ?, nivel_dificultad = ?, ODS = ? WHERE id = ?";
         RetoPregunta reto = null;
@@ -103,7 +103,7 @@ public class RepositorioPreguntaImpl<T extends Reto> extends RepositorioRetos<T>
             statement.setString(6, reto.getRespuestaCorrecta());
             statement.setInt(7, reto.getDificultad());
             statement.setString(8, services.intListToString(reto.getODS()));
-            statement.setInt(9, reto.getId());
+            statement.setInt(9, id);
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {

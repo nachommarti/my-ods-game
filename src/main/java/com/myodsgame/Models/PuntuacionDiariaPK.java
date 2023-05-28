@@ -6,9 +6,9 @@ public class PuntuacionDiariaPK {
     String usuario;
     LocalDate fecha;
 
-    public PuntuacionDiariaPK(String usuario, LocalDate fecha) {
+    public PuntuacionDiariaPK(String usuario) {
         this.usuario = usuario;
-        this.fecha = fecha;
+        this.fecha = LocalDate.now();
     }
 
     public String getUsuario() {

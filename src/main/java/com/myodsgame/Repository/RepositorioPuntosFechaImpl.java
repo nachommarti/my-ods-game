@@ -96,20 +96,22 @@ public class RepositorioPuntosFechaImpl implements Repositorio<Estadisticas, Pun
     }
 
     @Override
-    public void insert(Estadisticas estadisticas) {
-        if (findById(new PuntuacionDiariaPK(estadisticas.getUsuario(), LocalDate.now())) == null) create(estadisticas);
-        else update(estadisticas);
+    public void insert(Estadisticas estadisticas, PuntuacionDiariaPK pk) {
+        if (findById(pk) == null) create(estadisticas);
+        else update(estadisticas, pk);
     }
 
     @Override
-    public void update(Estadisticas estadisticas) {
+    public void update(Estadisticas estadisticas, PuntuacionDiariaPK pk) {
         try {
-            String insertQuery = "INSERT INTO puntuacionDiaria (usuario, puntos, fecha) VALUES (?, ?, ?)";
+            String insertQuery = "UPDATE puntuacionDiaria SET usuario = ?, puntos = ?, fecha = ? " +
+                                 "WHERE usuario = ? AND fecha = ?";
             PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
             insertStatement.setString(1, estadisticas.getUsuario());
             insertStatement.setInt(2, EstadoJuego.getInstance().getPartida().getPuntuacion());
             insertStatement.setString(3, LocalDate.now().toString());
-
+            insertStatement.setString(4, pk.getUsuario());
+            insertStatement.setString(5, pk.getFecha().toString());
             insertStatement.executeUpdate();
             insertStatement.close();
         } catch (SQLException e) {

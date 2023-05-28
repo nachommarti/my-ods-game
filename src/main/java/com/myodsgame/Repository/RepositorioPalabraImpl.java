@@ -76,13 +76,13 @@ public class RepositorioPalabraImpl<T extends Reto> extends RepositorioRetos<T> 
     }
 
     @Override
-    public void insert(T reto) {
-        if (findById(reto.getId()) == null) create(reto);
-        else update(reto);
+    public void insert(T reto, Integer id) {
+        if (findById(id) == null) create(reto);
+        else update(reto, id);
     }
 
     @Override
-    public void update(T entidad) {
+    public void update(T entidad, Integer id) {
         String sql = "UPDATE palabras SET palabra = ?, pista = ?, ODS = ?, nivel_dificultad = ? WHERE id = ? ";
         RetoAhorcado reto = null;
         if (entidad instanceof RetoAhorcado) reto = (RetoAhorcado) entidad;
@@ -94,7 +94,7 @@ public class RepositorioPalabraImpl<T extends Reto> extends RepositorioRetos<T> 
             statement.setString(2, reto.getPista());
             statement.setString(3, services.intListToString(reto.getODS()));
             statement.setInt(4, reto.getDificultad());
-            statement.setInt(5, reto.getId());
+            statement.setInt(5, id);
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {

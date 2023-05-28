@@ -65,18 +65,18 @@ public class RepositorioRetos<T extends Reto> implements Repositorio<T, Integer>
     }
 
     @Override
-    public void insert(T entidad) {
-        if (entidad.getTipoReto() == TipoReto.PREGUNTA)  repositorioPregunta.insert(entidad);
-        else if (entidad.getTipoReto() == TipoReto.AHORACADO)  repositorioPalabra.insert(entidad);
-        else if (entidad.getTipoReto() == TipoReto.FRASE) repositorioFrase.insert(entidad);
+    public void insert(T entidad, Integer id) {
+        if (entidad.getTipoReto() == TipoReto.PREGUNTA)  repositorioPregunta.insert(entidad, id);
+        else if (entidad.getTipoReto() == TipoReto.AHORACADO)  repositorioPalabra.insert(entidad, id);
+        else if (entidad.getTipoReto() == TipoReto.FRASE) repositorioFrase.insert(entidad, id);
         else throw new IllegalArgumentException("Tipo de reto inválido.");
     }
 
     @Override
-    public void update(T entidad) {
-        if (entidad.getTipoReto() == TipoReto.PREGUNTA)  repositorioPregunta.update(entidad);
-        else if (entidad.getTipoReto() == TipoReto.AHORACADO)  repositorioPalabra.update(entidad);
-        else if (entidad.getTipoReto() == TipoReto.FRASE) repositorioFrase.update(entidad);
+    public void update(T entidad, Integer id) {
+        if (entidad.getTipoReto() == TipoReto.PREGUNTA)  repositorioPregunta.update(entidad, id);
+        else if (entidad.getTipoReto() == TipoReto.AHORACADO)  repositorioPalabra.update(entidad, id);
+        else if (entidad.getTipoReto() == TipoReto.FRASE) repositorioFrase.update(entidad, id);
         else throw new IllegalArgumentException("Tipo de reto inválido.");
     }
 

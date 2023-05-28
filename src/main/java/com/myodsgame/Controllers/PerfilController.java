@@ -109,7 +109,7 @@ public class PerfilController implements Initializable {
             usuarioLabel.setText(user.getUsername());
         }
         EstadoJuego.getInstance().setUsuario(user);
-        services.updateUser(user.getUsername(), oldUser, user.getEmail(), user.getAvatar());
+        services.updateUser(user, oldUser);
     }
 
     @FXML

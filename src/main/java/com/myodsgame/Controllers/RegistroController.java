@@ -2,6 +2,7 @@ package com.myodsgame.Controllers;
 
 import com.myodsgame.Models.Estadisticas;
 import com.myodsgame.Models.Usuario;
+import com.myodsgame.Repository.Repositorio;
 import com.myodsgame.Repository.RepositorioUsuario;
 import com.myodsgame.Repository.RepositorioUsuarioImpl;
 import com.myodsgame.Utils.EstadoJuego;
@@ -72,7 +73,7 @@ public class RegistroController implements Initializable {
     private BooleanProperty validBirthdate;
     private BooleanBinding validFields;
 
-    private RepositorioUsuario repositorioUsuario;
+    private Repositorio<Usuario, String> repositorioUsuario;
 
     private void manageError(Label errorLabel, TextField textField, BooleanProperty boolProp) {
         boolProp.setValue(Boolean.FALSE);
@@ -272,12 +273,10 @@ public class RegistroController implements Initializable {
         usuario.setPassword(passwordField.getText());
         usuario.setEmail(emailField.getText());
         usuario.setBirthdate(Date.from(birthdateSelector.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-        usuario.setEstadistica(new Estadisticas());
-
         String avatarRegistro = EstadoJuego.getInstance().getUrlAvatarRegistro();
         usuario.setAvatar(avatarRegistro == null ? "src/main/resources/images/avatar1.png" : avatarRegistro);
 
-        repositorioUsuario.saveUsuario(usuario);
+        repositorioUsuario.insert(usuario, usuario.getUsername());
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Registration confirmed");

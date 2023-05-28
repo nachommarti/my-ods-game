@@ -13,9 +13,12 @@ import java.util.List;
 public class RepositorioEstadisticasImpl implements Repositorio<Estadisticas, String>{
 
     private final Connection connection;
-    private final Services services = new Services();
+    private final Services services;
 
-    public RepositorioEstadisticasImpl() {connection = DBConnection.getConnection();}
+    public RepositorioEstadisticasImpl() {
+        connection = DBConnection.getConnection();
+        services = new Services();
+    }
 
     @Override
     public void create(Estadisticas estadisticas) {
@@ -102,13 +105,13 @@ public class RepositorioEstadisticasImpl implements Repositorio<Estadisticas, St
     }
 
     @Override
-    public void insert(Estadisticas estadisticas) {
-        if (findById(estadisticas.getUsuario()) == null) create(estadisticas);
-        else update(estadisticas);
+    public void insert(Estadisticas estadisticas, String username) {
+        if (findById(username) == null) create(estadisticas);
+        else update(estadisticas, username);
     }
 
     @Override
-    public void update(Estadisticas estadisticas) {
+    public void update(Estadisticas estadisticas, String username) {
         String sql = "UPDATE estadisticas SET username = ?, puntos_totales = ?, partidas_jugadas = ?, " +
                 "numero_aciertos = ?, numero_fallos = ?, aciertos_individual_ods = ?, " +
                 "fallos_individual_ods = ?, nivel = ? WHERE username = ?";
@@ -123,7 +126,7 @@ public class RepositorioEstadisticasImpl implements Repositorio<Estadisticas, St
             statement.setString(6, services.intArrayToString(estadisticas.getAciertos_individual_ods()));
             statement.setString(7, services.intArrayToString(estadisticas.getFallos_individual_ods()));
             statement.setInt(8, estadisticas.getNivel());
-            statement.setString(9, estadisticas.getUsuario());
+            statement.setString(9, username);
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
