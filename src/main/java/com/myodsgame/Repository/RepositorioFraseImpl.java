@@ -1,6 +1,5 @@
 package com.myodsgame.Repository;
 
-import com.myodsgame.Factory.RetoFactory;
 import com.myodsgame.Models.Reto;
 import com.myodsgame.Models.RetoFrase;
 import com.myodsgame.Utils.TipoReto;
@@ -9,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class RepositorioFraseImpl<T extends Reto> extends RepositorioRetos<T> implements Repositorio<T, Integer>{
@@ -69,7 +67,7 @@ public class RepositorioFraseImpl<T extends Reto> extends RepositorioRetos<T> im
         try {
             ResultSet resultSet = findBylimitHelper(query, numFacil, numResto);
             while (resultSet.next()) {
-                frases.add(mapResultSetToRetoAhorcado(resultSet));
+                frases.add(mapResultSetToRetoFrase(resultSet));
             }
         } catch (SQLException e) {
             System.err.println("Error al obtener frases: " + e.getMessage());

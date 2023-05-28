@@ -1,6 +1,7 @@
 package com.myodsgame.Repository;
 
 import com.myodsgame.Models.Estadisticas;
+import com.myodsgame.Services.IServices;
 import com.myodsgame.Services.Services;
 import com.myodsgame.Utils.DBConnection;
 
@@ -13,7 +14,7 @@ import java.util.List;
 public class RepositorioEstadisticasImpl implements Repositorio<Estadisticas, String>{
 
     private final Connection connection;
-    private final Services services;
+    private final IServices services;
 
     public RepositorioEstadisticasImpl() {
         connection = DBConnection.getConnection();

@@ -1,9 +1,7 @@
 package com.myodsgame.Controllers;
 
-import com.myodsgame.Models.Estadisticas;
 import com.myodsgame.Models.Usuario;
 import com.myodsgame.Repository.Repositorio;
-import com.myodsgame.Repository.RepositorioUsuario;
 import com.myodsgame.Repository.RepositorioUsuarioImpl;
 import com.myodsgame.Utils.EstadoJuego;
 import com.myodsgame.Utils.UserUtils;

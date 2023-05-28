@@ -49,13 +49,12 @@ public class EstadisticaController implements Initializable {
     private List<Estadisticas> estadisticas;
     private List<Estadisticas> top10;
 
-    private IServices servicios;
     private Repositorio<Estadisticas, String> repositorioEstadisticas;
     private RepositorioPuntosFechaImpl repositorioPuntosFecha;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        servicios = new Services();
+        IServices servicios = new Services();
         repositorioEstadisticas = new RepositorioEstadisticasImpl();
         repositorioPuntosFecha = new RepositorioPuntosFechaImpl();
         Estadisticas est = EstadoJuego.getInstance().getUsuario().getEstadistica();
@@ -94,8 +93,7 @@ public class EstadisticaController implements Initializable {
 
         XYChart.Series<String, Number> serie = new XYChart.Series<>();
         for(int i = 0; i < datosODS.length; i++){
-            int valorODS = datosODS[i];
-            serie.getData().add(new XYChart.Data<>(Integer.toString(i + 1), valorODS));
+            serie.getData().add(new XYChart.Data<>(Integer.toString(i + 1), datosODS[i]));
         }
 
         graficaOds.getData().add(serie);

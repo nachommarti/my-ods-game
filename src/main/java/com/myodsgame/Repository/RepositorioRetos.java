@@ -2,6 +2,7 @@ package com.myodsgame.Repository;
 
 import com.myodsgame.Factory.RetoFactory;
 import com.myodsgame.Models.Reto;
+import com.myodsgame.Services.IServices;
 import com.myodsgame.Services.Services;
 import com.myodsgame.Utils.DBConnection;
 import com.myodsgame.Utils.TipoReto;
@@ -13,23 +14,26 @@ import java.util.List;
 
 public class RepositorioRetos<T extends Reto> implements Repositorio<T, Integer>{
     protected final Connection connection;
-    protected final Services services;
-    private final Repositorio<T, Integer> repositorioPregunta;
-    private final Repositorio<T, Integer> repositorioPalabra;
-    private final Repositorio<T, Integer> repositorioFrase;
+    protected final IServices services;
     public RepositorioRetos() {
         connection = DBConnection.getConnection();
         services = new Services();
-        repositorioPregunta = new RepositorioPreguntaImpl<>();
-        repositorioPalabra = new RepositorioPalabraImpl<>();
-        repositorioFrase = new RepositorioFraseImpl<>();
     }
 
     @Override
     public void create(T entidad) {
-        if (entidad.getTipoReto() == TipoReto.PREGUNTA)  repositorioPregunta.create(entidad);
-        else if (entidad.getTipoReto() == TipoReto.AHORACADO)  repositorioPalabra.create(entidad);
-        else if (entidad.getTipoReto() == TipoReto.FRASE) repositorioFrase.create(entidad);
+        if (entidad.getTipoReto() == TipoReto.PREGUNTA) {
+            Repositorio<T, Integer> repositorioPregunta = new RepositorioPreguntaImpl<>();
+            repositorioPregunta.create(entidad);
+        }
+        else if (entidad.getTipoReto() == TipoReto.AHORACADO) {
+            Repositorio<T, Integer> repositorioPalabra = new RepositorioPalabraImpl<>();
+            repositorioPalabra.create(entidad);
+        }
+        else if (entidad.getTipoReto() == TipoReto.FRASE) {
+            Repositorio<T, Integer> repositorioFrase = new RepositorioFraseImpl<>();
+            repositorioFrase.create(entidad);
+        }
         else throw new IllegalArgumentException("Tipo de reto inválido.");
     }
 
@@ -66,25 +70,52 @@ public class RepositorioRetos<T extends Reto> implements Repositorio<T, Integer>
 
     @Override
     public void insert(T entidad, Integer id) {
-        if (entidad.getTipoReto() == TipoReto.PREGUNTA)  repositorioPregunta.insert(entidad, id);
-        else if (entidad.getTipoReto() == TipoReto.AHORACADO)  repositorioPalabra.insert(entidad, id);
-        else if (entidad.getTipoReto() == TipoReto.FRASE) repositorioFrase.insert(entidad, id);
+        if (entidad.getTipoReto() == TipoReto.PREGUNTA) {
+            Repositorio<T, Integer> repositorioPregunta = new RepositorioPreguntaImpl<>();
+            repositorioPregunta.insert(entidad, id);
+        }
+        else if (entidad.getTipoReto() == TipoReto.AHORACADO) {
+            Repositorio<T, Integer> repositorioPalabra = new RepositorioPalabraImpl<>();
+            repositorioPalabra.insert(entidad, id);
+        }
+        else if (entidad.getTipoReto() == TipoReto.FRASE) {
+            Repositorio<T, Integer> repositorioFrase = new RepositorioFraseImpl<>();
+            repositorioFrase.insert(entidad, id);
+        }
         else throw new IllegalArgumentException("Tipo de reto inválido.");
     }
 
     @Override
     public void update(T entidad, Integer id) {
-        if (entidad.getTipoReto() == TipoReto.PREGUNTA)  repositorioPregunta.update(entidad, id);
-        else if (entidad.getTipoReto() == TipoReto.AHORACADO)  repositorioPalabra.update(entidad, id);
-        else if (entidad.getTipoReto() == TipoReto.FRASE) repositorioFrase.update(entidad, id);
+        if (entidad.getTipoReto() == TipoReto.PREGUNTA) {
+            Repositorio<T, Integer> repositorioPregunta = new RepositorioPreguntaImpl<>();
+            repositorioPregunta.update(entidad, id);
+        }
+        else if (entidad.getTipoReto() == TipoReto.AHORACADO) {
+            Repositorio<T, Integer> repositorioPalabra = new RepositorioPalabraImpl<>();
+            repositorioPalabra.update(entidad, id);
+        }
+        else if (entidad.getTipoReto() == TipoReto.FRASE) {
+            Repositorio<T, Integer> repositorioFrase = new RepositorioFraseImpl<>();
+            repositorioFrase.update(entidad, id);
+        }
         else throw new IllegalArgumentException("Tipo de reto inválido.");
     }
 
     @Override
     public void delete(T entidad) {
-        if (entidad.getTipoReto() == TipoReto.PREGUNTA)  repositorioPregunta.delete(entidad);
-        else if (entidad.getTipoReto() == TipoReto.AHORACADO)  repositorioPalabra.delete(entidad);
-        else if (entidad.getTipoReto() == TipoReto.FRASE) repositorioFrase.delete(entidad);
+        if (entidad.getTipoReto() == TipoReto.PREGUNTA) {
+            Repositorio<T, Integer> repositorioPregunta = new RepositorioPreguntaImpl<>();
+            repositorioPregunta.delete(entidad);
+        }
+        else if (entidad.getTipoReto() == TipoReto.AHORACADO) {
+            Repositorio<T, Integer> repositorioPalabra = new RepositorioPalabraImpl<>();
+            repositorioPalabra.delete(entidad);
+        }
+        else if (entidad.getTipoReto() == TipoReto.FRASE) {
+            Repositorio<T, Integer> repositorioFrase = new RepositorioFraseImpl<>();
+            repositorioFrase.delete(entidad);
+        }
         else throw new IllegalArgumentException("Tipo de reto inválido.");
     }
 
@@ -120,6 +151,8 @@ public class RepositorioRetos<T extends Reto> implements Repositorio<T, Integer>
         try {
             PreparedStatement repo = connection.prepareStatement(query);
             repo.setString(1, String.valueOf(ods));
+            repo.setString(2, String.valueOf(ods));
+            repo.setString(3, String.valueOf(ods));
             ResultSet rs = repo.executeQuery();
             if(rs.next()){
                 result = rs.getInt(1);
@@ -153,7 +186,7 @@ public class RepositorioRetos<T extends Reto> implements Repositorio<T, Integer>
     }
     protected T mapResultSetToRetoAhorcado(ResultSet resultSet) throws SQLException {
         HashMap<String, String> map = new HashMap<>();
-        map.put("palabra", resultSet.getString("palabra"));
+        map.put("palabra", resultSet.getString("frase"));
         map.put("pista", resultSet.getString("pista"));
         List<Integer> Ods = services.stringToIntList(resultSet.getString("ODS"));
 

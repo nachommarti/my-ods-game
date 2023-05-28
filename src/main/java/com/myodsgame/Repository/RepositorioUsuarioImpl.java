@@ -34,13 +34,13 @@ public class RepositorioUsuarioImpl implements Repositorio<Usuario, String>{
 
             Estadisticas estadisticas = new Estadisticas();
             estadisticas.setUsuario(user.getUsername());
-            estadisticas.setPuntosTotales(user.getEstadistica().getPuntosTotales());
-            estadisticas.setPartidasJugadas(user.getEstadistica().getPartidasJugadas());
-            estadisticas.setNumeroAciertos(user.getEstadistica().getNumeroAciertos());
-            estadisticas.setNumeroFallos(user.getEstadistica().getNumeroFallos());
-            estadisticas.setAciertos_individual_ods(user.getEstadistica().getAciertos_individual_ods());
-            estadisticas.setFallos_individual_ods(user.getEstadistica().getFallos_individual_ods());
-            estadisticas.setNivel(user.getEstadistica().getNivel());
+            estadisticas.setPuntosTotales(estadisticas.getPuntosTotales());
+            estadisticas.setPartidasJugadas(estadisticas.getPartidasJugadas());
+            estadisticas.setNumeroAciertos(estadisticas.getNumeroAciertos());
+            estadisticas.setNumeroFallos(estadisticas.getNumeroFallos());
+            estadisticas.setAciertos_individual_ods(estadisticas.getAciertos_individual_ods());
+            estadisticas.setFallos_individual_ods(estadisticas.getFallos_individual_ods());
+            estadisticas.setNivel(estadisticas.getNivel());
             repositorioEstadisticas.create(estadisticas);
 
             user.setEstadistica(estadisticas);
