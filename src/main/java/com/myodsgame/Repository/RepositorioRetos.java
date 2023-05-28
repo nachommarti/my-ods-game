@@ -186,7 +186,7 @@ public class RepositorioRetos<T extends Reto> implements Repositorio<T, Integer>
     }
     protected T mapResultSetToRetoAhorcado(ResultSet resultSet) throws SQLException {
         HashMap<String, String> map = new HashMap<>();
-        map.put("palabra", resultSet.getString("frase"));
+        map.put("palabra", resultSet.getString("palabra"));
         map.put("pista", resultSet.getString("pista"));
         List<Integer> Ods = services.stringToIntList(resultSet.getString("ODS"));
 
