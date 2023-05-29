@@ -46,7 +46,7 @@ class PartidaBuilderTest {
 
         builder.BuildImagenes();
         assertNotNull(builder.getPartida().getImagenFondo());
-        assertTrue(builder.getPartida().getImagenFondo() instanceof Image);
+        assertTrue(builder.getPartida().getImagenFondo() != null);
         assertTrue(builder.getPartida().getImagenFondo().getUrl().contains("src\\main\\resources\\images\\fondo_frase.png"));
 
         assertNotNull(builder.getPartida());

@@ -151,8 +151,66 @@ public class RetoFraseController implements Initializable {
         botonAbandonar.setVisible(partidaActual.isConsolidado());
         loadRetosState();
         ((Label) labelArray.getChildren().get(partidaActual.getRetoActual() - 1)).setStyle("-fx-background-color: rgb(202,184,218)");
+        loadFraseChars();
 
 
+    }
+
+    private void loadFraseChars() {
+        List<String> letters = Arrays.asList(frase.split(""));
+        Collections.shuffle(letters);
+        StringBuilder shuffled = new StringBuilder(letters.stream().collect(Collectors.joining()).replaceAll("\\s", ""));
+        boolean [] rellenados = new boolean[sentence.getChildren().size()];
+        int letrasParaPoner = getPercentageSizeOfString(shuffled);
+        System.out.println("Letras para poner: " + letrasParaPoner);
+
+        for(int i = 0; i < letrasParaPoner; i++) {
+
+            Character letraRandomRestante = shuffled.charAt(new Random().nextInt(shuffled.length()));
+            int contadorRellenados = 0;
+            for (Node node : sentence.getChildren()) {
+                Label label = (Label) node;
+                if (label.getText().equals(Character.toString(letraRandomRestante)) && !rellenados[contadorRellenados]) {
+                    System.out.println("Explorando label : " + label.getText());
+                    label.setStyle("-fx-background-color: grey; -fx-text-fill: white; -fx-border-color: white; -fx-border-width: 2;");
+                    System.out.print("LETRA ELIMINADA: " + letraRandomRestante + " ");
+                    letrasRestantes.remove(letraRandomRestante);
+                    rellenados[contadorRellenados] = true;
+                    break;
+                }else System.out.println("saltando...");
+                contadorRellenados++;
+            }
+            Button buttonToBeRemoved = null;
+            for (Node node : clickableChars.getChildren()) {
+                Button button = (Button) node;
+                if (button.getText().equals(Character.toString(letraRandomRestante))) {
+                    buttonToBeRemoved = button;
+                }
+            }
+            clickableChars.getChildren().remove(buttonToBeRemoved);
+
+            for(int j = 0; j < shuffled.length(); j++){
+                if(shuffled.charAt(j) == letraRandomRestante){
+                    shuffled.deleteCharAt(j);
+                    break;
+                }
+            }
+        }
+    }
+
+    private int getPercentageSizeOfString(StringBuilder sb){
+        int length = sb.length();
+        int percentageSize;
+
+        if(retoActual.getDificultad() == 1){
+            percentageSize = (int) Math.round(length * 0.3);
+        }else if(retoActual.getDificultad() == 2){
+            percentageSize = (int) Math.round(length * 0.2);
+        }else{
+            percentageSize = (int) Math.round(length * 0.1);
+        }
+
+        return percentageSize;
     }
 
     private void loadRetosState() {
@@ -212,7 +270,6 @@ public class RetoFraseController implements Initializable {
             char currentChar = shuffled.charAt(i);
             Button button = new Button(String.valueOf(currentChar));
             clickableCharsArray.add(button);
-            System.out.println("Added button: " + currentChar);
             button.setOnAction(e -> {
                 botonPulsado = button;
                 button.setStyle("-fx-background-color: white;");
