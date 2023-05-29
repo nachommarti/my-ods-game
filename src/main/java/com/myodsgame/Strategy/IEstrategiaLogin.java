@@ -1,5 +1,5 @@
 package com.myodsgame.Strategy;
 
-public interface EstrategiaLogin {
+public interface IEstrategiaLogin {
     boolean login(String username, String password);
 }

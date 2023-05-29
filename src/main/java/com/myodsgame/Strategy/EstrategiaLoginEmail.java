@@ -4,7 +4,7 @@ import com.myodsgame.Models.Usuario;
 import com.myodsgame.Repository.RepositorioUsuarioImpl;
 import com.myodsgame.Utils.EstadoJuego;
 
-public class EstrategiaLoginEmail implements EstrategiaLogin{
+public class EstrategiaLoginEmail implements IEstrategiaLogin {
     public boolean login(String email, String password){
         RepositorioUsuarioImpl repositorioUsuario = new RepositorioUsuarioImpl();
         Usuario user = repositorioUsuario.findByEmailAndPassword(email, password);

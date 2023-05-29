@@ -1,9 +1,9 @@
 package com.myodsgame.Strategy;
 
 public class LoginManager {
-    private EstrategiaLogin estrategia;
+    private IEstrategiaLogin estrategia;
 
-    public void setEstrategia(EstrategiaLogin estrategia){
+    public void setEstrategia(IEstrategiaLogin estrategia){
         this.estrategia = estrategia;
     }
 
