@@ -1,5 +1,7 @@
 package com.myodsgame.Models;
 
+import java.util.Set;
+
 public class Estadisticas {
 
     private int [] aciertos_individual_ods = new int[17];
@@ -11,6 +13,11 @@ public class Estadisticas {
     private String usuario;
     private int nivel;
     private int posicion;
+
+    private Set<Integer> preguntasAcertadas;
+    private Set<Integer> palabrasAcertadas;
+    private Set<Integer> frasesAcertadas;
+
 
     public int getNivel() {
         return nivel;
@@ -74,4 +81,15 @@ public class Estadisticas {
     public int getPosicion() {return posicion;}
 
     public void setPosicion(int pos){posicion = pos;}
+
+    public Set<Integer> getPalabrasAcertadas(){return palabrasAcertadas;}
+    public Set<Integer> getPreguntasAcertadas(){return preguntasAcertadas;}
+    public Set<Integer> getFrasesAcertadas(){return frasesAcertadas;}
+
+    public void setPreguntasAcertadas(Set<Integer> preguntasAcertadas){this.preguntasAcertadas = preguntasAcertadas;}
+
+    public void setPalabrasAcertadas(Set<Integer> palabrasAcertadas) {this.palabrasAcertadas = palabrasAcertadas;}
+
+    public void setFrasesAcertadas(Set<Integer> frasesAcertadas) {this.frasesAcertadas = frasesAcertadas;}
+
 }

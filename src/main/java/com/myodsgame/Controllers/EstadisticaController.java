@@ -58,8 +58,9 @@ public class EstadisticaController implements Initializable {
         repositorioEstadisticas = new RepositorioEstadisticasImpl();
         repositorioPuntosFecha = new RepositorioPuntosFechaImpl();
         Estadisticas est = EstadoJuego.getInstance().getUsuario().getEstadistica();
+        int numeroAciertosTotales = est.getPalabrasAcertadas().size() + est.getPreguntasAcertadas().size() + est.getFrasesAcertadas().size();
 
-        double porcentajeAciertos = (double) est.getNumeroAciertos() / servicios.getNumeroTotalRetos();
+        double porcentajeAciertos = (double) numeroAciertosTotales / servicios.getNumeroTotalRetos();
         labelPuntos.setText(String.valueOf(est.getPuntosTotales()));
         labelAciertos.setText(String.valueOf(String.format("%.2f",porcentajeAciertos*100) +" %"));
         labelTipoRanking.setText("Ranking Global");

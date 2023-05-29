@@ -11,8 +11,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
 
 
@@ -180,4 +179,22 @@ public class Services implements IServices {
        PuntuacionDiariaPK pk = new PuntuacionDiariaPK(estadisticas.getUsuario());
        repositorioPuntosFecha.insert(estadisticas, pk);
    }
+
+    public Set<Integer> parsearStringASet(String input){
+        Set<Integer> output = new HashSet<>();
+        String sinCorchetes = input.substring(1, input.length() - 1);
+        if(!sinCorchetes.equals("")) {
+            String[] idEnString = sinCorchetes.split(", ");
+            int[] ids = new int[idEnString.length];
+
+            for (int i = 0; i < idEnString.length; i++) {
+                ids[i] = Integer.parseInt(idEnString[i]);
+            }
+
+            for (int id : ids) {
+                output.add(id);
+            }
+        }
+        return output;
+    }
 }

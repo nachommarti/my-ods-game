@@ -4,6 +4,7 @@ import com.myodsgame.Models.Reto;
 import com.myodsgame.Models.Usuario;
 
 import java.util.List;
+import java.util.Set;
 
 public interface IServices {
     List<Integer> stringToIntList(String string);
@@ -18,4 +19,5 @@ public interface IServices {
     int getNumeroTotalRetos();
     int[] getNumeroTotalRetosPorODS();
     void guardarPuntosDiarios(int puntos);
+    Set<Integer> parsearStringASet(String input);
 }
