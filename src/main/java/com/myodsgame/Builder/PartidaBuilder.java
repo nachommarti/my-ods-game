@@ -15,6 +15,7 @@ public abstract class PartidaBuilder implements IPartidaBuilder{
     public static String SONIDO_VICTORIA = "src/main/resources/sounds/pista_larga.mp3";
     public static String SONIDO_DERROTA = "src/main/resources/sounds/pista_larga.mp3";
     public static String SONIDO_TICTAC = "src/main/resources/sounds/pista_larga.mp3";
+    public static String IMAGEN_VIDAS = "src/main/resources/images/vidas.png";
 
     public PartidaBuilder() {
         partida = new Partida();
