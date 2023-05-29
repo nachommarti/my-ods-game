@@ -21,6 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
@@ -35,6 +36,8 @@ import java.util.stream.Collectors;
 
 public class RetoFraseController implements Initializable {
 
+    @FXML
+    private ImageView imagenODS;
     @FXML
     private HBox clickableChars;
     @FXML
@@ -112,6 +115,14 @@ public class RetoFraseController implements Initializable {
         borderPane.setBackground(background);
 
         retoActual = (RetoFrase) EstadoJuego.getInstance().getPartida().getRetos().get(EstadoJuego.getInstance().getPartida().getRetoQueHayQueMirarEnElArray());
+
+        if (retoActual.getODS().size() == 1) imagenODS.setImage(new Image(Path.of("", "src", "main", "resources", "images", "ODS_"+retoActual.getODS().get(0)+".jpg").toAbsolutePath().toString()));
+        else imagenODS.setImage(new Image(Path.of("", "src", "main", "resources", "images", "ODS_0.jpg").toAbsolutePath().toString()));
+
+        Rectangle clip = new Rectangle(imagenODS.getFitWidth(), imagenODS.getFitHeight());
+        clip.setArcWidth(40);
+        clip.setArcHeight(40);
+        imagenODS.setClip(clip);
 
         frase = retoActual.getFrase().toUpperCase();
         frasePista.setText(retoActual.getPista());
