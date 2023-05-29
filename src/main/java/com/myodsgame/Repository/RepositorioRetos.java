@@ -4,6 +4,7 @@ import com.myodsgame.Factory.RetoFactory;
 import com.myodsgame.Models.Reto;
 import com.myodsgame.Services.IServices;
 import com.myodsgame.Services.Services;
+import com.myodsgame.Strategy.PuntosManager;
 import com.myodsgame.Utils.DBConnection;
 import com.myodsgame.Utils.TipoReto;
 
@@ -15,9 +16,11 @@ import java.util.List;
 public class RepositorioRetos<T extends Reto> implements Repositorio<T, Integer>{
     protected final Connection connection;
     protected final IServices services;
+    protected final PuntosManager puntosManager;
     public RepositorioRetos() {
         connection = DBConnection.getConnection();
         services = new Services();
+        puntosManager = new PuntosManager();
     }
 
     @Override
@@ -181,7 +184,7 @@ public class RepositorioRetos<T extends Reto> implements Repositorio<T, Integer>
         List<Integer> Ods = services.stringToIntList(resultSet.getString("ODS"));
 
         return (T) RetoFactory.crearReto(resultSet.getInt("id"), false, 30, 10,
-                resultSet.getInt("nivel_dificultad"), resultSet.getInt("nivel_dificultad")*100,
+                resultSet.getInt("nivel_dificultad"), puntosManager.SetPuntosStrategy(resultSet.getInt("nivel_dificultad")),
                 Ods, TipoReto.PREGUNTA, map);
     }
     protected T mapResultSetToRetoAhorcado(ResultSet resultSet) throws SQLException {
@@ -191,7 +194,7 @@ public class RepositorioRetos<T extends Reto> implements Repositorio<T, Integer>
         List<Integer> Ods = services.stringToIntList(resultSet.getString("ODS"));
 
         return (T) RetoFactory.crearReto(resultSet.getInt("id"), false, 120, 20,
-                resultSet.getInt("nivel_dificultad"), resultSet.getInt("nivel_dificultad")*100,
+                resultSet.getInt("nivel_dificultad"), puntosManager.SetPuntosStrategy(resultSet.getInt("nivel_dificultad")),
                 Ods, TipoReto.AHORACADO, map);
     }
     protected T mapResultSetToRetoFrase(ResultSet resultSet) throws SQLException {
@@ -201,7 +204,7 @@ public class RepositorioRetos<T extends Reto> implements Repositorio<T, Integer>
         List<Integer> Ods = services.stringToIntList(resultSet.getString("ODS"));
 
         return (T) RetoFactory.crearReto(resultSet.getInt("id"), false, 120, 20,
-                resultSet.getInt("nivel_dificultad"), resultSet.getInt("nivel_dificultad")*100,
+                resultSet.getInt("nivel_dificultad"), puntosManager.SetPuntosStrategy(resultSet.getInt("nivel_dificultad")),
                 Ods, TipoReto.FRASE, map);
     }
     protected ResultSet findBylimitHelper(String query, int numFacil, int numResto) throws SQLException {
