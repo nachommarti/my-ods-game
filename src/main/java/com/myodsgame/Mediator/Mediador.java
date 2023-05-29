@@ -49,7 +49,7 @@ public class Mediador {
         if (mediaPlayerMusic != null) mediaPlayerMusic.stop();
         if (mediaPlayerTicTac != null) mediaPlayerTicTac.stop();
         ayuda.setDisable(true);
-        UserUtils.saveStats(true, retoActual.getODS());
+        UserUtils.saveStats(true, retoActual.getODS(), partidaActual.getObjetoRetoActual(partidaActual.getRetoActual()).getId(), retoActual.getTipoReto().toString());
         EstadoJuego.getInstance().getPartida().getRetosFallados()[partidaActual.getRetoActual()-1] = false;
         int obtainedPoints = servicios.computePoints(retoActual, true);
         int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
@@ -61,7 +61,7 @@ public class Mediador {
         if (mediaPlayerMusic != null) mediaPlayerMusic.stop();
         if (mediaPlayerTicTac != null) mediaPlayerTicTac.stop();
 
-        UserUtils.saveStats(false, retoActual.getODS());
+        UserUtils.saveStats(false, retoActual.getODS(), 0, "null");
         int obtainedPoints = servicios.computePoints(retoActual, false);
         int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
         EstadoJuego.getInstance().getPartida().getRetosFallados()[partidaActual.getRetoActual() - 1] = true;

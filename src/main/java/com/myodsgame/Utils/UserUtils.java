@@ -58,21 +58,21 @@ public class UserUtils {
                 estadisticas.setAciertos_individual_ods(aciertosODS);
             }
 
-            if(tipo.equals("pregunta")){ //tipo Pregunta
+            if(tipo.equals("pregunta") || tipo.equals("PREGUNTA")){ //tipo Pregunta
                 Set<Integer> preguntasAcertadas = estadisticas.getPreguntasAcertadas();
                 if(!preguntasAcertadas.contains(idReto)){
                     preguntasAcertadas.add(idReto);
                     estadisticas.setPreguntasAcertadas(preguntasAcertadas);
                 }
             }
-            else if (tipo.equals("ahorcado")) { //tipo ahorcado
+            else if (tipo.equals("ahorcado") || tipo.equals("AHORACADO")) { //tipo ahorcado
                 Set<Integer> palabrasAcertadas = estadisticas.getPalabrasAcertadas();
                 if(!palabrasAcertadas.contains(idReto)){
                     palabrasAcertadas.add(idReto);
                     estadisticas.setPalabrasAcertadas(palabrasAcertadas);
                 }
             }
-            else if (tipo.equals("frase")) { //tipo frase
+            else if (tipo.equals("frase") || tipo.equals("FRASE")) { //tipo frase
                 Set<Integer> frasesAcertadas = estadisticas.getFrasesAcertadas();
                 if(!frasesAcertadas.contains(idReto)){
                     frasesAcertadas.add(idReto);
