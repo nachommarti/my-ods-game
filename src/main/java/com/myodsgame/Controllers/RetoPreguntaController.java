@@ -1,22 +1,16 @@
 package com.myodsgame.Controllers;
 
 import com.myodsgame.Mediator.Mediador;
-import com.myodsgame.Mediator.MediadorPregunta;
 import com.myodsgame.Models.Partida;
 import com.myodsgame.Models.RetoPregunta;
-import com.myodsgame.Services.IServices;
-import com.myodsgame.Services.Services;
 import com.myodsgame.Utils.EstadoJuego;
-import com.myodsgame.Utils.UserUtils;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -26,12 +20,10 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.*;
@@ -42,25 +34,18 @@ public class RetoPreguntaController implements Initializable {
     private BorderPane borderPane;
     @FXML
     private Label enunciadoPregunta;
-
     @FXML
     private Button ayuda;
-
     @FXML
     private Button respuesta1;
-
     @FXML
     private Button respuesta2;
-
     @FXML
     private Button respuesta3;
-
     @FXML
     private Button respuesta4;
-
     @FXML
     private Label currentScore;
-
     @FXML
     private Label timer;
     @FXML
@@ -69,7 +54,6 @@ public class RetoPreguntaController implements Initializable {
     private ImageView vidas;
     @FXML
     private Label puntosPorAcertar;
-
     @FXML
     private Label estatusRespuesta;
     @FXML
@@ -83,31 +67,18 @@ public class RetoPreguntaController implements Initializable {
 
     private List<Button> respuestas;
     private String respuestaCorrecta;
-    private boolean ayudaPulsada;
-    private boolean respuestaCorrectaSeleccionada;
     public int obtainedPoints = 0;
-    private boolean consolidated;
-    private String currentStyleButton;
-    private String currentStyleLabel;
-    private String initialStyle;
     private Timeline timeline;
     private int timeCountdown;
-    private boolean perdido = false;
-    private int contAbandonar = 1;
-    private MediaPlayer mediaPlayerSonidos = null, mediaPlayerMusic = null, mediaPlayerTicTac = new MediaPlayer(new Media(new File("src/main/resources/sounds/10S_tick.mp3").toURI().toString()));
-
+    private MediaPlayer mediaPlayerMusic;
+    private final MediaPlayer mediaPlayerTicTac = new MediaPlayer(new Media(new File("src/main/resources/sounds/10S_tick.mp3").toURI().toString()));
     private Partida partidaActual;
-
     private RetoPregunta retoActual;
-    private boolean fallado;
-
-    private IServices servicios;
     private Mediador mediador;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        servicios = new Services();
-        mediador = new MediadorPregunta();
+        mediador = new Mediador();
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
         this.partidaActual = EstadoJuego.getInstance().getPartida();
@@ -151,12 +122,10 @@ public class RetoPreguntaController implements Initializable {
                                 mediaPlayerTicTac.stop();
                                 endTimer();
                                 mediaPlayerMusic.stop();
-                                reproducirSonido("src/main/resources/sounds/Fallo.mp3", 0.5);
                             }
                         })
         );
         reproducirMusica();
-        this.initialStyle = "-fx-background-color:  rgba(255, 255, 255, 1); -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10";
         ayuda.setGraphic(new ImageView(new Image(Path.of("", "src", "main", "resources", "images", "ayuda.png").toAbsolutePath().toString())));
 
         loadRetosState();
@@ -164,10 +133,7 @@ public class RetoPreguntaController implements Initializable {
 
         currentScore.setText("Score:" + EstadoJuego.getInstance().getPartida().getPuntuacion());
 
-        if(EstadoJuego.getInstance().getPartida().getPuntuacion() >= retoActual.getPuntuacion()/2)
-            ayuda.setDisable(false);
-        else
-            ayuda.setDisable(true);
+        ayuda.setDisable(EstadoJuego.getInstance().getPartida().getPuntuacion() < retoActual.getPuntuacion() / 2);
 
         abandonarBoton.setVisible(partidaActual.isConsolidado());
 
@@ -216,14 +182,7 @@ public class RetoPreguntaController implements Initializable {
         ((Label) labelArray.getChildren().get(partidaActual.getRetoActual() - 1)).setStyle("-fx-background-color: rgb(202,184,218)");
         timeline.playFromStart();
 
-        if (EstadoJuego.getInstance().getPartida().getVidas() == 1) {
-            EstadoJuego.getInstance().getPartida().setImagenVidas(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
-            vidas.setImage(EstadoJuego.getInstance().getPartida().getImagenVidas());
-        }
-        else if (EstadoJuego.getInstance().getPartida().getVidas() == 0) {
-            EstadoJuego.getInstance().getPartida().setImagenVidas(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
-            vidas.setImage(EstadoJuego.getInstance().getPartida().getImagenVidas());
-        }
+        vidas.setImage(EstadoJuego.getInstance().getPartida().getImagenVidas());
     }
 
     @FXML
@@ -241,7 +200,6 @@ public class RetoPreguntaController implements Initializable {
                     removedElements++;
                 }
             }
-            ayudaPulsada = true;
             reproducirSonido("src/main/resources/sounds/pista_larga.mp3", 0.5);
             mediaPlayerMusic.play();
         }
@@ -306,109 +264,53 @@ public class RetoPreguntaController implements Initializable {
 
     private void checkAnswers(Button respuestaSeleccionada) {
         timeline.stop();
-        if(mediaPlayerMusic !=null)mediaPlayerMusic.stop();
-        if(mediaPlayerTicTac !=null) mediaPlayerTicTac.stop();
-        currentStyleLabel = labelArray.getStyle();
 
         if (respuestaSeleccionada.getText().equals(respuestaCorrecta)) {
-            ((Label) labelArray.getChildren().get(partidaActual.getRetoActual()-1)).setStyle("-fx-background-color: rgba(184, 218, 186, 1); " + currentStyleLabel);
-            ((Label) labelArray.getChildren().get(partidaActual.getRetoActual()-1)).setTextFill(Color.WHITE);
-            respuestaCorrectaSeleccionada = true;
-            reproducirSonido("src/main/resources/sounds/Acierto.mp3", 0.15);
-            UserUtils.saveStats(true, retoActual.getODS());
-            EstadoJuego.getInstance().getPartida().getRetosFallados()[partidaActual.getRetoActual()-1] = false;
-        }
-        else {
-            ((Label) labelArray.getChildren().get(partidaActual.getRetoActual()-1)).setStyle("-fx-background-color: rgb(255,25,25); " + currentStyleLabel);
-            ((Label) labelArray.getChildren().get(partidaActual.getRetoActual()-1)).setTextFill(Color.WHITE);
-            EstadoJuego.getInstance().getPartida().setVidas(partidaActual.getVidas()-1);
-            reproducirSonido("src/main/resources/sounds/Fallo.mp3", 0.5);
-            UserUtils.saveStats(false, retoActual.getODS());
-            EstadoJuego.getInstance().getPartida().setImagenVidas(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
-            vidas.setImage(EstadoJuego.getInstance().getPartida().getImagenVidas());
-            EstadoJuego.getInstance().getPartida().getRetosFallados()[partidaActual.getRetoActual()-1] = true;
-            if (EstadoJuego.getInstance().getPartida().getVidas() == 0) {
-                if(mediaPlayerSonidos!=null) mediaPlayerSonidos.stop();
-                lostGame();
-                EstadoJuego.getInstance().getPartida().setPartidaPerdida(true);
-                reproducirSonido("src/main/resources/sounds/Partida_Perdida.mp3", 0.5);
-                EstadoJuego.getInstance().getPartida().setImagenVidas(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
-                vidas.setImage(EstadoJuego.getInstance().getPartida().getImagenVidas());
-            }
-
+            disablePreguntas(respuestaSeleccionada, true);
+            checkWin();
+        } else {
+            disablePreguntas(respuestaSeleccionada, false);
+            checkLose();
         }
 
-        for (Button respuesta : respuestas) {
-            currentStyleButton = respuesta.getStyle();
-            int index = currentStyleButton.indexOf(";");
-            if (respuesta.getText().equals(respuestaCorrecta)) {
-                respuesta.setStyle("-fx-background-color: rgba(184, 218, 186, 1)" + currentStyleButton.substring(index));
-                respuesta.setDisable(true);
-            } else if (!respuestaCorrectaSeleccionada) {
-                respuestaSeleccionada.setStyle("-fx-background-color: rgba(204, 96, 56, 1)" + currentStyleButton.substring(index));
-                respuestaSeleccionada.setDisable(true);
-            }
-            respuesta.setDisable(true);
-
-        }
-
-        ayuda.setDisable(true);
-        computePoints();
         showPopUp();
-        EstadoJuego.getInstance().getPartida().setPuntuacion(EstadoJuego.getInstance().getPartida().getPuntuacion() + obtainedPoints);
         currentScore.setText("Score: " + EstadoJuego.getInstance().getPartida().getPuntuacion());
 
     }
 
-    private void computePoints() {
-        obtainedPoints = servicios.computePoints(retoActual, ayudaPulsada, respuestaCorrectaSeleccionada);
-        if (!respuestaCorrectaSeleccionada && EstadoJuego.getInstance().getPartida().isConsolidado())
-        {
-            EstadoJuego.getInstance().getPartida().setPuntuacionConsolidada(EstadoJuego.getInstance().getPartida().getPuntuacionConsolidada()
-                    + obtainedPoints);
+    private void checkWin() {
+        reproducirSonido("src/main/resources/sounds/Acierto.mp3", 0.15);
+        obtainedPoints = mediador.checkWin(mediaPlayerTicTac, mediaPlayerMusic, retoActual, partidaActual, ayuda);
+        estatusRespuesta.setText("HAS GANADO " + obtainedPoints + " PUNTOS");
+        estatusRespuesta.setTextFill(Color.GREEN);
+    }
+
+    private void checkLose() {
+        int[] array = mediador.checkLose(mediaPlayerTicTac, mediaPlayerMusic, retoActual, partidaActual, ayuda);
+        ((Label) labelArray.getChildren().get(partidaActual.getRetoActual() - 1)).setStyle("-fx-background-color: rgb(255,25,25); ");
+        obtainedPoints = array[0];
+        if(array[1] == 0){
+            estatusRespuesta.setText("HAS PERDIDO LA PARTIDA Y " + obtainedPoints + " PUNTOS");
+            estatusRespuesta.setTextFill(Color.RED);
+            reproducirSonido("src/main/resources/sounds/Partida_Perdida.mp3", 0.5);
+            EstadoJuego.getInstance().getPartida().setImagenVidas(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
+        } else {
+            estatusRespuesta.setText("HAS GANADO " + obtainedPoints + " PUNTOS");
+            estatusRespuesta.setTextFill(Color.RED);
+            reproducirSonido("src/main/resources/sounds/Fallo.mp3", 0.5);
+            EstadoJuego.getInstance().getPartida().setImagenVidas(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
         }
+        vidas.setImage(EstadoJuego.getInstance().getPartida().getImagenVidas());
     }
 
     private void endTimer() {
         respuestas.forEach(respuesta -> respuesta.setDisable(true));
-
-
-        EstadoJuego.getInstance().getPartida().setVidas(partidaActual.getVidas()-1);
-        if (EstadoJuego.getInstance().getPartida().getVidas() == 1) {
-            EstadoJuego.getInstance().getPartida().setImagenVidas(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
-            vidas.setImage(EstadoJuego.getInstance().getPartida().getImagenVidas());
-        }
-        if (EstadoJuego.getInstance().getPartida().getVidas() == 2) {
-            if(mediaPlayerSonidos!=null) mediaPlayerSonidos.stop();
-            EstadoJuego.getInstance().getPartida().setImagenVidas(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
-            vidas.setImage(EstadoJuego.getInstance().getPartida().getImagenVidas());
-            lostGame();
-            reproducirSonido("src/main/resources/sounds/Partida_Perdida.mp3", 0.5);
-
-        }
-
-        ((Label) labelArray.getChildren().get(partidaActual.getRetoActual()-1)).setTextFill(Color.RED);
-        ayuda.setDisable(true);
-        this.timeCountdown = 30;
-    }
-
-
-
-    private void lostGame() {
-        perdido = true;
-        estatusRespuesta.setText("¡INCORRECTO! " + "Has perdido");
-        estatusRespuesta.setTextFill(Color.RED);
-        respuesta1.setDisable(true);
-        respuesta2.setDisable(true);
-        respuesta3.setDisable(true);
-        respuesta4.setDisable(true);
-        ayuda.setDisable(true);
-        UserUtils.aumentarPartidasJugadas();
+        checkLose();
     }
 
     private void reproducirSonido(String sonidoPath, double volumen){
         mediaPlayerMusic.pause();
-        mediaPlayerSonidos = mediador.sonidoSetter(sonidoPath, volumen);
+        MediaPlayer mediaPlayerSonidos = mediador.sonidoSetter(sonidoPath, volumen);
         mediaPlayerSonidos.play();
     }
 
@@ -420,5 +322,20 @@ public class RetoPreguntaController implements Initializable {
     private void showPopUp() {
         Stage stage = mediador.showPopUp(partidaActual);
         stage.show();
+    }
+
+    private void disablePreguntas(Button respuestaSeleccionada, boolean respuestaCorrectaSeleccionada) {
+        for (Button respuesta : respuestas) {
+            String currentStyleButton = respuesta.getStyle();
+            int index = currentStyleButton.indexOf(";");
+            if (respuesta.getText().equals(respuestaCorrecta)) {
+                respuesta.setStyle("-fx-background-color: rgba(184, 218, 186, 1)" + currentStyleButton.substring(index));
+                respuesta.setDisable(true);
+            } else if (!respuestaCorrectaSeleccionada) {
+                respuestaSeleccionada.setStyle("-fx-background-color: rgba(204, 96, 56, 1)" + currentStyleButton.substring(index));
+                respuestaSeleccionada.setDisable(true);
+            }
+            respuesta.setDisable(true);
+        }
     }
 }

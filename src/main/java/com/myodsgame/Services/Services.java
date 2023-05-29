@@ -73,7 +73,7 @@ public class Services implements IServices {
         repositorioUsuario.update(user, oldUsername);
     }
 
-    public int computePoints(Reto retoActual, boolean ayudaUsada, boolean retoAcertado) {
+    public int computePoints(Reto retoActual, boolean retoAcertado) {
         int obtainedPoints;
 
         if (retoAcertado) {

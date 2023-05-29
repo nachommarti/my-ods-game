@@ -52,7 +52,7 @@ public class PopUpRetoPreguntaController implements Initializable {
         servicios = new Services();
         partidaActual = EstadoJuego.getInstance().getPartida();
         retoActual = partidaActual.getRetos().get(partidaActual.getRetoQueHayQueMirarEnElArray());
-        obtainedPoints = servicios.computePoints(retoActual, retoActual.isAyudaUsada(), true);
+        obtainedPoints = servicios.computePoints(retoActual, true);
         consolidarBoton.setDisable(partidaActual.isConsolidado());
 
         abandonarBoton.setVisible(false);
@@ -118,11 +118,6 @@ public class PopUpRetoPreguntaController implements Initializable {
     @FXML
     private void siguientePreguntaPulsado(ActionEvent event)
     {
-        if(partidaActual.getRetoActual() == 10) {
-            UserUtils.saveUserScore(EstadoJuego.getInstance().getPartida().getPuntuacion());
-            servicios.guardarPuntosDiarios(EstadoJuego.getInstance().getPartida().getPuntuacion());
-        }
-
         for (Window window : windows)
         {
             if (((Stage) window).getTitle().equals("Reto Ahorcado") || ((Stage) window).getTitle().equals("Reto Pregunta") || ((Stage) window).getTitle().equals("Reto Frase"))

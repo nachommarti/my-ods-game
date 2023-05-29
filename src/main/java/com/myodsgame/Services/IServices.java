@@ -12,7 +12,7 @@ public interface IServices {
     String intArrayToString(int[] array);
     void reorderRetos(List<Reto> retos, int inicio, List<Integer> randomIndices);
     void updateUser(Usuario user, String oldUsername);
-    int computePoints(Reto retoActual, boolean ayudaUsada, boolean retoAcertado);
+    int computePoints(Reto retoActual, boolean retoAcertado);
     void linkClicked(Reto retoActual);
     void levelUp();
     int getNumeroTotalRetos();
