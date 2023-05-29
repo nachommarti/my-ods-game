@@ -1,24 +1,17 @@
 package com.myodsgame.Controllers;
 
 import com.myodsgame.Mediator.Mediador;
-import com.myodsgame.Mediator.MediadorAhorcado;
 import com.myodsgame.Models.Partida;
 import com.myodsgame.Models.RetoAhorcado;
-import com.myodsgame.Services.IServices;
-import com.myodsgame.Services.Services;
 import com.myodsgame.Utils.EstadoJuego;
-import com.myodsgame.Utils.UserUtils;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -29,14 +22,11 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.KeyCode;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -51,7 +41,6 @@ public class RetoAhorcadoController implements Initializable {
     private Button ayudaButton;
     @FXML
     private BorderPane borderPane;
-
     @FXML
     private Label timer;
     @FXML
@@ -61,15 +50,9 @@ public class RetoAhorcadoController implements Initializable {
     @FXML
     private ImageView imagenAhorcado;
     @FXML
-    private Label palabraOculta;
-
-    @FXML
-    private Label consolidatedScore;
-    @FXML
     private Label estatusRespuesta;
     @FXML
     private Label partidaScore;
-
     @FXML
     private HBox botones1;
     @FXML
@@ -82,10 +65,6 @@ public class RetoAhorcadoController implements Initializable {
     private HBox labelArray;
     @FXML
     private Label puntosPorAcertar;
-    //@FXML
-    //private Button nextQuestionButton;
-    //@FXML
-    //private Button consolidarButton;
     @FXML
     private Button botonAbandonar;
 
@@ -93,12 +72,11 @@ public class RetoAhorcadoController implements Initializable {
     private RetoAhorcado retoActual;
     private String palabra;
     private int obtainedPoints;
-    private boolean ayudaUsada;
     private Timeline timeline;
     private int timeCountdown;
-    private IServices servicios;
 
-    private MediaPlayer mediaPlayerMusic = null, mediaPlayerTicTac = null, mediaPlayerSonidos = null;
+    private MediaPlayer mediaPlayerMusic;
+    private final MediaPlayer mediaPlayerTicTac = new MediaPlayer(new Media(new File("src/main/resources/sounds/10S_tick.mp3").toURI().toString()));
     private Mediador mediador;
 
     @Override
@@ -109,8 +87,7 @@ public class RetoAhorcadoController implements Initializable {
                 new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, false, true));
         Background background = new Background(fill);
         borderPane.setBackground(background);
-        servicios = new Services();
-        mediador = new MediadorAhorcado();
+        mediador = new Mediador();
         timeline = new Timeline();
         reproducirMusica();
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -157,17 +134,13 @@ public class RetoAhorcadoController implements Initializable {
                             timer.setText(Integer.toString(timeCountdown));
 
                             if (timeCountdown <= 0) {
-                                reproducirSonido("src/main/resources/sounds/Fallo.mp3", 0.5);
-                                timeline.stop();
                                 palabraMostrada.setText(palabra);
                                 endTimer();
-
                             }
 
-                            if (timeCountdown == 10){
-                                Media TicTac = new Media(new File("src/main/resources/sounds/10S_tick.mp3").toURI().toString());
-                                mediaPlayerTicTac = new MediaPlayer(TicTac);
+                            if (timeCountdown == retoActual.getTiempoTicTac()){
                                 mediaPlayerTicTac.play();
+                                mediaPlayerMusic.setVolume(0.05);
                             }
                         })
         );
@@ -186,20 +159,10 @@ public class RetoAhorcadoController implements Initializable {
 
         loadRetosState();
         loadPalabra();
-        if (EstadoJuego.getInstance().getPartida().getVidas() == 1) {
-            vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
-        }
-        else if (EstadoJuego.getInstance().getPartida().getVidas() == 0)
-        {
-            vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
-        }
-        //consolidarButton.setDisable(true);
-        //nextQuestionButton.setDisable(true);
 
-        if(EstadoJuego.getInstance().getPartida().getPuntuacion() >= retoActual.getPuntuacion()/2)
-            ayudaButton.setDisable(false);
-        else
-            ayudaButton.setDisable(true);
+        vidas.setImage(EstadoJuego.getInstance().getPartida().getImagenVidas());
+
+        ayudaButton.setDisable(EstadoJuego.getInstance().getPartida().getPuntuacion() < retoActual.getPuntuacion() / 2);
 
         timeline.playFromStart();
 
@@ -233,7 +196,7 @@ public class RetoAhorcadoController implements Initializable {
        Button pressedButton = (Button) event.getSource();
        char selectedChar = pressedButton.getText().charAt(0);
        Background background = new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY));
-       if(palabra.contains(selectedChar+"")) {
+       if(palabra.contains(String.valueOf(selectedChar))) {
            background = new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY));
            pressedButton.setBackground(background);
            loadChar(selectedChar);
@@ -255,7 +218,7 @@ public class RetoAhorcadoController implements Initializable {
         Button pressedButton = getButtonForPressedKey(selectedChar, botones1, botones2, botones3);
         Background background = new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY));
         if(Character.toUpperCase(selectedChar) == pressedButton.getText().charAt(0)) {
-            if (palabra.contains(selectedChar + "")) {
+            if (palabra.contains(String.valueOf(selectedChar))) {
                 background = new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY));
                 pressedButton.setBackground(background);
                 loadChar(selectedChar);
@@ -286,11 +249,9 @@ public class RetoAhorcadoController implements Initializable {
     }
 
     private void endTimer(){
-        disableKeyboard();
         retoActual.setIntentos(0);
         imagenAhorcado.setImage(new Image(Path.of("", "src", "main", "resources", "images", "ahorcado" + retoActual.getIntentos() +".png").toAbsolutePath().toString()));
         checkLose();
-
     }
 
     private void disableKeyboard(){
@@ -310,18 +271,10 @@ public class RetoAhorcadoController implements Initializable {
 
     private void checkWin() {
         if (palabraMostrada.getText().equals(palabra)) {
-            if(mediaPlayerMusic != null ){mediaPlayerMusic.stop();}
-            if(mediaPlayerTicTac != null){mediaPlayerTicTac.stop();}
             reproducirSonido("src/main/resources/sounds/Acierto.mp3", 0.15);
             disableKeyboard();
-            EstadoJuego.getInstance().getPartida().getRetosFallados()[partidaActual.getRetoActual()-1] = false;
-            obtainedPoints = servicios.computePoints(retoActual, ayudaUsada, true);
-            int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
-            EstadoJuego.getInstance().getPartida().setPuntuacion(puntosPartida + obtainedPoints);
-            int idReto = EstadoJuego.getInstance().getPartida().getObjetoRetoActual(EstadoJuego.getInstance().getPartida().getRetoActual() - 1).getId();
-            UserUtils.saveStats(true, retoActual.getODS(), idReto, "ahorcado");
+            obtainedPoints = mediador.checkWin(mediaPlayerTicTac, mediaPlayerMusic, retoActual, partidaActual, ayudaButton);
             showMessage("HAS GANADO " + obtainedPoints + " PUNTOS", true);
-            ayudaButton.setDisable(true);
             timeline.stop();
             showPopUp();
         }
@@ -329,42 +282,22 @@ public class RetoAhorcadoController implements Initializable {
 
     private void checkLose(){
         if(retoActual.getIntentos() == 0){
-            if(mediaPlayerMusic != null ){mediaPlayerMusic.stop();}
-            if(mediaPlayerTicTac != null){mediaPlayerTicTac.stop();}
-            timeline.stop();
-            reproducirSonido("src/main/resources/sounds/Fallo.mp3", 0.5);
             disableKeyboard();
-            UserUtils.saveStats(false, retoActual.getODS(), 0, "null");
-            obtainedPoints = servicios.computePoints(retoActual, ayudaUsada, false);
-            int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
-
-            EstadoJuego.getInstance().getPartida().getRetosFallados()[partidaActual.getRetoActual()-1] = true;
-            int vidasPartida = EstadoJuego.getInstance().getPartida().getVidas()-1;
-            if(vidasPartida == 0){
+            timeline.stop();
+            ((Label) labelArray.getChildren().get(partidaActual.getRetoActual() - 1)).setStyle("-fx-background-color: rgba(204, 96, 56, 1)");
+            int[] array = mediador.checkLose(mediaPlayerTicTac, mediaPlayerMusic, retoActual, partidaActual, ayudaButton);
+            obtainedPoints = array[0];
+            if(array[1] == 0){
                 showMessage("HAS PERDIDO LA PARTIDA Y " + obtainedPoints + " PUNTOS!", false);
                 reproducirSonido("src/main/resources/sounds/Partida_Perdida.mp3", 0.5);
-                EstadoJuego.getInstance().getPartida().setPartidaPerdida(true);
-                UserUtils.aumentarPartidasJugadas();
+                EstadoJuego.getInstance().getPartida().setImagenVidas(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
+            } else {
+                showMessage("HAS PERDIDO " + obtainedPoints + " PUNTOS!", false);
+                reproducirSonido("src/main/resources/sounds/Fallo.mp3", 0.5);
+                EstadoJuego.getInstance().getPartida().setImagenVidas(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
             }
-            EstadoJuego.getInstance().getPartida().setVidas(vidasPartida);
-            if (EstadoJuego.getInstance().getPartida().getVidas() == 1) {
-                vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
-            }
-            else if (EstadoJuego.getInstance().getPartida().getVidas() == 0)
-            {
-                vidas.setImage(new Image(Path.of("", "src", "main", "resources", "images", "vidasAgotadas.png").toAbsolutePath().toString()));
-            }
-            ayudaButton.setDisable(true);
-            if (EstadoJuego.getInstance().getPartida().isConsolidado())
-            {
-                EstadoJuego.getInstance().getPartida().setPuntuacionConsolidada(EstadoJuego.getInstance().getPartida().getPuntuacionConsolidada()
-                        + obtainedPoints);
-            }
-
+            vidas.setImage(EstadoJuego.getInstance().getPartida().getImagenVidas());
             showPopUp();
-            EstadoJuego.getInstance().getPartida().setPuntuacion(puntosPartida + obtainedPoints);
-
-            //nextQuestionButton.setDisable(false);
         }
     }
 
@@ -404,39 +337,11 @@ public class RetoAhorcadoController implements Initializable {
                 char randomChar = palabra.charAt(new Random().nextInt(palabra.length()));
                 System.out.println("Random char is: " + randomChar);
                 if (!palabraMostrada.getText().contains(String.valueOf(randomChar))) {
-                    for (Node node : botones1.getChildren()) {
-                        Button button = (Button) node;
-                        if (button.getText().equals("" + randomChar)) {
-                            button.setDisable(true);
-                            loadChar(randomChar);
-                            checkWin();
-                            notFoundChar = false;
-                            break;
-                        }
-                    }
-                    for (Node node : botones2.getChildren()) {
-                        Button button = (Button) node;
-                        if (button.getText().equals(String.valueOf(randomChar))) {
-                            button.setDisable(true);
-                            loadChar(randomChar);
-                            checkWin();
-                            notFoundChar = false;
-                            break;
-                        }
-                    }
-                    for (Node node : botones3.getChildren()) {
-                        Button button = (Button) node;
-                        if (button.getText().equals(String.valueOf(randomChar))) {
-                            button.setDisable(true);
-                            loadChar(randomChar);
-                            checkWin();
-                            notFoundChar = false;
-                            break;
-                        }
-                    }
+                    notFoundChar = isNotFoundChar(notFoundChar, randomChar, botones1);
+                    notFoundChar = isNotFoundChar(notFoundChar, randomChar, botones2);
+                    notFoundChar = isNotFoundChar(notFoundChar, randomChar, botones3);
                 }
             }
-            ayudaUsada = true;
             reproducirSonido("src/main/resources/sounds/pista_larga.mp3", 0.5);
             mediaPlayerMusic.play();
         }
@@ -459,7 +364,21 @@ public class RetoAhorcadoController implements Initializable {
 
     private void reproducirSonido(String sonidoPath, double volumen){
         mediaPlayerMusic.pause();
-        mediaPlayerSonidos = mediador.sonidoSetter(sonidoPath, volumen);
+        MediaPlayer mediaPlayerSonidos = mediador.sonidoSetter(sonidoPath, volumen);
         mediaPlayerSonidos.play();
+    }
+
+    private boolean isNotFoundChar(boolean notFoundChar, char randomChar, HBox botones) {
+        for (Node node : botones.getChildren()) {
+            Button button = (Button) node;
+            if (button.getText().equals(String.valueOf(randomChar))) {
+                button.setDisable(true);
+                loadChar(randomChar);
+                checkWin();
+                notFoundChar = false;
+                break;
+            }
+        }
+        return notFoundChar;
     }
 }
