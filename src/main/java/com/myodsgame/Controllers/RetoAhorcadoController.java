@@ -318,7 +318,8 @@ public class RetoAhorcadoController implements Initializable {
             obtainedPoints = servicios.computePoints(retoActual, ayudaUsada, true);
             int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
             EstadoJuego.getInstance().getPartida().setPuntuacion(puntosPartida + obtainedPoints);
-            UserUtils.saveStats(true, retoActual.getODS());
+            int idReto = EstadoJuego.getInstance().getPartida().getObjetoRetoActual(EstadoJuego.getInstance().getPartida().getRetoActual() - 1).getId();
+            UserUtils.saveStats(true, retoActual.getODS(), idReto, "ahorcado");
             showMessage("HAS GANADO " + obtainedPoints + " PUNTOS", true);
             ayudaButton.setDisable(true);
             timeline.stop();
@@ -333,8 +334,7 @@ public class RetoAhorcadoController implements Initializable {
             timeline.stop();
             reproducirSonido("src/main/resources/sounds/Fallo.mp3", 0.5);
             disableKeyboard();
-            //botonSalir.setDisable(false);
-            UserUtils.saveStats(false, retoActual.getODS());
+            UserUtils.saveStats(false, retoActual.getODS(), 0, "null");
             obtainedPoints = servicios.computePoints(retoActual, ayudaUsada, false);
             int puntosPartida = EstadoJuego.getInstance().getPartida().getPuntuacion();
 

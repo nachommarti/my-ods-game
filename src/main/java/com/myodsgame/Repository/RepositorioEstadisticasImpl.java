@@ -4,6 +4,7 @@ import com.myodsgame.Models.Estadisticas;
 import com.myodsgame.Services.IServices;
 import com.myodsgame.Services.Services;
 import com.myodsgame.Utils.DBConnection;
+import com.myodsgame.Utils.UserUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -117,7 +118,7 @@ public class RepositorioEstadisticasImpl implements Repositorio<Estadisticas, St
     public void update(Estadisticas estadisticas, String username) {
         String sql = "UPDATE estadisticas SET username = ?, puntos_totales = ?, partidas_jugadas = ?, " +
                 "numero_aciertos = ?, numero_fallos = ?, aciertos_individual_ods = ?, " +
-                "fallos_individual_ods = ?, nivel = ? WHERE username = ?";
+                "fallos_individual_ods = ?, nivel = ?, preguntasAcertadas = ?, ahorcadosAcertados = ?, frasesAcertadas = ? WHERE username = ?";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -129,7 +130,10 @@ public class RepositorioEstadisticasImpl implements Repositorio<Estadisticas, St
             statement.setString(6, services.intArrayToString(estadisticas.getAciertos_individual_ods()));
             statement.setString(7, services.intArrayToString(estadisticas.getFallos_individual_ods()));
             statement.setInt(8, estadisticas.getNivel());
-            statement.setString(9, username);
+            statement.setString(9, estadisticas.getPreguntasAcertadas().toString());
+            statement.setString(10, estadisticas.getPalabrasAcertadas().toString());
+            statement.setString(11, estadisticas.getFrasesAcertadas().toString());
+            statement.setString(12, username);
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
@@ -175,6 +179,9 @@ public class RepositorioEstadisticasImpl implements Repositorio<Estadisticas, St
         estadisticas.setAciertos_individual_ods(services.stringToIntArray(resultSet.getString("aciertos_individual_ods")));
         estadisticas.setAciertos_individual_ods(services.stringToIntArray(resultSet.getString("fallos_individual_ods")));
         estadisticas.setNivel(resultSet.getInt("nivel"));
+        estadisticas.setPreguntasAcertadas(services.parsearStringASet(resultSet.getString("preguntasAcertadas")));
+        estadisticas.setPalabrasAcertadas(services.parsearStringASet(resultSet.getString("ahorcadosAcertados")));
+        estadisticas.setFrasesAcertadas(services.parsearStringASet(resultSet.getString("frasesAcertadas")));
 
         return estadisticas;
     }

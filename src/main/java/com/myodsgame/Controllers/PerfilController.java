@@ -60,13 +60,9 @@ public class PerfilController implements Initializable {
         usuarioLabel.setText(user.getUsername());
         emailLabel.setText(user.getEmail());
         fotoUsuario.setImage(new Image(Path.of(user.getAvatar()).toAbsolutePath().toString()));
-        double porcentaje;
-        if (est.getNumeroAciertos() == 0) porcentaje = 0;
-        else if (est.getNumeroFallos() == 0) porcentaje = 100;
-        else {
-            porcentaje = ((double) est.getNumeroAciertos() / services.getNumeroTotalRetos()) * 100;
-        }
-        if(porcentaje > 100) {porcentaje = 100.0;}
+        int numeroAciertosTotales = est.getPalabrasAcertadas().size() + est.getPreguntasAcertadas().size() + est.getFrasesAcertadas().size();
+        double porcentaje = ((double) numeroAciertosTotales / services.getNumeroTotalRetos()) * 100;
+
         porcentajeODS.setText(String.format("%.2f",porcentaje) +" %");
         barraProgreso.setProgress(porcentaje);
         saveButton.setVisible(false);

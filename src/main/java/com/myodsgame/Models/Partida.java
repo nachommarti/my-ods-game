@@ -206,4 +206,6 @@ public class Partida {
     public boolean isPartidaAbandonada() {
         return partidaAbandonada;
     }
+
+    public Reto getObjetoRetoActual(int indice){return retos.get(indice);}
 }

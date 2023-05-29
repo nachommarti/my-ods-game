@@ -6,7 +6,9 @@ import com.myodsgame.Repository.Repositorio;
 import com.myodsgame.Repository.RepositorioEstadisticasImpl;
 import com.myodsgame.Repository.RepositorioUsuarioImpl;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class UserUtils {
 
@@ -40,7 +42,7 @@ public class UserUtils {
         repositorioEstadisticas.update(estadisticas, user.getUsername());
     }
 
-    public static void saveStats(boolean correcto, List<Integer> ODS){
+    public static void saveStats(boolean correcto, List<Integer> ODS, int idReto, String tipo){
         Usuario user = EstadoJuego.getInstance().getUsuario();
         Estadisticas estadisticas = user.getEstadistica();
 
@@ -54,6 +56,28 @@ public class UserUtils {
                 }
 
                 estadisticas.setAciertos_individual_ods(aciertosODS);
+            }
+
+            if(tipo.equals("pregunta")){ //tipo Pregunta
+                Set<Integer> preguntasAcertadas = estadisticas.getPreguntasAcertadas();
+                if(!preguntasAcertadas.contains(idReto)){
+                    preguntasAcertadas.add(idReto);
+                    estadisticas.setPreguntasAcertadas(preguntasAcertadas);
+                }
+            }
+            else if (tipo.equals("ahorcado")) { //tipo ahorcado
+                Set<Integer> palabrasAcertadas = estadisticas.getPalabrasAcertadas();
+                if(!palabrasAcertadas.contains(idReto)){
+                    palabrasAcertadas.add(idReto);
+                    estadisticas.setPalabrasAcertadas(palabrasAcertadas);
+                }
+            }
+            else if (tipo.equals("frase")) { //tipo frase
+                Set<Integer> frasesAcertadas = estadisticas.getFrasesAcertadas();
+                if(!frasesAcertadas.contains(idReto)){
+                    frasesAcertadas.add(idReto);
+                    estadisticas.setFrasesAcertadas(frasesAcertadas);
+                }
             }
 
         }
@@ -73,6 +97,8 @@ public class UserUtils {
         user.setEstadistica(estadisticas);
         repositorioEstadisticas.update(estadisticas, user.getUsername());
     }
+
+
 
     public static void aumentarPartidasJugadas(){
         Usuario user = EstadoJuego.getInstance().getUsuario();

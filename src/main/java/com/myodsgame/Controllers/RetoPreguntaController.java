@@ -2,6 +2,7 @@ package com.myodsgame.Controllers;
 
 import com.myodsgame.Mediator.Mediador;
 import com.myodsgame.Mediator.MediadorPregunta;
+import com.myodsgame.Models.Estadisticas;
 import com.myodsgame.Models.Partida;
 import com.myodsgame.Models.RetoPregunta;
 import com.myodsgame.Services.IServices;
@@ -309,21 +310,22 @@ public class RetoPreguntaController implements Initializable {
         if(mediaPlayerMusic !=null)mediaPlayerMusic.stop();
         if(mediaPlayerTicTac !=null) mediaPlayerTicTac.stop();
         currentStyleLabel = labelArray.getStyle();
-
+        int idReto = EstadoJuego.getInstance().getPartida().getObjetoRetoActual(EstadoJuego.getInstance().getPartida().getRetoActual() - 1).getId();
         if (respuestaSeleccionada.getText().equals(respuestaCorrecta)) {
             ((Label) labelArray.getChildren().get(partidaActual.getRetoActual()-1)).setStyle("-fx-background-color: rgba(184, 218, 186, 1); " + currentStyleLabel);
             ((Label) labelArray.getChildren().get(partidaActual.getRetoActual()-1)).setTextFill(Color.WHITE);
             respuestaCorrectaSeleccionada = true;
             reproducirSonido("src/main/resources/sounds/Acierto.mp3", 0.15);
-            UserUtils.saveStats(true, retoActual.getODS());
+            UserUtils.saveStats(true, retoActual.getODS(), idReto, "pregunta");
             EstadoJuego.getInstance().getPartida().getRetosFallados()[partidaActual.getRetoActual()-1] = false;
+
         }
         else {
             ((Label) labelArray.getChildren().get(partidaActual.getRetoActual()-1)).setStyle("-fx-background-color: rgb(255,25,25); " + currentStyleLabel);
             ((Label) labelArray.getChildren().get(partidaActual.getRetoActual()-1)).setTextFill(Color.WHITE);
             EstadoJuego.getInstance().getPartida().setVidas(partidaActual.getVidas()-1);
             reproducirSonido("src/main/resources/sounds/Fallo.mp3", 0.5);
-            UserUtils.saveStats(false, retoActual.getODS());
+            UserUtils.saveStats(false, retoActual.getODS(), 0,"null");
             EstadoJuego.getInstance().getPartida().setImagenVidas(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
             vidas.setImage(EstadoJuego.getInstance().getPartida().getImagenVidas());
             EstadoJuego.getInstance().getPartida().getRetosFallados()[partidaActual.getRetoActual()-1] = true;
