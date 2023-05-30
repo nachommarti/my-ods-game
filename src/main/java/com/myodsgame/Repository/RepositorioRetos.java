@@ -14,9 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class RepositorioRetos<T extends Reto> implements Repositorio<T, Integer>{
-    protected final Connection connection;
-    protected final IServices services;
-    protected final PuntosManager puntosManager;
+    public final Connection connection;
+    public final IServices services;
+    public final PuntosManager puntosManager;
+
     public RepositorioRetos() {
         connection = DBConnection.getConnection();
         services = new Services();

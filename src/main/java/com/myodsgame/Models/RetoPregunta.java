@@ -12,6 +12,11 @@ public class RetoPregunta extends Reto{
     private String respuesta4;
     private String respuestaCorrecta;
 
+    public RetoPregunta(){
+        super();
+
+    }
+
     public RetoPregunta(int id, boolean ayudaUsada, int duracion, int tiempoTicTac, int dificultad, int puntuacion,
                         TipoReto tipoReto, List<Integer> ODS, String enunciado, String respuesta1, String respuesta2,
                         String respuesta3, String respuesta4, String respuestaCorrecta) {

@@ -60,10 +60,10 @@ public class RepositorioPreguntaImpl<T extends Reto> extends RepositorioRetos<T>
                 "SELECT * FROM " +
                         "(SELECT * FROM preguntas WHERE nivel_dificultad = " + 1 +
                         " ORDER BY RAND() LIMIT ?) AS dificultad_incial " +
-                        "UNION ALL" +
+                        "UNION ALL " +
                         "(SELECT * FROM preguntas WHERE nivel_dificultad = " + 2 +
                         " ORDER BY RAND() LIMIT ?) " +
-                        "UNION ALL" +
+                        "UNION ALL " +
                         "(SELECT * FROM preguntas WHERE nivel_dificultad = " + 3 +
                         " ORDER BY RAND() LIMIT ?) "
                 ;

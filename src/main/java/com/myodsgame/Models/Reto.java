@@ -14,6 +14,10 @@ public abstract class Reto {
     private TipoReto tipoReto;
     private List<Integer> ODS;
 
+    public Reto(){
+
+    }
+
     protected Reto(int id, boolean ayudaUsada, int duracion, int tiempoTicTac, int dificultad, int puntuacion, TipoReto tipoReto,
                 List<Integer> ODS) {
         this.id = id;

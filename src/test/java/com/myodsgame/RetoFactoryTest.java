@@ -33,7 +33,14 @@ public class RetoFactoryTest {
         params.put("respuesta_correcta", "París");
 
         Reto reto = RetoFactory.crearReto(id, ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, ODS, TipoReto.PREGUNTA, params);
+
         assertTrue(reto instanceof RetoPregunta);
+        assertEquals(((RetoPregunta) reto).getEnunciado(), "¿Cuál es la capital de Francia?");
+        assertEquals(((RetoPregunta) reto).getRespuesta1(), "Berlín");
+        assertEquals(((RetoPregunta) reto).getRespuesta2(), "París");
+        assertEquals(((RetoPregunta) reto).getRespuesta3(), "Madrid");
+        assertEquals(((RetoPregunta) reto).getRespuesta4(), "Roma");
+        assertEquals(((RetoPregunta) reto).getRespuestaCorrecta(), "París");
         params.clear();
     }
 
@@ -43,7 +50,10 @@ public class RetoFactoryTest {
         params.put("pista", "Es la capital de un país");
 
         Reto reto = RetoFactory.crearReto(id, ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, ODS, TipoReto.AHORACADO, params);
+
         assertTrue(reto instanceof RetoAhorcado);
+        assertEquals(((RetoAhorcado) reto).getPalabra(), "París");
+        assertEquals(((RetoAhorcado) reto).getPista(), "Es la capital de un país");
         params.clear();
     }
 
@@ -53,7 +63,10 @@ public class RetoFactoryTest {
         params.put("pista", "Es un pangrama");
 
         Reto reto = RetoFactory.crearReto(id, ayudaUsada, duracion, tiempoTicTac, dificultad, puntuacion, ODS, TipoReto.FRASE, params);
+
         assertTrue(reto instanceof RetoFrase);
+        assertEquals(((RetoFrase) reto).getFrase(), "El zorro marrón rápido salta sobre el perro perezoso");
+        assertEquals(((RetoFrase) reto).getPista(), "Es un pangrama");
         params.clear();
     }
 
