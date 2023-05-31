@@ -6,25 +6,29 @@ import com.myodsgame.Repository.Repositorio;
 import com.myodsgame.Repository.RepositorioFraseImpl;
 import com.myodsgame.Repository.RepositorioPalabraImpl;
 import com.myodsgame.Repository.RepositorioPreguntaImpl;
-import javafx.scene.image.Image;
-import javafx.scene.media.Media;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
-import java.io.File;
 import java.util.List;
 
+import static com.myodsgame.Builder.PartidaBuilder.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PartidaBuilderTest {
-
     PartidaBuilder builder;
 
     @BeforeAll
     public static void setupClass() {
         JavaFXInitializer.initializeToolkit();
+    }
+
+    @AfterEach
+    public  void checkAfterTest(){
+        builder.BuildSonidos();
+        assertTrue(builder.getPartida().getSonidoAyuda().getSource().contains(SONIDO_AYUDA));
+        assertTrue(builder.getPartida().getSonidoAcierto().getSource().contains(SONIDO_ACIERTO));
+        assertTrue(builder.getPartida().getSondioFallo().getSource().contains(SONIDO_FALLO));
+        assertTrue(builder.getPartida().getSonidoVictoria().getSource().contains(SONIDO_VICTORIA));
+        assertTrue(builder.getPartida().getSonidoDerrota().getSource().contains(SONIDO_DERROTA));
     }
 
     @Test
@@ -93,27 +97,20 @@ class PartidaBuilderTest {
     @Test
     public void testPartidaMixtaBuilder() {
         builder = new PartidaMixtaBuilder();
+
         builder.BuildRetos();
+        assertNotNull(builder.getPartida().getRetos());
 
-        List<? extends Reto> retos =  builder.getPartida().getRetos();
-        Assertions.assertNotNull(retos);
-        Assertions.assertEquals(builder.getPartida().getRetos().size(), retos.size());
         builder.BuildMusica();
-
-        Media musica = builder.getPartida().getMusica();
-        Assertions.assertNotNull(musica);
+        assertNotNull(builder.getPartida().getMusica());
+        assertTrue(builder.getPartida().getMusica().getSource().contains("src/main/resources/sounds/cancion_3.mp3"));
 
         builder.BuildImagenes();
+        assertNotNull(builder.getPartida().getImagenFondo());
+        assertTrue(builder.getPartida().getImagenFondo().getUrl().contains("src\\main\\resources\\images\\fondo_mixta.png"));
 
-        Image imagenFondo = builder.getPartida().getImagenFondo();
-        Assertions.assertNotNull(imagenFondo);
+        assertNotNull(builder.getPartida());
 
-        Partida partida = builder.getPartida();
-
-        Assertions.assertNotNull(partida);
-        Assertions.assertNotNull(partida.getRetos());
-        Assertions.assertNotNull(partida.getMusica());
-        Assertions.assertNotNull(partida.getImagenFondo());
     }
 
 }

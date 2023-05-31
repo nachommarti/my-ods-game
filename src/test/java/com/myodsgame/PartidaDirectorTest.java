@@ -14,18 +14,14 @@ public class PartidaDirectorTest {
 
     @BeforeEach
     public void setUp() {
-        // Crear un mock de IPartidaBuilder
         mockBuilder = Mockito.mock(IPartidaBuilder.class);
-        // Crear una instancia de PartidaDirector con el mock builder
         director = new PartidaDirector(mockBuilder);
     }
 
     @Test
     public void testBuildPartida() {
-        // Llamamos a BuildPartida
         director.BuildPartida();
 
-        // Verificamos que los métodos correspondientes de IPartidaBuilder se llaman
         verify(mockBuilder).BuildRetos();
         verify(mockBuilder).BuildMusica();
         verify(mockBuilder).BuildSonidos();

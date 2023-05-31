@@ -10,12 +10,11 @@ import java.nio.file.Path;
 public abstract class PartidaBuilder implements IPartidaBuilder{
     protected Partida partida;
     public static String SONIDO_AYUDA = "src/main/resources/sounds/pista_larga.mp3";
-    public static String SONIDO_ACIERTO = "src/main/resources/sounds/pista_larga.mp3";
-    public static String SONIDO_FALLO = "src/main/resources/sounds/pista_larga.mp3";
-    public static String SONIDO_VICTORIA = "src/main/resources/sounds/pista_larga.mp3";
-    public static String SONIDO_DERROTA = "src/main/resources/sounds/pista_larga.mp3";
-    public static String SONIDO_TICTAC = "src/main/resources/sounds/pista_larga.mp3";
-    public static String IMAGEN_VIDAS = "src/main/resources/images/vidas.png";
+    public static String SONIDO_ACIERTO = "src/main/resources/sounds/Acierto.mp3";
+    public static String SONIDO_FALLO = "src/main/resources/sounds/Fallo.mp3";
+    public static String SONIDO_VICTORIA = "src/main/resources/sounds/Victoria.mp3";
+    public static String SONIDO_DERROTA = "src/main/resources/sounds/Partida_Perdida.mp3";
+    public static String SONIDO_TICTAC = "src/main/resources/sounds/10S_tick.mp3";
 
     public PartidaBuilder() {
         partida = new Partida();
