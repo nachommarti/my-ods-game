@@ -64,7 +64,7 @@ public class PerfilController implements Initializable {
         double porcentaje = ((double) numeroAciertosTotales / services.getNumeroTotalRetos()) * 100;
 
         porcentajeODS.setText(String.format("%.2f",porcentaje) +" %");
-        barraProgreso.setProgress(porcentaje);
+        barraProgreso.setProgress(porcentaje / 100);
         saveButton.setVisible(false);
         usuarioTextField.setVisible(false);
         usuarioLabel.setVisible(true);

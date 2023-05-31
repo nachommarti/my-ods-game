@@ -7,6 +7,7 @@ import com.myodsgame.Utils.DBConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class RepositorioUsuarioImpl implements Repositorio<Usuario, String>{
@@ -41,6 +42,9 @@ public class RepositorioUsuarioImpl implements Repositorio<Usuario, String>{
             estadisticas.setAciertos_individual_ods(estadisticas.getAciertos_individual_ods());
             estadisticas.setFallos_individual_ods(estadisticas.getFallos_individual_ods());
             estadisticas.setNivel(estadisticas.getNivel());
+            estadisticas.setPreguntasAcertadas(new HashSet<>());
+            estadisticas.setPalabrasAcertadas(new HashSet<>());
+            estadisticas.setFrasesAcertadas(new HashSet<>());
             repositorioEstadisticas.create(estadisticas);
 
             user.setEstadistica(estadisticas);

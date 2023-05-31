@@ -25,8 +25,8 @@ public class RepositorioEstadisticasImpl implements Repositorio<Estadisticas, St
     @Override
     public void create(Estadisticas estadisticas) {
         String sql = "INSERT INTO estadisticas (username, puntos_totales, partidas_jugadas, " +
-                "numero_aciertos, numero_fallos, aciertos_individual_ods, fallos_individual_ods, nivel) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                "numero_aciertos, numero_fallos, aciertos_individual_ods, fallos_individual_ods, nivel, preguntasAcertadas, ahorcadosAcertados, frasesAcertadas) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -38,6 +38,9 @@ public class RepositorioEstadisticasImpl implements Repositorio<Estadisticas, St
             statement.setString(6, services.intArrayToString(estadisticas.getAciertos_individual_ods()));
             statement.setString(7, services.intArrayToString(estadisticas.getFallos_individual_ods()));
             statement.setInt(8, estadisticas.getNivel());
+            statement.setString(9, estadisticas.getPreguntasAcertadas().toString());
+            statement.setString(10, estadisticas.getPalabrasAcertadas().toString());
+            statement.setString(11, estadisticas.getFrasesAcertadas().toString());
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
