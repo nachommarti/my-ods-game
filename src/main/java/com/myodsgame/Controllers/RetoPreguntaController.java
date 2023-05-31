@@ -272,8 +272,6 @@ public class RetoPreguntaController implements Initializable {
             disablePreguntas(respuestaSeleccionada, false);
             checkLose();
         }
-
-        showPopUp();
         currentScore.setText("Score: " + EstadoJuego.getInstance().getPartida().getPuntuacion());
 
     }
@@ -283,6 +281,7 @@ public class RetoPreguntaController implements Initializable {
         obtainedPoints = mediador.checkWin(mediaPlayerTicTac, mediaPlayerMusic, retoActual, partidaActual, ayuda);
         estatusRespuesta.setText("HAS GANADO " + obtainedPoints + " PUNTOS");
         estatusRespuesta.setTextFill(Color.GREEN);
+        showPopUp();
     }
 
     private void checkLose() {
@@ -301,6 +300,7 @@ public class RetoPreguntaController implements Initializable {
             EstadoJuego.getInstance().getPartida().setImagenVidas(new Image(Path.of("", "src", "main", "resources", "images", "vidaMitad.png").toAbsolutePath().toString()));
         }
         vidas.setImage(EstadoJuego.getInstance().getPartida().getImagenVidas());
+        showPopUp();
     }
 
     private void endTimer() {
