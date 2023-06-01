@@ -14,6 +14,8 @@ public class DBConnection {
 
     private static Connection conn = null;
 
+    private DBConnection(){}
+
     public static Connection getConnection() {
         try {
             if (conn == null || conn.isClosed()) {
