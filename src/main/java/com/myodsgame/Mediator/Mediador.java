@@ -29,7 +29,8 @@ public class Mediador {
             EstadoJuego.getInstance().getPartida().setPuntuacion(puntos);
             currentScore.setText("Score: " + puntos);
             ayuda.setDisable(true);
-            EstadoJuego.getInstance().getPartida().setAyudasRestantes(EstadoJuego.getInstance().getPartida().getAyudasRestantes() - 1);
+            EstadoJuego.getInstance().getPartida().
+                    setAyudasRestantes(EstadoJuego.getInstance().getPartida().getAyudasRestantes() - 1);
         }
         return result;
     }

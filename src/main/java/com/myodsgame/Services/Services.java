@@ -1,9 +1,6 @@
 package com.myodsgame.Services;
 
-import com.myodsgame.Models.Estadisticas;
-import com.myodsgame.Models.PuntuacionDiariaPK;
-import com.myodsgame.Models.Reto;
-import com.myodsgame.Models.Usuario;
+import com.myodsgame.Models.*;
 import com.myodsgame.Repository.*;
 import com.myodsgame.Utils.EstadoJuego;
 
@@ -159,15 +156,20 @@ public class Services implements IServices {
     }
 
    public int getNumeroTotalRetos(){
-        RepositorioRetos<Reto> repositorioRetos = new RepositorioRetos<>();
-        return repositorioRetos.getNumeroTotalRetos();
+        RepositorioPreguntaImpl<RetoPregunta> repositorioPregunta = new RepositorioPreguntaImpl<>();
+        RepositorioPalabraImpl<RetoPregunta> repositorioPalabra = new RepositorioPalabraImpl<>();
+        RepositorioFraseImpl<RetoPregunta> repositorioFrase = new RepositorioFraseImpl<>();
+        return repositorioPregunta.getNumeroTotalRetos() + repositorioPalabra.getNumeroTotalRetos() + repositorioFrase.getNumeroTotalRetos();
    }
 
    public int[] getNumeroTotalRetosPorODS(){
-       RepositorioRetos<Reto> repositorioRetos = new RepositorioRetos<>();
+       RepositorioPreguntaImpl<RetoPregunta> repositorioPregunta = new RepositorioPreguntaImpl<>();
+       RepositorioPalabraImpl<RetoPregunta> repositorioPalabra = new RepositorioPalabraImpl<>();
+       RepositorioFraseImpl<RetoPregunta> repositorioFrase = new RepositorioFraseImpl<>();
        int[] retosPorODS = new int[17];
        for(int i = 0; i < retosPorODS.length; i++){
-           retosPorODS[i] = repositorioRetos.getNumeroTotalRetosPorODS(i+1);
+           retosPorODS[i] = repositorioPregunta.getNumeroTotalRetosPorODS(i+1)
+                   + repositorioPalabra.getNumeroTotalRetosPorODS(i+1) + repositorioFrase.getNumeroTotalRetosPorODS(i+1);
        }
        return retosPorODS;
    }
