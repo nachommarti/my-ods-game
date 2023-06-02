@@ -118,7 +118,7 @@
          </children></VBox>
    </center>
    <bottom>
-      <Button fx:id="botonAbandonar" mnemonicParsing="false" onAction="#botonAbandonarPulsado" prefHeight="14.0" prefWidth="78.0" style="-fx-background-color: red;" text=" Abandonar" textFill="WHITE" visible="false" BorderPane.alignment="CENTER">
+      <Button fx:id="botonAbandonar" mnemonicParsing="false" onAction="#botonAbandonarPulsado" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: red;" text=" Abandonar" textFill="WHITE" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="20.0" />
          </BorderPane.margin>
